@@ -12,6 +12,15 @@ class Handover extends Model
 {
     /** @use HasFactory<\Database\Factories\HandoverFactory> */
     use HasFactory;
+    protected $fillable =[
+        'title',
+        'attachment',
+        'is_delivered',
+        'module_id',
+        'team_id',
+        'created_at',
+        'updated_at'
+    ];
 
     public function module() : BelongsTo
     {
