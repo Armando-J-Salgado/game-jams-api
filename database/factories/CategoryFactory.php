@@ -18,7 +18,8 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            // Se asume que una categoría puede abarcar varias palabras, por lo que usamos 'words' en lugar de 'word'
+            'name' => fake()->unique()->words(2, true),
         ];
     }
 }
