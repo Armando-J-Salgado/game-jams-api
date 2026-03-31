@@ -11,11 +11,13 @@ use App\Models\Category;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Competition extends Model
 {
     /** @use HasFactory<\Database\Factories\CompetitionFactory> */
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -50,6 +52,6 @@ class Competition extends Model
 
     public function user() : BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }
