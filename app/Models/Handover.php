@@ -18,6 +18,8 @@ class Handover extends Model
         'is_delivered',
         'module_id',
         'team_id',
+        'score',
+        'date_of_submission',
         'created_at',
         'updated_at'
     ];

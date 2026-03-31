@@ -11,6 +11,11 @@ class Category extends Model
 {
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'created_at',
+        'updated_at'
+    ];
 
     public function competitions() : HasMany
     {

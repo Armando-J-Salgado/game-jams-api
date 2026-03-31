@@ -15,13 +15,14 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Team;
 use App\Models\Competition;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * Get the attributes that should be cast.
@@ -35,6 +36,24 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $fillable = [
+        'username',
+        'email',
+        'password',
+        'name',
+        'lastname',
+        'dui',
+        'team_id',
+        'role_id',
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     public function competitions(): HasMany
     {
