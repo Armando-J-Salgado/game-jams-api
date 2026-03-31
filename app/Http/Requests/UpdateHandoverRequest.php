@@ -27,7 +27,9 @@ class UpdateHandoverRequest extends FormRequest
             'attachement' => ['sometimes','required', 'string', 'url', 'active_url', 'regex:/^https?:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:\/\S*)?$/'],
             'is_delivered' => ['sometimes','required', 'boolean'],
             'module_id' => ['sometimes','required', 'integer', 'exists:modules,id'],
-            'team_id' => ['sometimes','required', 'integer', 'exists:teams,id']
+            'team_id' => ['sometimes','required', 'integer', 'exists:teams,id'],
+            'score' => ['sometimes','nullable', 'integer', 'between:0,100'],
+            'date_of_submission' => ['sometimes','required', 'date', 'before_or_equal:today']
         ];
     }
 }
