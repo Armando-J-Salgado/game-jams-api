@@ -29,6 +29,9 @@ class HandoverFactory extends Factory
             'attachment' => $hasAttachment ? fake()->url() : null,
             'is_delivered' => $hasAttachment,
             
+            // Si se entregó, simulamos una fecha de entrega aleatoria de las últimas 2 semanas
+            'date_of_submission' => $hasAttachment ? fake()->dateTimeBetween('-2 weeks', 'now') : null,
+            
             // Solo calificamos si ya se entregó
             'score' => $hasAttachment ? fake()->numberBetween(1, 10) : null,
             

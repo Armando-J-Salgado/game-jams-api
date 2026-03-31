@@ -24,6 +24,24 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
+            
+            // Orquestador único de usuarios que respeta los roles previamente creados
+            UserSeeder::class,
+            
+            // Catálogo necesario para clasificar competencias
+            CategorySeeder::class,
+            
+            // Competencias manejadas por organizadores
+            CompetitionSeeder::class,
+            
+            // Equipos orquestados por líderes
+            TeamSeeder::class,
+
+            // Etapas/Módulos para las competencias
+            ModuleSeeder::class,
+            
+            // Entregas de los equipos en cada módulo
+            HandoverSeeder::class,
         ]);
     }
 }
