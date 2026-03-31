@@ -5,15 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    use AuthorizesRequests;
+    public function __construct() {
+        $this->authorizeResource(Category::class);
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->authorize('viewAny', Category::class);
+        $categories = Category::all();
+        return CategoryResource::collection($categories);
     }
 
     /**
@@ -29,7 +38,10 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $this->authorize('create', Category::class);
+        $data = $request->validated();
+        $category = Category::create($data);
+        return response()->json(CategoryResource::make($category), 201);
     }
 
     /**
@@ -37,7 +49,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $this->authorize('view', $category);
+        return CategoryResource::make($category);
     }
 
     /**
@@ -53,7 +66,10 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $this->authorize('update', $category);
+        $data = $request->validated();
+        $category->update($data);
+        return response()->json(CategoryResource::make($category));
     }
 
     /**
