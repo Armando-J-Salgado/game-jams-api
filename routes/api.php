@@ -25,17 +25,23 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function() {
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{category}', [CategoryController::class, 'show'])
     ->missing(fn () => response()
-    ->json(['message' => 'There are no matches for the searched category'], 404));;
+    ->json(['message' => 'There are no matches for the searched category'], 404));
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{category}', [CategoryController::class, 'update'])
     ->missing(fn () => response()
-    ->json(['message' => 'There are no matches for the searched category'], 404));;
+    ->json(['message' => 'There are no matches for the searched category'], 404));
 
     
 
     // CRUD Handovers
-    
-
+    Route::get('/handovers', [HandoverController::class, 'index']);
+    Route::get('/handovers/{handover}', [HandoverController::class, 'show'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched handover'], 404));
+    Route::post('/handovers', [HandoverController::class, 'store']);
+    Route::put('/handovers/{handover}', [HandoverController::class, 'update'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched handover'], 404));
 
     // CRUD Utils
 
