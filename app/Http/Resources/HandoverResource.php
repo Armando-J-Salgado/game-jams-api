@@ -20,7 +20,9 @@ class HandoverResource extends JsonResource
             'attachment' => $this->attachment,
             'is_delivered' => $this->is_delivered,
             'module_id' => $this->module_id,
-            'team_id' => $this->team_id
+            'team_id' => $this->team_id,
+            'score' => $this->score,
+            'date_of_submission' => $this->date_of_submission
         ];
     }
 }
