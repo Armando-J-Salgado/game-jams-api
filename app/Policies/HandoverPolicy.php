@@ -20,7 +20,18 @@ class HandoverPolicy
      */
     public function view(User $user, Handover $handover): bool
     {
-        return $user->can('handovers.view');
+        if (!$user->can('handovers.view')) {
+            return false;
+        }
+
+        if ($user->hasAnyRole(['administrador', 'organizador'])) {
+            return true;
+        }
+        $team = $handover->team;
+        $isLeader = $team && $team->admin_id === $user->id;
+        $isMember = $team && $user->team_id === $team->id;
+
+        return $isLeader || $isMember;
     }
 
     /**
@@ -36,7 +47,19 @@ class HandoverPolicy
      */
     public function update(User $user, Handover $handover): bool
     {
-        return $user->can('handovers.update');
+        if (!$user->can('handovers.update')) {
+            return false;
+        }
+
+        if ($user->hasAnyRole(['administrador', 'organizador'])) {
+            return true;
+        }
+
+        $team = $handover->team;
+        $isLeader = $team && $team->admin_id === $user->id;
+        $isMember = $team && $user->team_id === $team->id;
+
+        return $isLeader || $isMember;
     }
 
     /**

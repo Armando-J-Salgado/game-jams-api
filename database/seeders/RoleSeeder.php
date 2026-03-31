@@ -57,15 +57,11 @@ class RoleSeeder extends Seeder
                 'competitions.update',
     
                 'handovers.view',
+                'handovers.update',
     
                 'modules.view',
                 'modules.create',
                 'modules.update',
-    
-                'teams.view',
-                'teams.create',
-                'teams.update',
-                'teams.delete',
 
                 'users.view',
             ]);
@@ -85,6 +81,8 @@ class RoleSeeder extends Seeder
                 'teams.view',
                 'teams.create',
                 'teams.update',
+
+                'users.view',
             ]);
 
             $participante->syncPermissions([
@@ -99,6 +97,8 @@ class RoleSeeder extends Seeder
                 'modules.view',
 
                 'teams.view',
+
+                'users.view',
             ]);
     }
         
