@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Module;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ModulePolicy
 {
@@ -13,7 +12,7 @@ class ModulePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->can('modules.view');
     }
 
     /**
@@ -21,7 +20,7 @@ class ModulePolicy
      */
     public function view(User $user, Module $module): bool
     {
-        return false;
+        return $user->can('modules.view');
     }
 
     /**
@@ -29,7 +28,7 @@ class ModulePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->can('modules.create');
     }
 
     /**
@@ -37,7 +36,7 @@ class ModulePolicy
      */
     public function update(User $user, Module $module): bool
     {
-        return false;
+        return $user->can('modules.update');
     }
 
     /**
@@ -45,7 +44,7 @@ class ModulePolicy
      */
     public function delete(User $user, Module $module): bool
     {
-        return false;
+        return $user->can('modules.delete');
     }
 
     /**
