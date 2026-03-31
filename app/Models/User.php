@@ -37,6 +37,24 @@ class User extends Authenticatable
         ];
     }
 
+    protected $fillable = [
+        'username',
+        'email',
+        'password',
+        'name',
+        'lastname',
+        'dui',
+        'team_id',
+        'role_id',
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     public function competitions(): HasMany
     {
         return $this->hasMany(Competition::class);
