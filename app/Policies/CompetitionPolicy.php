@@ -36,7 +36,15 @@ class CompetitionPolicy
      */
     public function update(User $user, Competition $competition): bool
     {
-        return $user->can('competitions.update');
+        if (! $user->can('competitions.update')) {
+            return false;
+        }
+
+        if ($user->hasRole('organizador')) {
+            return $competition->admin_id === $user->id;
+        }
+        
+        return true;
     }
 
     /**
