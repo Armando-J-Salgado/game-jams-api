@@ -9,9 +9,19 @@ class UserPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user, User $model): bool
     {
-        return $user->can('users.view');
+        if (!$user->can('users.view')) {
+            return false;
+        }
+
+        if ($user->hasRole('administrador')) {
+            return true;
+        }
+
+        return $user->id == $model->id;
+        
+
     }
 
     /**
