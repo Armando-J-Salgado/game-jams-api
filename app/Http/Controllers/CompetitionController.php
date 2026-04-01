@@ -38,7 +38,7 @@ class CompetitionController extends Controller
             $query->onlyTrashed();
         }
 
-        $competitions = $query->paginate($request->input('per_page', 15))->getCollection();
+        $competitions = $query->paginate($request->input('per_page', 15), page: $request->input('page', 1))->getCollection();
         return CompetitionResource::collection($competitions);
     }
 

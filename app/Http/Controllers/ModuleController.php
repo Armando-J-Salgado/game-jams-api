@@ -5,15 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\Module;
 use App\Http\Requests\StoreModuleRequest;
 use App\Http\Requests\UpdateModuleRequest;
+use App\Http\Resources\ModuleResource;
+use App\Http\Requests\IndexModuleRequest;
+use App\Models\Handover;
+use function Termwind\parse;
 
 class ModuleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexModuleRequest $request)
     {
-        //
+        $query = Module::query();
+
+        if($request->input('title')) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        if($request->input('due_date')) {
+            $query->whereDate('due_date', '<=', $request->due_date);
+        }
+
+        if($request->input('competition_id')) {
+            $query->where('competition_id', intval($request->competition_id));
+        }
+
+        if ($request->has('is_trashed') && $request->is_trashed) {
+            $query->onlyTrashed();
+        }
+
+        $modules = $query->paginate($request->input('per_page', 15), page: $request->input('page', 1))->getCollection();
+        return response()->json(ModuleResource::collection($modules));
     }
 
     /**
@@ -29,7 +52,31 @@ class ModuleController extends Controller
      */
     public function store(StoreModuleRequest $request)
     {
-        //
+        $module = Module::create([
+            'title'=>$request->title,
+            'description'=>$request->description,
+            'attachments'=>$request->attachments ? $request->attachments : '',
+            'due_date'=>$request->due_date,
+            'competition_id'=>$request->competition_id,
+        ]);
+
+        //Regla de negocio: Al crear un módulo en la competencia todos los equipos
+        //deben ser asignados una entrega en relación a ese módulo
+        $teams = $module->competition->teams;
+        foreach ($teams as $team) {
+            Handover::create([
+                'title'=> 'Asignación módulo: ' . $module->title,
+                'module_id'=>$module->id,
+                'team_id'=>$team->id,
+            ]);
+        }
+
+        return response()->json([
+            'message'=>'Module created successfully',
+            'module'=> ModuleResource::make($module)
+        ], 201);
+
+
     }
 
     /**
@@ -37,7 +84,7 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-        //
+        return response()->json([ModuleResource::make($module)], 200);
     }
 
     /**
@@ -53,7 +100,13 @@ class ModuleController extends Controller
      */
     public function update(UpdateModuleRequest $request, Module $module)
     {
-        //
+        $data = $request->validated();
+        $module->update($data);
+
+        return response()->json([
+            'message'=>'Module updated successfully',
+            ModuleResource::make($module)
+        ], 200);
     }
 
     /**
@@ -61,6 +114,8 @@ class ModuleController extends Controller
      */
     public function destroy(Module $module)
     {
-        //
+        $module->delete();
+
+        return response()->json(['message'=>'Modulo eliminado de forma exitosa'], 200);
     }
 }

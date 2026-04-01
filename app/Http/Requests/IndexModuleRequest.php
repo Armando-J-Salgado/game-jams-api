@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class IndexCompetitionRequest extends FormRequest
+class IndexModuleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,12 @@ class IndexCompetitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=> ['sometimes', 'string'],
-            'is_finished'=>['sometimes', 'boolean'],
-            'start_date'=>['sometimes', Rule::date()->format('Y-m-d')],
-            'end_date'=>['sometimes', Rule::date()->format('Y-m-d')],
-            'per_page'=>['sometimes', 'integer', 'gt:0'],
+            'title'=>['sometimes', 'string'],
+            'due_date'=>['sometimes', Rule::date()->format('Y-m-d')],
+            'competition_id'=>['sometimes', 'integer', 'exists:competitions,id'],
+            'is_trashed'=>['sometimes', 'boolean'],
+            'per_page'=>['sometimes', 'integer', 'gte:1'],
             'page'=>['sometimes', 'integer', 'gte: 1'],
-            'is_trashed'=>['sometimes', 'boolean']
         ];
     }
 }

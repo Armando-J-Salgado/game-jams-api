@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\HandoverController;
+use App\Http\Controllers\ModuleController;
 use Illuminate\Support\Facades\Route;
 
 // Routes that do not require Authentication
@@ -58,11 +59,21 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function() {
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched competition'], 404));
     Route::patch('/competitions/{competition}', [CompetitionController::class, 'update'])
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched competition'], 404));
-    Route::put('competitions/{competition}', [CompetitionController::class, 'update'])
+    Route::put('/competitions/{competition}', [CompetitionController::class, 'update'])
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched competition'], 404));
-    Route::delete('competitions/{competition}', [CompetitionController::class, 'destroy'])
+    Route::delete('/competitions/{competition}', [CompetitionController::class, 'destroy'])
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched competition'], 404));
 
     // CRUD Modules
+    Route::post('/modules', [ModuleController::class, 'store']);
+    Route::get('/modules', [ModuleController::class, 'index']);
+    Route::get('/modules/{module}', [ModuleController::class, 'show'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched competition'], 404));
+    Route::put('/modules/{module}', [ModuleController::class, 'update'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched competition'], 404));
+    Route::patch('/modules/{module}', [ModuleController::class, 'update'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched competition'], 404));
+    Route::delete('/modules/{module}', [ModuleController::class, 'destroy'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched competition'], 404));
 });
 

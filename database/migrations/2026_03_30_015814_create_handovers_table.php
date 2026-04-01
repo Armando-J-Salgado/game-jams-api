@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('is_delivered')->default(false);
             $table->integer('score')->nullable();
             $table->dateTime('date_of_submission')->nullable();
-            $table->foreignId('module_id')->constrained();
+            $table->foreignId('module_id')->constrained()->onDelete('cascade');
             $table->foreignId('team_id')->constrained();
             $table->timestamps();
         });
