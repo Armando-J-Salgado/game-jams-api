@@ -19,7 +19,10 @@ class ModuleResource extends JsonResource
             'description'=>$this->description,
             'attachments'=>$this->attachments,
             'due_date'=>$this->due_date,
-            'competition_id'=>$this->competition->name,
+            'competition'=>[
+                'id'=>$this->competition_id,
+                'name'=>$this->competition->name,
+            ],
             'created_at'=>$this->created_at,
             'updated_at'=>$this->updated_at,
         ];

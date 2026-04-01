@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Handover;
 use App\Models\Competition;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Module extends Model
 {
     /** @use HasFactory<\Database\Factories\ModuleFactory> */
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
