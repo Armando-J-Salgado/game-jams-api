@@ -32,4 +32,11 @@ class StoreHandoverRequest extends FormRequest
             'date_of_submission' => ['nullable', 'date', 'before_or_equal:today']
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'is_delivered' => $this->input('is_delivered', false),
+        ]);
+    }
 }

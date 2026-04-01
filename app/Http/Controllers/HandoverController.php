@@ -93,6 +93,8 @@ class HandoverController extends Controller
      */
     public function destroy(Handover $handover)
     {
-        //
+        $this->authorize('delete', $handover);
+        $handover->delete();
+        return response()->json(['message' => 'Handover deleted successfully']);
     }
 }

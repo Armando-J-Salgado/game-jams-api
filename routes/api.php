@@ -42,6 +42,9 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function() {
     Route::put('/handovers/{handover}', [HandoverController::class, 'update'])
     ->missing(fn () => response()
     ->json(['message' => 'There are no matches for the searched handover'], 404));
+    Route::delete('/handovers/{handover}', [HandoverController::class, 'destroy'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched handover'], 404));
 
     // CRUD Utils
 
