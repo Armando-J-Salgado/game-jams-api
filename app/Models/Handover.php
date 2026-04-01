@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Team;
 use App\Models\Module;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Handover extends Model
 {
     /** @use HasFactory<\Database\Factories\HandoverFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable =[
         'title',
         'attachment',
