@@ -16,6 +16,7 @@ class CompetitionController extends Controller
      */
     public function index(IndexCompetitionRequest $request)
     {
+        $this->authorize('viewAny', Competition::class);
         $query = Competition::query();
 
         if ($request->input('name')) {
@@ -55,6 +56,7 @@ class CompetitionController extends Controller
      */
     public function store(StoreCompetitionRequest $request)
     {
+        $this->authorize('create', Competition::class);
         $user = Auth::user();
         $competition = Competition::create([
             'name'=> $request->name,
@@ -79,6 +81,7 @@ class CompetitionController extends Controller
      */
     public function show(Competition $competition)
     {
+        $this->authorize('view', $competition);
         return CompetitionResource::make($competition);
     }
 
@@ -95,7 +98,15 @@ class CompetitionController extends Controller
      */
     public function update(UpdateCompetitionRequest $request, Competition $competition)
     {
+        $this->authorize('update', $competition);
         $data = $request->validated();
+
+        $user = Auth::user();
+
+        if ($competition->admin_id !== $user->id) {
+            return response()->json(["Error"=>"You can't update another user competition"], 403);
+        }
+
         $competition->update($data);
 
         return response()->json([
@@ -109,8 +120,7 @@ class CompetitionController extends Controller
      */
     public function destroy(Competition $competition)
     {
-        $competition->delete();
-
+        $this->authorize('delete', $competition);
         return response()->json(['message'=>'Competition deleted succesfully'], 200);
     }
 }
