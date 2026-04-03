@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\HandoverController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -64,10 +65,20 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
 
     // CRUD Teams
-
-
-
-    // CRUD Competitions
+    Route::get('/teams', [TeamController::class, 'index']);
+    Route::post('/teams', [TeamController::class, 'store']);
+    Route::get('/teams/deleted', [TeamController::class, 'deleted'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
+    Route::patch('/teams/{id}/restore', [TeamController::class, 'restore'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
+    Route::get('/teams/{team}', [TeamController::class, 'show'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
+    Route::put('/teams/{team}', [TeamController::class, 'update'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
+    Route::delete('/teams/{team}', [TeamController::class, 'destroy'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
+    
+        // CRUD Competitions
     Route::post('/competitions', [CompetitionController::class, 'store']);
     Route::get('/competitions', [CompetitionController::class, 'index']);
     Route::get('/competitions/{competition}', [CompetitionController::class, 'show'])
