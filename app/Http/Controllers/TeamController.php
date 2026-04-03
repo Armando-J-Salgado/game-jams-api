@@ -6,6 +6,8 @@ use App\Models\Team;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 
+use App\Http\Resources\TeamResource;
+
 class TeamController extends Controller
 {
     /**
@@ -13,15 +15,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return TeamResource::collection(Team::all());
     }
 
     /**
@@ -29,7 +23,17 @@ class TeamController extends Controller
      */
     public function store(StoreTeamRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['total_members'] = 1; // El líder es el primer miembro
+        $data['max_members'] = 5; // el máximo default debe ser 5
+
+        
+        $team = Team::create($data);
+
+        return response()->json([
+            'message' => 'Team created successfully',
+            'data' => new TeamResource($team)
+        ], 201);
     }
 
     /**
@@ -37,15 +41,7 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Team $team)
-    {
-        //
+        return new TeamResource($team);
     }
 
     /**
@@ -53,7 +49,12 @@ class TeamController extends Controller
      */
     public function update(UpdateTeamRequest $request, Team $team)
     {
-        //
+        $team->update($request->validated());
+
+        return response()->json([
+            'message' => 'Team updated successfully',
+            'data' => new TeamResource($team)
+        ]);
     }
 
     /**
@@ -61,6 +62,38 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
-        //
+        $team->delete();
+
+        return response()->json([
+            'message' => 'Team deleted successfully'
+        ], 204);
+    }
+
+    /**
+     * Display a listing of soft deleted resources.
+     */
+    public function deleted()
+    {
+        $deletedTeams = Team::onlyTrashed()->get();
+        return TeamResource::collection($deletedTeams);
+    }
+
+    /**
+     * Restore a soft deleted resource.
+     */
+    public function restore($id)
+    {
+        $team = Team::onlyTrashed()->find($id);
+        
+        if (!$team) {
+            return response()->json(['message' => 'There are no matches for the searched team'], 404);
+        }
+
+        $team->restore();
+
+        return response()->json([
+            'message' => 'Team restored successfully',
+            'data' => new TeamResource($team)
+        ]);
     }
 }
