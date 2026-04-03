@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\Competition;
 use App\Models\Module;
 use App\Models\User;
 
@@ -27,17 +26,9 @@ class ModulePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Competition $competition): bool
+    public function create(User $user): bool
     {
-        if (! $user->can('modules.create')) {
-            return false;
-        }
-
-        if ($user->hasRole('organizador')) {
-            return $competition->admin_id === $user->id;
-        }
-
-        return true;
+        return $user->can('modules.create');
 
     }
 
@@ -46,15 +37,7 @@ class ModulePolicy
      */
     public function update(User $user, Module $module): bool
     {
-        if (! $user->can('modules.update')) {
-            return false;
-        }
-
-        if ($user->hasRole('organizador')) {
-            return $module->competition->admin_id === $user->id;
-        }
-
-        return true;
+        return $user->can('modules.update');
     }
 
     /**

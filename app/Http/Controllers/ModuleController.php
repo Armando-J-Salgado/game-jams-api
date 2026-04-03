@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Competition;
 use App\Models\Module;
 use App\Http\Requests\StoreModuleRequest;
 use App\Http\Requests\UpdateModuleRequest;
 use App\Http\Resources\ModuleResource;
 use App\Http\Requests\IndexModuleRequest;
 use App\Models\Handover;
+use Illuminate\Support\Facades\Auth;
 use function Termwind\parse;
 
 class ModuleController extends Controller
@@ -17,6 +19,7 @@ class ModuleController extends Controller
      */
     public function index(IndexModuleRequest $request)
     {
+        $this->authorize('viewAny', Module::class);
         $query = Module::query();
 
         if($request->input('title')) {
@@ -52,6 +55,15 @@ class ModuleController extends Controller
      */
     public function store(StoreModuleRequest $request)
     {
+        $this->authorize('create', Module::class);
+
+        $user = Auth::user();
+        $competition = Competition::find($request->input('competition_id'));
+
+        if ($user->id !== $competition->admin_id) {
+            return response()->json(['Error'=>'You can`t create modules in a third-party competition'], 403);
+        }
+        
         $module = Module::create([
             'title'=>$request->title,
             'description'=>$request->description,
@@ -84,6 +96,7 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
+        $this->authorize('view', $module);
         return response()->json([ModuleResource::make($module)], 200);
     }
 

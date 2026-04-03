@@ -24,8 +24,8 @@ class StoreModuleRequest extends FormRequest
     public function rules(): array
     {
         $competition = Competition::find($this->input('competition_id'));
-        $end_date = $competition->end_date;
-        $start_date = $competition->start_date;
+        $end_date = $competition ? $competition->end_date : null;
+        $start_date = $competition ? $competition->start_date : null;
         return [
             'title'=>['required', 'string', 'min:1', 'max:255'],
             'description'=>['required', 'string', 'min:1', 'max:300'],
