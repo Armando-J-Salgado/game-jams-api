@@ -11,8 +11,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('users.view');
-        
+        return $user->hasRole('administrador') && $user->can('users.view');
     }
 
     /**
@@ -20,15 +19,11 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        if (!$user->can('users.view')) {
-            return false;
-        }
-
-        if ($user->hasRole('administrador')) {
+        if ($user->hasRole('administrador') && $user->can('users.view')) {
             return true;
         }
 
-        return true;
+        return $user->id === $model->id;
     }
 
     /**
@@ -44,7 +39,11 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->can('users.update');
+        if ($user->can('users.update')) {
+            return true;
+        }
+
+        return $user->id === $model->id;
     }
 
     /**
