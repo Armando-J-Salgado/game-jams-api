@@ -24,7 +24,6 @@ class StoreUserRequest extends FormRequest
             'username' => ['required', 'string', 'min:3', 'max:100'],
             'password' => ['required', 'string', 'min:8', 'max:255'],
             'dui' => ['required', 'string', 'regex:/^\d{8}-\d$/', 'unique:users,dui'],
-            'team_id' => ['nullable', 'integer','exists:teams,id'],
             'role'     => ['required', 'string', 'in:administrador,organizador,lider,participante']
         ];
     }

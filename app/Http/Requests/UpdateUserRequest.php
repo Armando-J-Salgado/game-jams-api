@@ -28,7 +28,6 @@ class UpdateUserRequest extends FormRequest
             'username' => ['sometimes', 'string', 'min:3', 'max:100', Rule::unique('users', 'username')->ignore($userId)],
             'password' => ['nullable', 'string', 'min:8', 'max:255'],
             'dui' => ['sometimes', 'string', 'regex:/^\d{8}-\d$/', Rule::unique('users', 'dui')->ignore($userId)],
-            'team_id' => ['nullable', 'integer', 'exists:teams,id'],
             'role' => ['sometimes', 'string', 'in:administrador,organizador,lider,participante'],
         ];
     }

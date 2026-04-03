@@ -21,8 +21,7 @@ class UserResource extends JsonResource
             'name'=>$this->name,
             'lastname'=>$this->lastname,
             'dui'=>$this->dui,
-            'team_id'=>$this->team_id,
-            'role_id'=>$this->role_id
+            'role' => $this->getRoleNames()->first(),
         ];
     }
 }

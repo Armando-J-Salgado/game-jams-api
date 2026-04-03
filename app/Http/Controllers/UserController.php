@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -21,12 +22,41 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', User::class);
 
-        $user = User::all();
-        return UserResource::collection($user);
+        $request->validate([
+            'role' => 'string|exists:roles,name',
+            'team_id' => 'integer|exists:teams,id',
+            'dui' => 'string|regex:/^\d{8}-\d$/',
+        ]);
+
+        $users = User::query()
+            ->when($request->filled('role'), function ($query) use ($request) {
+                $query->whereHas('roles', fn($q) => $q->where('name', $request->input('role')));
+            })
+            ->when($request->filled('team_id'), function ($query) use ($request) {
+                $query->where('team_id', $request->input('team_id'));
+            })
+            ->when($request->filled('name'), function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->input('name') . '%');
+            }) 
+            ->when($request->filled('lastname'), function ($query) use ($request) {
+                $query->where('lastname', 'like', '%' . $request->input('lastname') . '%');
+            })
+            ->when($request->filled('email'), function ($query) use ($request) {
+                $query->where('email', 'like', '%' . $request->input('email') . '%');
+            })
+            ->when($request->filled('username'), function ($query) use ($request) {
+                $query->where('username', 'like', '%' . $request->input('username') . '%');
+            })
+            ->when($request->filled('dui'), function ($query) use ($request) {
+                $query->where('dui', $request->input('dui'));
+            })
+            ->get();
+
+        return UserResource::collection($users);
     }
 
     /**
@@ -46,14 +76,13 @@ class UserController extends Controller
 
         $validatedData = $request->validated();
         $user = User::create([
-        'name'     => $validatedData['name'],
-        'lastname' => $validatedData['lastname'],
-        'email'    => $validatedData['email'],
-        'username' => $validatedData['username'],
-        'password' => bcrypt($validatedData['password']),
-        'dui'      => $validatedData['dui'],
-        'team_id'  => $validatedData['team_id'] ?? null,
-    ]);
+            'name' => $validatedData['name'],
+            'lastname' => $validatedData['lastname'],
+            'email' => $validatedData['email'],
+            'username' => $validatedData['username'],
+            'password' => bcrypt($validatedData['password']),
+            'dui' => $validatedData['dui'],
+        ]);
 
         $user->assignRole($validatedData['role']);
 
@@ -68,7 +97,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-       $this->authorize('view', $user);
+        $this->authorize('view', $user);
         return UserResource::make($user);
     }
 
