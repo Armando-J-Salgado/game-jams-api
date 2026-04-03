@@ -30,7 +30,9 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function() {
     Route::put('/categories/{category}', [CategoryController::class, 'update'])
     ->missing(fn () => response()
     ->json(['message' => 'There are no matches for the searched category'], 404));
-
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched category'], 404));
     
 
     // CRUD Handovers
