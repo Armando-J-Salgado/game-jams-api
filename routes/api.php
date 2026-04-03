@@ -7,6 +7,11 @@ use App\Http\Controllers\HandoverController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Actions\EnrollTeamController;
+use App\Http\Controllers\Actions\WithdrawTeamController;
+use App\Http\Controllers\Actions\AddTeamMemberController;
+use App\Http\Controllers\Actions\RemoveTeamMemberController;
+use App\Http\Controllers\Actions\SubmitHandoverController;
 use Illuminate\Support\Facades\Route;
 
 // Routes that do not require Authentication
@@ -60,10 +65,12 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         ->missing(fn() => response()
             ->json(['message' => 'There are no matches for the searched handover'], 404));
 
-    // CRUD Utils
-
-
-
+    // Business Logic Actions (Utils)
+    Route::post('/teams/{team}/enroll/{competition}', EnrollTeamController::class);
+    Route::delete('/teams/{team}/withdraw/{competition}', WithdrawTeamController::class);
+    Route::post('/teams/{team}/members/{user}', AddTeamMemberController::class);
+    Route::delete('/teams/{team}/members/{user}', RemoveTeamMemberController::class);
+    Route::patch('/handovers/{handover}', SubmitHandoverController::class);
     // CRUD Teams
     Route::get('/teams', [TeamController::class, 'index']);
     Route::post('/teams', [TeamController::class, 'store']);
