@@ -62,4 +62,12 @@ class TeamPolicy
     {
         return false;
     }
+
+    /**
+     * Determine whether the user can manage the team members and enrollments.
+     */
+    public function manage(User $user, Team $team): bool
+    {
+        return $user->id === $team->admin_id;
+    }
 }
