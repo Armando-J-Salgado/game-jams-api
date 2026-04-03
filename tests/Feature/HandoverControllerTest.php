@@ -13,6 +13,10 @@ beforeEach(function () {
     (new \Database\Seeders\RoleSeeder())->run();
 });
 
+// ==========================================
+// INDEX TESTS
+// ==========================================
+
 #Test: It can get a list of all handovers
 test("It can get a list of all handovers (no filters)", function (string $role) {
     /** @var \Tests\TestCase $this */
