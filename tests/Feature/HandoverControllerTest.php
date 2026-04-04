@@ -327,7 +327,7 @@ test("It can soft delete a handover", function (string $role) {
 
     $response->assertStatus(200);
     $this->assertSoftDeleted('handovers', ['id' => $handover->id]);
-})->with(['administrador', 'organizador']);
+})->with(['administrador']);
 
 #Test: Refuses to soft delete a handover with invalid users
 test("It cannot soft delete a handover with invalid users", function (string $role) {
@@ -343,7 +343,7 @@ test("It cannot soft delete a handover with invalid users", function (string $ro
     $response = $this->deleteJson("api/v1/handovers/{$handover->id}");
 
     $response->assertStatus(403);
-})->with(['lider', 'participante', 'invitado']);
+})->with(['organizador', 'lider', 'participante', 'invitado']);
 
 #Test: Refusal to soft delete a non-existent handover
 test("It returns 404 when deleting a non-existent handover", function (string $role) {
