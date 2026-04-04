@@ -7,7 +7,7 @@ use App\Http\Requests\StoreHandoverRequest;
 use App\Http\Requests\UpdateHandoverRequest;
 use App\Http\Resources\HandoverResource;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Client\Request;
+use Illuminate\Http\Request;
 
 class HandoverController extends Controller
 {
@@ -26,16 +26,21 @@ class HandoverController extends Controller
             'team_id' => 'integer|exists:teams,id',
             'module_id' => 'integer|exists:modules,id',
         ]);
-         $handover=Handover::query()
-        ->when($request->has('team_id'), 
-            fn ($query)=>$query->where('team_id', $request->input('team_id')))
 
+        $query = Handover::query();
+
+        // Enforce team isolation for non-admins
+        $user = $request->user();
+        if (!$user->hasAnyRole(['administrador', 'organizador'])) {
+            $query->where('team_id', $user->team_id);
+        }
+
+        $query->when($request->has('team_id'), 
+            fn ($q)=>$q->where('team_id', $request->input('team_id')))
         ->when($request->has('module_id'),
-            fn ($query)=>$query->where('module_id', $request->input('module_id')))
+            fn ($q)=>$q->where('module_id', $request->input('module_id')));
 
-        ->get();
-
-        return HandoverResource::collection($handover);
+        return HandoverResource::collection($query->get());
         
     }
 

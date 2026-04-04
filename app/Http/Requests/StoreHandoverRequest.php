@@ -12,7 +12,7 @@ class StoreHandoverRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class StoreHandoverRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'attachement' => ['nullable', 'string', 'url', 'active_url', 'regex:/^https?:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:\/\S*)?$/'],
+            'attachment' => ['nullable', 'string', 'url', 'active_url', 'regex:/^https?:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:\/\S*)?$/'],
             'is_delivered' => ['sometimes','required', 'boolean'],
             'module_id' => ['required', 'integer', 'exists:modules,id'],
             'team_id' => ['required', 'integer', 'exists:teams,id'],
