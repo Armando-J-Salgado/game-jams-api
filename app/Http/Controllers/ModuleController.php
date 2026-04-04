@@ -113,6 +113,14 @@ class ModuleController extends Controller
      */
     public function update(UpdateModuleRequest $request, Module $module)
     {
+        $this->authorize('update', $module);
+
+        $user = Auth::user();
+
+        if($module->competition->admin_id !== $user->id) {
+            return response()->json(['Error'=>'You can`t modify a third party`s competition module'], 403);
+        }
+
         $data = $request->validated();
         $module->update($data);
 
@@ -127,6 +135,7 @@ class ModuleController extends Controller
      */
     public function destroy(Module $module)
     {
+        $this->authorize('delete', $module);
         $module->delete();
 
         return response()->json(['message'=>'Modulo eliminado de forma exitosa'], 200);
