@@ -2,7 +2,7 @@
 
 use App\Models\Module;
 
-//Test # Sistem can create a module
+//Test #24 Sistem can create a module
 it('can create module', function () {
     $module = new Module([
         'title'=>'example',
@@ -15,7 +15,7 @@ it('can create module', function () {
     expect($module->competition_id)->toBe(1);
 });
 
-//Test # Sistem can change data of the module
+//Test #25 Sistem can change data of the module
 it('can change module data', function() {
     $module = new Module([
         'title'=>'example',
@@ -37,7 +37,7 @@ it('can change module data', function() {
     expect($module->due_date)->toBe("2026-05-01");
 });
 
-//Test # Sistem can create a module's timestamps
+//Test #26 Sistem can create a module's timestamps
 it('can create timestamps to module', function () {
     $module = new Module([
         'title'=>'example',
