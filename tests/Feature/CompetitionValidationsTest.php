@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Competition;
+use App\Models\Team;
 use App\Models\User;
 use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
@@ -600,3 +601,32 @@ it ("can delete competitions", function (string $role) {
         ->assertStatus(200);
 
 })->with(['administrador']);
+
+//Test #53 It can't update the max amount of teams with a value lower than the current amount enrolled
+it ('cannot update the max amount of teams with a value lower than the current amount enrolled', function (string $role) {
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+
+    $testCompetition = Competition::create([
+        "name" => "Test Competition",
+        "description" => "Test description",
+        "prize_information" => "Test prize information",
+        "tools_information" => "Test tools information",
+        "max_teams" => 10,
+        "start_date" => "2026-07-04",
+        "end_date" => "2026-07-06",
+        "admin_id" => $user->id,
+        "category_id" => test()->category->id,
+    ]);
+
+    $testTeam1 = Team::factory()->create();
+    $testTeam2 = Team::factory()->create();
+
+    $testCompetition->teams()->attach($testTeam1->id);
+    $testCompetition->teams()->attach($testTeam2->id);
+
+    $this->putJson('api/v1/competitions/' . $testCompetition->id, [
+        'max_teams' => 1
+    ])->assertJsonValidationErrors(['max_teams']);
+})->with(['administrador', 'organizador']);

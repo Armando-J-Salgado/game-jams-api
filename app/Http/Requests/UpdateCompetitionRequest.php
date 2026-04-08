@@ -29,6 +29,8 @@ class UpdateCompetitionRequest extends FormRequest
         $endDate = $this->input('end_date', $competition->end_date);
         $maxTeams = $this->input('max_teams', $competition->max_teams);
 
+        $enrolledTeams = $competition->teams->count();
+
         return [
             'name'=>['sometimes', 'string', 'max:255'],
             'description'=>['sometimes', 'string', 'min:1', 'max:500'],
@@ -59,7 +61,11 @@ class UpdateCompetitionRequest extends FormRequest
                 }
             ],
             'category_id'=>['sometimes', 'exists:categories,id'],
-            'max_teams'=>['sometimes', 'integer', 'gt:0'],
+            'max_teams'=>['sometimes', 'integer', 'gt:0', function($attribute, $value, $fail) use($enrolledTeams) {
+                if ($value < $enrolledTeams) {
+                    $fail('No se puede actualizar el máximo. Actualmente cuentas con más equipos inscritos');
+                }
+            }],
             'is_finished'=>['sometimes', 'boolean']
         ];
     }
