@@ -57,6 +57,7 @@ class RoleSeeder extends Seeder
                 'competitions.update',
     
                 'handovers.view',
+                'handovers.create',
                 'handovers.update',
     
                 'modules.view',
