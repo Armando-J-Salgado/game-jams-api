@@ -449,3 +449,145 @@ it("can delete a module", function(string $role) {
     $testModule->refresh();
     expect($testModule->trashed())->toBeTrue();
 })->with(['administrador']);
+
+//Test #60: It cannot restore a non-deleted module
+it('cannot restore a non-deleted module', function (string $role) {
+
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+
+    $competition = Competition::factory()->create([
+        'start_date'=>'2026-10-01',
+        'end_date'=>'2026-10-12',
+        'admin_id'=>$user->id
+    ]);
+    
+    $testModule = Module::factory()->create([
+        'competition_id'=> $competition->id,
+    ]);
+
+    $this->postJson("api/v1/modules/{$testModule->id}/restore")
+        ->assertStatus(400);
+
+})->with(['administrador']);
+
+//Test #61: It cannot restore a deleted module without authorization
+it('cannot restore a deleted module withouth authorization', function (string $role) {
+
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+
+    $competition = Competition::factory()->create([
+        'start_date'=>'2026-10-01',
+        'end_date'=>'2026-10-12',
+        'admin_id'=>$user->id
+    ]);
+    
+    $testModule = Module::factory()->create([
+        'competition_id'=> $competition->id,
+    ]);
+
+    $testModule->delete();
+
+    $this->postJson("api/v1/modules/{$testModule->id}/restore")
+        ->assertStatus(403);
+
+})->with(['organizador', 'lider', 'participante']);
+
+//Test #62: It cannot restore a deleted module from a third-party competition
+it('cannot restore a deleted module from a third-party competition', function (string $role) {
+
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+
+    $thirdParty = User::factory()->create();
+
+    $competition = Competition::factory()->create([
+        'start_date'=>'2026-10-01',
+        'end_date'=>'2026-10-12',
+        'admin_id'=>$thirdParty->id
+    ]);
+    
+    $testModule = Module::factory()->create([
+        'competition_id'=> $competition->id,
+    ]);
+
+    $testModule->delete();
+
+    $this->postJson("api/v1/modules/{$testModule->id}/restore")
+        ->assertStatus(403);
+
+})->with(['administrador']);
+
+//Test #63: It cannot restore a deleted module without authentication
+it('cannot restore a deleted module without authentication', function () {
+
+    $user = User::factory()->create();
+    $competition = Competition::factory()->create([
+        'start_date'=>'2026-10-01',
+        'end_date'=>'2026-10-12',
+        'admin_id'=>$user->id
+    ]);
+    
+    $testModule = Module::factory()->create([
+        'competition_id'=> $competition->id,
+    ]);
+
+    $testModule->delete();
+
+    $this->postJson("api/v1/modules/{$testModule->id}/restore")
+        ->assertUnauthorized();
+
+});
+
+//Test #64: It cannot restore a deleted module with invalid ID
+it('cannot restore a deleted module with invalid ID', function (string $role) {
+
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+    $competition = Competition::factory()->create([
+        'start_date'=>'2026-10-01',
+        'end_date'=>'2026-10-12',
+        'admin_id'=>$user->id
+    ]);
+    
+    $testModule = Module::factory()->create([
+        'competition_id'=> $competition->id,
+    ]);
+
+    $testModule->delete();
+
+    $this->postJson("api/v1/modules/AAA/restore")
+        ->assertStatus(404);
+
+})->with(['administrador']);
+
+//Test #65: It can restore a deleted module
+it('can restore a deleted module', function (string $role) {
+
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+    $competition = Competition::factory()->create([
+        'start_date'=>'2026-10-01',
+        'end_date'=>'2026-10-12',
+        'admin_id'=>$user->id
+    ]);
+    
+    $testModule = Module::factory()->create([
+        'competition_id'=> $competition->id,
+    ]);
+
+    $testModule->delete();
+
+    $this->postJson("api/v1/modules/{$testModule->id}/restore")
+        ->assertStatus(200);
+    
+    $testModule->refresh();
+    expect($testModule->trashed())->toBeFalse();
+
+})->with(['administrador']);

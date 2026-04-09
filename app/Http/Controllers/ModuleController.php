@@ -140,4 +140,26 @@ class ModuleController extends Controller
 
         return response()->json(['message'=>'Modulo eliminado de forma exitosa'], 200);
     }
+
+    /**
+     * Restore a soft deleted model
+     */
+    public function restore(string $id)
+    {
+        $moduleId = filter_var($id, FILTER_VALIDATE_INT);
+        if($moduleId === false){
+            return response()->json(['message'=>'El id del módulo es inválido'], 404);
+        }
+
+        $module = Module::onlyTrashed()->find($moduleId);
+
+        if(!$module) {
+            return response()->json(['message'=>'El modulo no ha sido eliminado o no existe'], 400);
+        }
+
+        $this->authorize('restore', $module);
+        $module->restore();
+
+        return response()->json(['message'=>'El modulo ha sido restaurado exitosamente'], 200);
+    }
 }
