@@ -21,10 +21,6 @@ dataset('restrictedRoles', [
     'participante',
 ]);
 
-dataset('duplicateUserFields', [
-    'email',
-    'dui',
-]);
 
 // Test # it blocks users listing without auth
 it('blocks users listing without auth', function () {
@@ -78,8 +74,30 @@ it('cannot create users without permission', function (string $role) {
         ->assertStatus(403);
 })->with('restrictedRoles');
 
-// Test # it cannot create with duplicate fields
-it('cannot create with duplicate fields', function (string $field) {
+// Test # it cannot create with duplicate email
+it('cannot create with duplicate email', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $existing = User::factory()->create();
+
+    Sanctum::actingAs($admin);
+
+    $payload = [
+        'name' => 'Maria',
+        'lastname' => 'Lopez',
+        'email' => $existing->email,
+        'username' => 'mlopez',
+        'password' => 'password123',
+        'dui' => '12345678-9',
+        'role' => 'organizador',
+    ];
+
+    $this->postJson('/api/v1/users', $payload)
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['email']);
+});
+
+// Test # it cannot create with duplicate dui
+it('cannot create with duplicate dui', function () {
     $admin = User::factory()->asAdministrador()->create();
     $existing = User::factory()->create();
 
@@ -91,22 +109,56 @@ it('cannot create with duplicate fields', function (string $field) {
         'email' => 'maria.lopez@example.com',
         'username' => 'mlopez',
         'password' => 'password123',
-        'dui' => '12345678-9',
+        'dui' => $existing->dui,
         'role' => 'organizador',
     ];
 
-    if ($field === 'email') {
-        $payload['email'] = $existing->email;
-    }
+    $this->postJson('/api/v1/users', $payload)
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['dui']);
+});
 
-    if ($field === 'dui') {
-        $payload['dui'] = $existing->dui;
-    }
+// Test # it cannot create with invalid dui format
+it('cannot create with invalid dui format', function () {
+    $admin = User::factory()->asAdministrador()->create();
+
+    Sanctum::actingAs($admin);
+
+    $payload = [
+        'name' => 'Maria',
+        'lastname' => 'Lopez',
+        'email' => 'maria.lopez@example.com',
+        'username' => 'mlopez',
+        'password' => 'password123',
+        'dui' => '1234',
+        'role' => 'organizador',
+    ];
 
     $this->postJson('/api/v1/users', $payload)
         ->assertStatus(422)
-        ->assertJsonValidationErrors([$field]);
-})->with('duplicateUserFields');
+        ->assertJsonValidationErrors(['dui']);
+});
+
+// Test # it cannot create with invalid role
+it('cannot create with invalid role', function () {
+    $admin = User::factory()->asAdministrador()->create();
+
+    Sanctum::actingAs($admin);
+
+    $payload = [
+        'name' => 'Maria',
+        'lastname' => 'Lopez',
+        'email' => 'maria.lopez@example.com',
+        'username' => 'mlopez',
+        'password' => 'password123',
+        'dui' => '12345678-9',
+        'role' => 'rol-invalido',
+    ];
+
+    $this->postJson('/api/v1/users', $payload)
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['role']);
+});
 
 // Test # it creates a user with role
 it('creates a user with role', function () {
@@ -145,26 +197,28 @@ it('shows a user', function () {
 });
 
 // Test # it shows own profile
-it('shows own profile', function () {
-    $user = User::factory()->asParticipante()->create();
+it('shows own profile', function (string $role) {
+    $user = User::factory()->create();
+    $user->assignRole($role);
 
     Sanctum::actingAs($user);
 
     $this->getJson('/api/v1/users/' . $user->id)
         ->assertOk()
         ->assertJsonPath('data.id', $user->id);
-});
+})->with('restrictedRoles');
 
 // Test # it cannot show another user profile
-it('cannot show another user profile', function () {
-    $actor = User::factory()->asParticipante()->create();
+it('cannot show another user profile', function (string $role) {
+    $actor = User::factory()->create();
+    $actor->assignRole($role);
     $other = User::factory()->create();
 
     Sanctum::actingAs($actor);
 
     $this->getJson('/api/v1/users/' . $other->id)
         ->assertStatus(403);
-});
+})->with('restrictedRoles');
 
 // Test # it updates a user
 it('updates a user', function () {
@@ -187,25 +241,132 @@ it('updates a user', function () {
     expect($user->hasRole('lider'))->toBeTrue();
 });
 
+// Test # it cannot update with duplicate email
+it('cannot update with duplicate email', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $existing = User::factory()->create();
+    $user = User::factory()->create();
+
+    Sanctum::actingAs($admin);
+
+    $payload = [
+        'email' => $existing->email,
+        'name' => 'Carlos',
+        'lastname' => 'Perez',
+    ];
+
+    $this->putJson('/api/v1/users/' . $user->id, $payload)
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['email']);
+});
+
+// Test # it cannot update with duplicate dui
+it('cannot update with duplicate dui', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $existing = User::factory()->create();
+    $user = User::factory()->create();
+
+    Sanctum::actingAs($admin);
+
+    $payload = [
+        'dui' => $existing->dui,
+        'name' => 'Carlos',
+        'lastname' => 'Perez',
+    ];
+
+    $this->putJson('/api/v1/users/' . $user->id, $payload)
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['dui']);
+});
+
+// Test # it cannot update with invalid dui format
+it('cannot update with invalid dui format', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $user = User::factory()->create();
+
+    Sanctum::actingAs($admin);
+
+    $payload = [
+        'dui' => '1234',
+        'name' => 'Carlos',
+        'lastname' => 'Perez',
+    ];
+
+    $this->putJson('/api/v1/users/' . $user->id, $payload)
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['dui']);
+});
+
+// Test # it cannot update with invalid role
+it('cannot update with invalid role', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $user = User::factory()->create();
+
+    Sanctum::actingAs($admin);
+
+    $payload = [
+        'role' => 'rol-invalido',
+        'name' => 'Carlos',
+        'lastname' => 'Perez',
+    ];
+
+    $this->putJson('/api/v1/users/' . $user->id, $payload)
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['role']);
+});
+
 // Test # it updates own profile
-it('updates own profile', function () {
-    $user = User::factory()->asParticipante()->create();
+it('updates own profile', function (string $role) {
+    $user = User::factory()->create();
+    $user->assignRole($role);
 
     Sanctum::actingAs($user);
 
     $payload = [
         'name' => 'Luis',
         'lastname' => 'Martinez',
+        'username' => 'lmartinez_' . $role,
+    ];
+
+    $this->putJson('/api/v1/users/' . $user->id, $payload)
+        ->assertOk()
+        ->assertJsonPath('data.name', $payload['name'])
+        ->assertJsonPath('data.username', $payload['username']);
+})->with('restrictedRoles');
+
+// Test # it ignores restricted fields on self update
+it('it cannot update restricted fields on own profile', function (string $role) {
+    $targetRole = $role === 'organizador' ? 'lider' : 'organizador';
+    $user = User::factory()->create([
+        'email' => 'original.' . $role . '@example.com',
+        'dui' => '12345678-9',
+    ]);
+    $user->assignRole($role);
+
+    Sanctum::actingAs($user);
+
+    $payload = [
+        'name' => 'Luis',
+        'email' => 'updated.' . $role . '@example.com',
+        'dui' => '87654321-0',
+        'role' => $targetRole,
     ];
 
     $this->putJson('/api/v1/users/' . $user->id, $payload)
         ->assertOk()
         ->assertJsonPath('data.name', $payload['name']);
-});
+
+    $user->refresh();
+    expect($user->email)->toBe('original.' . $role . '@example.com');
+    expect($user->dui)->toBe('12345678-9');
+    expect($user->hasRole($role))->toBeTrue();
+    expect($user->hasRole($targetRole))->toBeFalse();
+})->with('restrictedRoles');
 
 // Test # it cannot update another user profile
-it('cannot update another user profile', function () {
-    $actor = User::factory()->asParticipante()->create();
+it('cannot update another user profile', function (string $role) {
+    $actor = User::factory()->create();
+    $actor->assignRole($role);
     $other = User::factory()->create();
 
     Sanctum::actingAs($actor);
@@ -217,7 +378,7 @@ it('cannot update another user profile', function () {
 
     $this->putJson('/api/v1/users/' . $other->id, $payload)
         ->assertStatus(403);
-});
+})->with('restrictedRoles');
 
 // Test # it cannot update users without permission
 it('cannot update users without permission', function (string $role) {
