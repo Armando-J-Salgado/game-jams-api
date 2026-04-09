@@ -12,7 +12,19 @@ use App\Models\Competition;
 class WithdrawTeamController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Withdraw Team
+     *
+     * Withdraws a team from a competition.
+     *
+     * @group Team Actions
+     * @authenticated
+     *
+     * @urlParam team int required The ID of the team. Example: 1
+     * @urlParam competition int required ID of the competition. Example: 1
+     *
+     * @response 200 {
+     *   "message": "Team withdrawn successfully from the competition. Handovers are kept as history."
+     * }
      */
     public function __invoke(Request $request, Team $team, Competition $competition)
     {

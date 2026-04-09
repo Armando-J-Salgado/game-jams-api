@@ -20,6 +20,31 @@ class HandoverController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * List Handovers
+     *
+     * Display a listing of the handovers (entregas).
+     *
+     * @group Handovers
+     * @authenticated
+     *
+     * @queryParam team_id int Filter by team ID. Example: 1
+     * @queryParam module_id int Filter by module ID. Example: 1
+     * @queryParam competition_id int Filter by competition ID. Example: 1
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "title": "Entrega Fase 1",
+     *       "is_delivered": true
+     *     }
+     *   ]
+     * }
+     * @response 404 {
+     *   "message": "The specified team is not enrolled in this competition."
+     * }
+     */
     public function index(Request $request)
     {
         $this->authorize('viewAny', Handover::class);
@@ -86,6 +111,28 @@ class HandoverController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * Create Handover
+     *
+     * Store a newly created handover in storage.
+     *
+     * @group Handovers
+     * @authenticated
+     *
+     * @bodyParam title string required The title of the handover. Example: Entrega Final
+     * @bodyParam attachment string nullable URL or link to the attachment. Example: https://github.com/my-game
+     * @bodyParam is_delivered boolean sometimes Whether the handover is delivered. Example: true
+     * @bodyParam module_id int required ID of the module. Example: 1
+     * @bodyParam team_id int required ID of the team submitting. Example: 1
+     * @bodyParam score int nullable Score of the handover (0-100). Example: 95
+     * @bodyParam date_of_submission date nullable Date it was submitted. Example: 2026-05-10
+     *
+     * @response 201 {
+     *   "id": 1,
+     *   "title": "Entrega Final",
+     *   "is_delivered": true
+     * }
+     */
     public function store(StoreHandoverRequest $request)
     {
         $this->authorize('create', Handover::class);
@@ -98,6 +145,21 @@ class HandoverController extends Controller
 
     /**
      * Display the specified resource.
+     */
+    /**
+     * Get Handover
+     *
+     * Display the specified handover.
+     *
+     * @group Handovers
+     * @authenticated
+     *
+     * @urlParam handover int required ID of the handover. Example: 1
+     *
+     * @response 200 {
+     *   "id": 1,
+     *   "title": "Entrega Final"
+     * }
      */
     public function show(Handover $handover)
     {
@@ -116,6 +178,25 @@ class HandoverController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    /**
+     * Update Handover
+     *
+     * Update the specified handover in storage.
+     *
+     * @group Handovers
+     * @authenticated
+     *
+     * @urlParam handover int required ID of the handover. Example: 1
+     * @bodyParam title string required The title of the handover. Example: Entrega Corregida
+     * @bodyParam attachment string nullable URL or link to the attachment. Example: https://github.com/my-game-v2
+     * @bodyParam is_delivered boolean sometimes Whether the handover is delivered. Example: true
+     * @bodyParam score int nullable Score of the handover (0-100). Example: 100
+     *
+     * @response 200 {
+     *   "id": 1,
+     *   "title": "Entrega Corregida"
+     * }
+     */
     public function update(UpdateHandoverRequest $request, Handover $handover)
     {
         $this->authorize('update', $handover);
@@ -126,6 +207,20 @@ class HandoverController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     */
+    /**
+     * Delete Handover
+     *
+     * Remove the specified handover from storage.
+     *
+     * @group Handovers
+     * @authenticated
+     *
+     * @urlParam handover int required ID of the handover. Example: 1
+     *
+     * @response 200 {
+     *   "message": "Handover deleted successfully"
+     * }
      */
     public function destroy(Handover $handover)
     {

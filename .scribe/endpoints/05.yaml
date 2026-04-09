@@ -1,0 +1,80 @@
+name: 'Handover Actions'
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/handovers/{handover_id}'
+    metadata:
+      custom: []
+      groupName: 'Handover Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Submit Handover'
+      description: 'Submit an attachment for a pending handover.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      handover_id:
+        custom: []
+        name: handover_id
+        description: 'The ID of the handover.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      handover:
+        custom: []
+        name: handover
+        description: 'The ID of the handover to submit.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      handover_id: 1
+      handover: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      attachment:
+        custom: []
+        name: attachment
+        description: 'URL to the delivery attachment.'
+        required: true
+        example: 'https://github.com/my-repo'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      attachment: 'https://github.com/my-repo'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Handover submitted successfully",
+            "data": {"id": 1, "attachment": "https://github.com/my-repo"}
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

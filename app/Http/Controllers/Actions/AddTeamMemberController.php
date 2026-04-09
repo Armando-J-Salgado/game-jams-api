@@ -12,7 +12,24 @@ use App\Models\User;
 class AddTeamMemberController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Add Team Member
+     *
+     * Add an existing user to a specific team.
+     *
+     * @group Team Actions
+     * @authenticated
+     *
+     * @urlParam team int required The ID of the team. Example: 1
+     * @urlParam user int required The ID of the user to add. Example: 2
+     *
+     * @response 201 {
+     *   "message": "Member added successfully to the team.",
+     *   "data": {
+     *     "id": 1,
+     *     "name": "Los Codificadores"
+     *   }
+     * }
+     * @response 400 {"message": "This user is already a member of another team."}
      */
     public function __invoke(Request $request, Team $team, User $user)
     {

@@ -23,7 +23,17 @@ class UpdateModuleRequest extends FormRequest
      */
     public function rules(): array
     {
-        $competition = $this->route('module')->competition;
+        $module = $this->route('module');
+        if (!$module || is_string($module) || !$module->competition) {
+            return [
+                'title'=>['sometimes', 'string', 'min:1', 'max:255'],
+                'description'=>['sometimes', 'string', 'min:1', 'max:300'],
+                'attachments'=>['sometimes', 'string', 'min:1', 'max:255'],
+                'due_date'=>['sometimes', Rule::date()->format('Y-m-d')],
+            ];
+        }
+
+        $competition = $module->competition;
         $end_date = $competition->end_date;
         $start_date = $competition->start_date;
         return [

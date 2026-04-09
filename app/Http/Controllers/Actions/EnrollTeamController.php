@@ -13,7 +13,21 @@ use App\Models\Handover;
 class EnrollTeamController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Enroll Team in Competition
+     *
+     * Registers a team in the specified competition.
+     * 
+     * @group Team Actions
+     * @authenticated
+     *
+     * @urlParam team int required The ID of the team. Example: 1
+     * @urlParam competition int required The ID of the competition. Example: 1
+     *
+     * @response 201 {
+     *   "team": {"id": 1, "name": "Team"},
+     *   "competition": {"id": 1, "name": "Jam"}
+     * }
+     * @response 400 {"message": "The team is already enrolled in this competition."}
      */
     public function __invoke(Request $request, Team $team, Competition $competition)
     {

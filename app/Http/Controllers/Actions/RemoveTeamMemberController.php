@@ -12,7 +12,19 @@ use App\Models\User;
 class RemoveTeamMemberController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Remove Team Member
+     *
+     * Removes a user from a specific team.
+     *
+     * @group Team Actions
+     * @authenticated
+     *
+     * @urlParam team int required The ID of the team. Example: 1
+     * @urlParam user int required The ID of the user to remove. Example: 2
+     *
+     * @response 200 {
+     *   "message": "Member removed successfully from the team."
+     * }
      */
     public function __invoke(Request $request, Team $team, User $user)
     {

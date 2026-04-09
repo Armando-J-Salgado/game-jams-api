@@ -1,0 +1,2116 @@
+openapi: 3.0.3
+info:
+  title: 'Laravel API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+tags:
+  -
+    name: Authentication
+    description: ''
+  -
+    name: Categories
+    description: ''
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: 'Handover Actions'
+    description: ''
+  -
+    name: Handovers
+    description: ''
+  -
+    name: 'Team Actions'
+    description: ''
+  -
+    name: Teams
+    description: ''
+  -
+    name: Users
+    description: ''
+paths:
+  /api/v1/auth/login:
+    post:
+      summary: 'User Login'
+      operationId: userLogin
+      description: 'Authenticates a user and returns a token.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  messsage: 'Login successful'
+                  token: 1|abcdef123456789...
+                  user:
+                    id: 1
+                    name: Admin
+                    email: admin@example.com
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  messsage:
+                    type: string
+                    example: 'Login successful'
+                  token:
+                    type: string
+                    example: 1|abcdef123456789...
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Admin
+                      email:
+                        type: string
+                        example: admin@example.com
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Email or password incorrect'
+                properties:
+                  message:
+                    type: string
+                    example: 'Email or password incorrect'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The user email.'
+                  example: admin@example.com
+                password:
+                  type: string
+                  description: 'The user password.'
+                  example: password
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/auth/logout:
+    post:
+      summary: 'User Logout'
+      operationId: userLogout
+      description: 'Revokes the current access token.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Logout successful'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Logout successful'
+      tags:
+        - Authentication
+  /api/v1/auth/profile:
+    get:
+      summary: 'User Profile'
+      operationId: userProfile
+      description: "Retrieves the currently authenticated user's profile."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  profile:
+                    id: 1
+                    name: Admin
+                    email: admin@example.com
+                properties:
+                  profile:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Admin
+                      email:
+                        type: string
+                        example: admin@example.com
+      tags:
+        - Authentication
+  /api/v1/categories:
+    get:
+      summary: 'List Categories'
+      operationId: listCategories
+      description: 'Display a listing of the categories.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: 'Game Jam 2026'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Game Jam 2026'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Game Jam 2026'
+      tags:
+        - Categories
+    post:
+      summary: 'Create Category'
+      operationId: createCategory
+      description: 'Store a newly created category in the database.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: Art
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: Art
+      tags:
+        - Categories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the category.'
+                  example: Art
+              required:
+                - name
+  '/api/v1/categories/{category_id}':
+    get:
+      summary: 'Get Category'
+      operationId: getCategory
+      description: 'Display the specified category.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: Art
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: Art
+      tags:
+        - Categories
+    put:
+      summary: 'Update Category'
+      operationId: updateCategory
+      description: 'Update the specified category in storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: '2D Art'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: '2D Art'
+      tags:
+        - Categories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The new name for the category.'
+                  example: '2D Art'
+              required:
+                - name
+    delete:
+      summary: 'Delete Category'
+      operationId: deleteCategory
+      description: 'Remove the specified category from storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Category deleted successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'Category deleted successfully'
+      tags:
+        - Categories
+    parameters:
+      -
+        in: path
+        name: category_id
+        description: 'The ID of the category.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: category
+        description: 'The ID of the category.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/competitions:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 500 characters.'
+                  example: 'Et animi quos velit et fugiat.'
+                prize_information:
+                  type: string
+                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
+                  example: dljnikhwaykcmyuw
+                tools_information:
+                  type: string
+                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
+                  example: pwlvqwrsitcpscql
+                max_teams:
+                  type: integer
+                  description: ''
+                  example: 16
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after <code>start_date</code>.'
+                  example: '2052-05-02'
+                category_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example: architecto
+              required:
+                - name
+                - description
+                - prize_information
+                - tools_information
+                - start_date
+                - end_date
+                - category_id
+      security: []
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: architecto
+                is_finished:
+                  type: boolean
+                  description: ''
+                  example: true
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                per_page:
+                  type: integer
+                  description: ''
+                  example: 16
+                page:
+                  type: integer
+                  description: ''
+                  example: 16
+                is_trashed:
+                  type: boolean
+                  description: ''
+                  example: false
+      security: []
+  '/api/v1/competitions/{competition_id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    patch:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 500 characters.'
+                  example: 'Et animi quos velit et fugiat.'
+                prize_information:
+                  type: string
+                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
+                  example: dljnikhwaykcmyuw
+                tools_information:
+                  type: string
+                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
+                  example: pwlvqwrsitcpscql
+                total_teams:
+                  type: integer
+                  description: ''
+                  example: 16
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                category_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example: null
+                max_teams:
+                  type: integer
+                  description: ''
+                  example: 16
+                is_finished:
+                  type: boolean
+                  description: ''
+                  example: false
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 500 characters.'
+                  example: 'Et animi quos velit et fugiat.'
+                prize_information:
+                  type: string
+                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
+                  example: dljnikhwaykcmyuw
+                tools_information:
+                  type: string
+                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
+                  example: pwlvqwrsitcpscql
+                total_teams:
+                  type: integer
+                  description: ''
+                  example: 16
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                category_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example: null
+                max_teams:
+                  type: integer
+                  description: ''
+                  example: 16
+                is_finished:
+                  type: boolean
+                  description: ''
+                  example: true
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: competition_id
+        description: 'The ID of the competition.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/competitions/{id}/restore':
+    post:
+      summary: 'Restore a soft deleted model'
+      operationId: restoreASoftDeletedModel
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the competition.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/modules:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 300 characters.'
+                  example: 'Et animi quos velit et fugiat.'
+                attachments:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
+                  example: d
+                due_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                competition_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the competitions table.'
+                  example: 16
+              required:
+                - title
+                - description
+                - due_date
+                - competition_id
+      security: []
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: ''
+                  example: architecto
+                due_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+                competition_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the competitions table.'
+                  example: 16
+                is_trashed:
+                  type: boolean
+                  description: ''
+                  example: false
+                per_page:
+                  type: integer
+                  description: ''
+                  example: 16
+                page:
+                  type: integer
+                  description: ''
+                  example: 16
+      security: []
+  '/api/v1/modules/{module_id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 300 characters.'
+                  example: 'Et animi quos velit et fugiat.'
+                attachments:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
+                  example: d
+                due_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+      security: []
+    patch:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 300 characters.'
+                  example: 'Et animi quos velit et fugiat.'
+                attachments:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
+                  example: d
+                due_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
+                  example: '2026-04-09'
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: module_id
+        description: 'The ID of the module.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/modules/{id}/restore':
+    post:
+      summary: 'Restore a soft deleted model'
+      operationId: restoreASoftDeletedModel
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the module.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/handovers/{handover_id}':
+    patch:
+      summary: 'Submit Handover'
+      operationId: submitHandover
+      description: 'Submit an attachment for a pending handover.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Handover submitted successfully'
+                  data:
+                    id: 1
+                    attachment: 'https://github.com/my-repo'
+                properties:
+                  message:
+                    type: string
+                    example: 'Handover submitted successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      attachment:
+                        type: string
+                        example: 'https://github.com/my-repo'
+      tags:
+        - 'Handover Actions'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attachment:
+                  type: string
+                  description: 'URL to the delivery attachment.'
+                  example: 'https://github.com/my-repo'
+              required:
+                - attachment
+    get:
+      summary: 'Get Handover'
+      operationId: getHandover
+      description: 'Display the specified handover.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  title: 'Entrega Final'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: 'Entrega Final'
+      tags:
+        - Handovers
+    put:
+      summary: 'Update Handover'
+      operationId: updateHandover
+      description: 'Update the specified handover in storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  title: 'Entrega Corregida'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: 'Entrega Corregida'
+      tags:
+        - Handovers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'The title of the handover.'
+                  example: 'Entrega Corregida'
+                attachment:
+                  type: string
+                  description: 'nullable URL or link to the attachment.'
+                  example: 'https://github.com/my-game-v2'
+                is_delivered:
+                  type: boolean
+                  description: 'sometimes Whether the handover is delivered.'
+                  example: true
+                module_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the modules table.'
+                  example: 16
+                team_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the teams table.'
+                  example: 16
+                score:
+                  type: integer
+                  description: 'nullable Score of the handover (0-100).'
+                  example: 100
+                date_of_submission:
+                  type: string
+                  description: 'Must be a valid date. Must be a date before or equal to <code>today</code>.'
+                  example: '2022-05-03'
+              required:
+                - title
+    delete:
+      summary: 'Delete Handover'
+      operationId: deleteHandover
+      description: 'Remove the specified handover from storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Handover deleted successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'Handover deleted successfully'
+      tags:
+        - Handovers
+    parameters:
+      -
+        in: path
+        name: handover_id
+        description: 'The ID of the handover.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: handover
+        description: 'The ID of the handover to submit.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/handovers:
+    get:
+      summary: 'List Handovers'
+      operationId: listHandovers
+      description: 'Display a listing of the handovers (entregas).'
+      parameters:
+        -
+          in: query
+          name: team_id
+          description: 'Filter by team ID.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by team ID.'
+            example: 1
+        -
+          in: query
+          name: module_id
+          description: 'Filter by module ID.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by module ID.'
+            example: 1
+        -
+          in: query
+          name: competition_id
+          description: 'Filter by competition ID.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by competition ID.'
+            example: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      title: 'Entrega Fase 1'
+                      is_delivered: true
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        title: 'Entrega Fase 1'
+                        is_delivered: true
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: 'Entrega Fase 1'
+                        is_delivered:
+                          type: boolean
+                          example: true
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The specified team is not enrolled in this competition.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The specified team is not enrolled in this competition.'
+      tags:
+        - Handovers
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                team_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the teams table.'
+                  example: 16
+                module_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the modules table.'
+                  example: 16
+                competition_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the competitions table.'
+                  example: 16
+    post:
+      summary: 'Create Handover'
+      operationId: createHandover
+      description: 'Store a newly created handover in storage.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  title: 'Entrega Final'
+                  is_delivered: true
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: 'Entrega Final'
+                  is_delivered:
+                    type: boolean
+                    example: true
+      tags:
+        - Handovers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'The title of the handover.'
+                  example: 'Entrega Final'
+                attachment:
+                  type: string
+                  description: 'nullable URL or link to the attachment.'
+                  example: 'https://github.com/my-game'
+                  nullable: true
+                is_delivered:
+                  type: boolean
+                  description: 'sometimes Whether the handover is delivered.'
+                  example: true
+                module_id:
+                  type: integer
+                  description: 'ID of the module.'
+                  example: 1
+                team_id:
+                  type: integer
+                  description: 'ID of the team submitting.'
+                  example: 1
+                score:
+                  type: integer
+                  description: 'nullable Score of the handover (0-100).'
+                  example: 95
+                  nullable: true
+                date_of_submission:
+                  type: date
+                  description: 'nullable Date it was submitted.'
+                  example: '2026-05-10'
+                  nullable: true
+              required:
+                - title
+                - module_id
+                - team_id
+  '/api/v1/teams/{team_id}/enroll/{competition_id}':
+    post:
+      summary: 'Enroll Team in Competition'
+      operationId: enrollTeamInCompetition
+      description: 'Registers a team in the specified competition.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  team:
+                    id: 1
+                    name: Team
+                  competition:
+                    id: 1
+                    name: Jam
+                properties:
+                  team:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Team
+                  competition:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Jam
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The team is already enrolled in this competition.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The team is already enrolled in this competition.'
+      tags:
+        - 'Team Actions'
+    parameters:
+      -
+        in: path
+        name: team_id
+        description: 'The ID of the team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: competition_id
+        description: 'The ID of the competition.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: team
+        description: 'The ID of the team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: competition
+        description: 'The ID of the competition.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/teams/{team_id}/withdraw/{competition_id}':
+    delete:
+      summary: 'Withdraw Team'
+      operationId: withdrawTeam
+      description: 'Withdraws a team from a competition.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team withdrawn successfully from the competition. Handovers are kept as history.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Team withdrawn successfully from the competition. Handovers are kept as history.'
+      tags:
+        - 'Team Actions'
+    parameters:
+      -
+        in: path
+        name: team_id
+        description: 'The ID of the team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: competition_id
+        description: 'The ID of the competition.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: team
+        description: 'The ID of the team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: competition
+        description: 'ID of the competition.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/teams/{team_id}/members/{user_id}':
+    post:
+      summary: 'Add Team Member'
+      operationId: addTeamMember
+      description: 'Add an existing user to a specific team.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Member added successfully to the team.'
+                  data:
+                    id: 1
+                    name: 'Los Codificadores'
+                properties:
+                  message:
+                    type: string
+                    example: 'Member added successfully to the team.'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Los Codificadores'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This user is already a member of another team.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This user is already a member of another team.'
+      tags:
+        - 'Team Actions'
+    delete:
+      summary: 'Remove Team Member'
+      operationId: removeTeamMember
+      description: 'Removes a user from a specific team.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Member removed successfully from the team.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Member removed successfully from the team.'
+      tags:
+        - 'Team Actions'
+    parameters:
+      -
+        in: path
+        name: team_id
+        description: 'The ID of the team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: user_id
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: team
+        description: 'The ID of the team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: user
+        description: 'The ID of the user to add.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  /api/v1/teams:
+    get:
+      summary: 'List Teams'
+      operationId: listTeams
+      description: 'Display a listing of the teams.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: 'Los Codificadores'
+                      max_members: 5
+                      total_members: 3
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Los Codificadores'
+                        max_members: 5
+                        total_members: 3
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Los Codificadores'
+                        max_members:
+                          type: integer
+                          example: 5
+                        total_members:
+                          type: integer
+                          example: 3
+      tags:
+        - Teams
+    post:
+      summary: 'Create Team'
+      operationId: createTeam
+      description: 'Store a newly created team in storage.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team created successfully'
+                  data:
+                    id: 1
+                    name: 'Los Codificadores'
+                    total_members: 1
+                properties:
+                  message:
+                    type: string
+                    example: 'Team created successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Los Codificadores'
+                      total_members:
+                        type: integer
+                        example: 1
+      tags:
+        - Teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the team.'
+                  example: 'Los Codificadores'
+                admin_id:
+                  type: integer
+                  description: 'The ID of the user creating/leading the team.'
+                  example: 1
+                max_members:
+                  type: integer
+                  description: 'nullable The maximum number of members.'
+                  example: 5
+                  nullable: true
+              required:
+                - name
+                - admin_id
+  /api/v1/teams/deleted:
+    get:
+      summary: 'List Deleted Teams'
+      operationId: listDeletedTeams
+      description: 'Display a listing of softly deleted teams.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: 'Team Old'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Team Old'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Team Old'
+      tags:
+        - Teams
+  '/api/v1/teams/{id}/restore':
+    patch:
+      summary: 'Restore Team'
+      operationId: restoreTeam
+      description: 'Restore a soft deleted team.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team restored successfully'
+                  data:
+                    id: 1
+                    name: 'Team Old'
+                properties:
+                  message:
+                    type: string
+                    example: 'Team restored successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Team Old'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched team'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched team'
+      tags:
+        - Teams
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the deleted team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/teams/{team_id}':
+    get:
+      summary: 'Get Team'
+      operationId: getTeam
+      description: 'Display the specified team.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'Los Codificadores'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'Los Codificadores'
+      tags:
+        - Teams
+    put:
+      summary: 'Update Team'
+      operationId: updateTeam
+      description: 'Update the specified team in storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team updated successfully'
+                  data:
+                    id: 1
+                    name: 'Los Pro'
+                properties:
+                  message:
+                    type: string
+                    example: 'Team updated successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Los Pro'
+      tags:
+        - Teams
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'nullable The new name of the team.'
+                  example: 'Los Pro'
+                admin_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: null
+                max_members:
+                  type: integer
+                  description: 'nullable The new maximum members.'
+                  example: 4
+                  nullable: true
+    delete:
+      summary: 'Delete Team'
+      operationId: deleteTeam
+      description: 'Remove the specified team from storage.'
+      parameters: []
+      responses:
+        204:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team deleted successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'Team deleted successfully'
+      tags:
+        - Teams
+    parameters:
+      -
+        in: path
+        name: team_id
+        description: 'The ID of the team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: team
+        description: 'The ID of the team.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/users:
+    get:
+      summary: 'List Users'
+      operationId: listUsers
+      description: 'Display a listing of the users.'
+      parameters:
+        -
+          in: query
+          name: role
+          description: 'Filter by role.'
+          example: participante
+          required: false
+          schema:
+            type: string
+            description: 'Filter by role.'
+            example: participante
+        -
+          in: query
+          name: team_id
+          description: 'Filter by team ID.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by team ID.'
+            example: 1
+        -
+          in: query
+          name: dui
+          description: 'Filter by exact DUI.'
+          example: 12345678-9
+          required: false
+          schema:
+            type: string
+            description: 'Filter by exact DUI.'
+            example: 12345678-9
+        -
+          in: query
+          name: name
+          description: 'Filter by partial name.'
+          example: Juan
+          required: false
+          schema:
+            type: string
+            description: 'Filter by partial name.'
+            example: Juan
+        -
+          in: query
+          name: lastname
+          description: 'Filter by partial lastname.'
+          example: Perez
+          required: false
+          schema:
+            type: string
+            description: 'Filter by partial lastname.'
+            example: Perez
+        -
+          in: query
+          name: email
+          description: 'Filter by partial email.'
+          example: juan@
+          required: false
+          schema:
+            type: string
+            description: 'Filter by partial email.'
+            example: juan@
+        -
+          in: query
+          name: username
+          description: 'Filter by partial username.'
+          example: juano
+          required: false
+          schema:
+            type: string
+            description: 'Filter by partial username.'
+            example: juano
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: Juan
+                      lastname: Perez
+                      email: juan@example.com
+                      username: juanp
+                      dui: 12345678-9
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: Juan
+                        lastname: Perez
+                        email: juan@example.com
+                        username: juanp
+                        dui: 12345678-9
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Juan
+                        lastname:
+                          type: string
+                          example: Perez
+                        email:
+                          type: string
+                          example: juan@example.com
+                        username:
+                          type: string
+                          example: juanp
+                        dui:
+                          type: string
+                          example: 12345678-9
+      tags:
+        - Users
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: 'The <code>name</code> of an existing record in the roles table.'
+                  example: architecto
+                team_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the teams table.'
+                  example: 16
+                dui:
+                  type: string
+                  description: 'Must match the regex /^\d{8}-\d$/.'
+                  example: 56425593-1
+    post:
+      summary: 'Create User'
+      operationId: createUser
+      description: 'Store a newly created user in storage.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: Juan
+                  lastname: Perez
+                  email: juanperez@example.com
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: Juan
+                  lastname:
+                    type: string
+                    example: Perez
+                  email:
+                    type: string
+                    example: juanperez@example.com
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the user.'
+                  example: Juan
+                lastname:
+                  type: string
+                  description: 'The lastname of the user.'
+                  example: Perez
+                email:
+                  type: string
+                  description: 'The email of the user.'
+                  example: juanperez@example.com
+                username:
+                  type: string
+                  description: 'The username of the user.'
+                  example: juanp
+                password:
+                  type: string
+                  description: 'The password of the user (min 8 chars).'
+                  example: secretpassword
+                dui:
+                  type: string
+                  description: 'The DUI of the user.'
+                  example: 12345678-9
+                role:
+                  type: string
+                  description: 'The role to assign (administrador, organizador, lider, participante).'
+                  example: participante
+              required:
+                - name
+                - lastname
+                - email
+                - username
+                - password
+                - dui
+                - role
+  '/api/v1/users/{user_id}':
+    get:
+      summary: 'Get User'
+      operationId: getUser
+      description: 'Display the specified user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: Juan
+                  email: juanperez@example.com
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: Juan
+                  email:
+                    type: string
+                    example: juanperez@example.com
+      tags:
+        - Users
+    put:
+      summary: 'Update User'
+      operationId: updateUser
+      description: 'Update the specified user in storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'Juan Carlos'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'Juan Carlos'
+      tags:
+        - Users
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'nullable The name of the user.'
+                  example: 'Juan Carlos'
+                lastname:
+                  type: string
+                  description: 'nullable The lastname of the user.'
+                  example: Perez
+                username:
+                  type: string
+                  description: 'nullable The username of the user.'
+                  example: juanc
+                password:
+                  type: string
+                  description: 'nullable The new password (min 8 chars).'
+                  example: newpassword
+                role:
+                  type: string
+                  description: 'nullable The role to assign.'
+                  example: lider
+    patch:
+      summary: 'Update User'
+      operationId: updateUser
+      description: 'Update the specified user in storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'Juan Carlos'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'Juan Carlos'
+      tags:
+        - Users
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'nullable The name of the user.'
+                  example: 'Juan Carlos'
+                lastname:
+                  type: string
+                  description: 'nullable The lastname of the user.'
+                  example: Perez
+                username:
+                  type: string
+                  description: 'nullable The username of the user.'
+                  example: juanc
+                password:
+                  type: string
+                  description: 'nullable The new password (min 8 chars).'
+                  example: newpassword
+                role:
+                  type: string
+                  description: 'nullable The role to assign.'
+                  example: lider
+    delete:
+      summary: 'Delete User'
+      operationId: deleteUser
+      description: 'Remove the specified user from storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'User deleted successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'User deleted successfully'
+      tags:
+        - Users
+    parameters:
+      -
+        in: path
+        name: user_id
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: user
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer

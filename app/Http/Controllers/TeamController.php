@@ -15,6 +15,25 @@ class TeamController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * List Teams
+     *
+     * Display a listing of the teams.
+     *
+     * @group Teams
+     * @authenticated
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "name": "Los Codificadores",
+     *       "max_members": 5,
+     *       "total_members": 3
+     *     }
+     *   ]
+     * }
+     */
     public function index()
     {
         return TeamResource::collection(Team::all());
@@ -22,6 +41,27 @@ class TeamController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     */
+    /**
+     * Create Team
+     *
+     * Store a newly created team in storage.
+     *
+     * @group Teams
+     * @authenticated
+     *
+     * @bodyParam name string required The name of the team. Example: Los Codificadores
+     * @bodyParam admin_id int required The ID of the user creating/leading the team. Example: 1
+     * @bodyParam max_members int nullable The maximum number of members. Example: 5
+     *
+     * @response 201 {
+     *   "message": "Team created successfully",
+     *   "data": {
+     *     "id": 1,
+     *     "name": "Los Codificadores",
+     *     "total_members": 1
+     *   }
+     * }
      */
     public function store(StoreTeamRequest $request)
     {
@@ -42,6 +82,21 @@ class TeamController extends Controller
     /**
      * Display the specified resource.
      */
+    /**
+     * Get Team
+     *
+     * Display the specified team.
+     *
+     * @group Teams
+     * @authenticated
+     *
+     * @urlParam team int required The ID of the team. Example: 1
+     *
+     * @response 200 {
+     *   "id": 1,
+     *   "name": "Los Codificadores"
+     * }
+     */
     public function show(Team $team)
     {
         return new TeamResource($team);
@@ -49,6 +104,26 @@ class TeamController extends Controller
 
     /**
      * Update the specified resource in storage.
+     */
+    /**
+     * Update Team
+     *
+     * Update the specified team in storage.
+     *
+     * @group Teams
+     * @authenticated
+     *
+     * @urlParam team int required The ID of the team. Example: 1
+     * @bodyParam name string nullable The new name of the team. Example: Los Pro
+     * @bodyParam max_members int nullable The new maximum members. Example: 4
+     *
+     * @response 200 {
+     *   "message": "Team updated successfully",
+     *   "data": {
+     *     "id": 1,
+     *     "name": "Los Pro"
+     *   }
+     * }
      */
     public function update(UpdateTeamRequest $request, Team $team)
     {
@@ -63,6 +138,18 @@ class TeamController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    /**
+     * Delete Team
+     *
+     * Remove the specified team from storage.
+     *
+     * @group Teams
+     * @authenticated
+     *
+     * @urlParam team int required The ID of the team. Example: 1
+     *
+     * @response 204 {"message": "Team deleted successfully"}
+     */
     public function destroy(Team $team)
     {
         $team->delete();
@@ -75,6 +162,20 @@ class TeamController extends Controller
     /**
      * Display a listing of soft deleted resources.
      */
+    /**
+     * List Deleted Teams
+     *
+     * Display a listing of softly deleted teams.
+     *
+     * @group Teams
+     * @authenticated
+     *
+     * @response 200 {
+     *   "data": [
+     *     {"id": 1, "name": "Team Old"}
+     *   ]
+     * }
+     */
     public function deleted()
     {
         $deletedTeams = Team::onlyTrashed()->get();
@@ -83,6 +184,22 @@ class TeamController extends Controller
 
     /**
      * Restore a soft deleted resource.
+     */
+    /**
+     * Restore Team
+     *
+     * Restore a soft deleted team.
+     *
+     * @group Teams
+     * @authenticated
+     *
+     * @urlParam id int required The ID of the deleted team. Example: 1
+     *
+     * @response 200 {
+     *   "message": "Team restored successfully",
+     *   "data": {"id": 1, "name": "Team Old"}
+     * }
+     * @response 404 {"message": "There are no matches for the searched team"}
      */
     public function restore($id)
     {

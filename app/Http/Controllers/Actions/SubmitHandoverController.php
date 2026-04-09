@@ -12,7 +12,20 @@ use App\Http\Requests\SubmitHandoverRequest;
 class SubmitHandoverController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Submit Handover
+     *
+     * Submit an attachment for a pending handover.
+     *
+     * @group Handover Actions
+     * @authenticated
+     *
+     * @urlParam handover int required The ID of the handover to submit. Example: 1
+     * @bodyParam attachment string required URL to the delivery attachment. Example: https://github.com/my-repo
+     *
+     * @response 200 {
+     *   "message": "Handover submitted successfully",
+     *   "data": {"id": 1, "attachment": "https://github.com/my-repo"}
+     * }
      */
     public function __invoke(SubmitHandoverRequest $request, Handover $handover)
     {

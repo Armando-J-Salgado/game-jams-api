@@ -1,0 +1,2080 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost"
+        }
+    ],
+    "info": {
+        "name": "Laravel API Documentation",
+        "_postman_id": "624f8b58-4989-4bb8-aa42-b92f436ab58c",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "description": "",
+            "item": [
+                {
+                    "name": "User Login",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"admin@example.com\",\"password\":\"password\"}"
+                        },
+                        "description": "Authenticates a user and returns a token.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"status\": \"success\",\n \"messsage\": \"Login successful\",\n \"token\": \"1|abcdef123456789...\",\n \"user\": {\"id\": 1, \"name\": \"Admin\", \"email\": \"admin@example.com\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"Email or password incorrect\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "User Logout",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Revokes the current access token."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"status\": \"success\",\n \"message\": \"Logout successful\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "User Profile",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/profile"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves the currently authenticated user's profile."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"profile\": {\"id\": 1, \"name\": \"Admin\", \"email\": \"admin@example.com\"}\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Categories",
+            "description": "",
+            "item": [
+                {
+                    "name": "List Categories",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Display a listing of the categories."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"data\": [\n   {\n     \"id\": 1,\n     \"name\": \"Game Jam 2026\"\n   }\n ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories\/:category_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories\/:category_id",
+                            "variable": [
+                                {
+                                    "id": "category_id",
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                },
+                                {
+                                    "id": "category",
+                                    "key": "category",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Display the specified category."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"id\": 1,\n \"name\": \"Art\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Art\"}"
+                        },
+                        "description": "Store a newly created category in the database."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n \"id\": 1,\n \"name\": \"Art\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories\/:category_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories\/:category_id",
+                            "variable": [
+                                {
+                                    "id": "category_id",
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                },
+                                {
+                                    "id": "category",
+                                    "key": "category",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"2D Art\"}"
+                        },
+                        "description": "Update the specified category in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"id\": 1,\n \"name\": \"2D Art\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete Category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories\/:category_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories\/:category_id",
+                            "variable": [
+                                {
+                                    "id": "category_id",
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                },
+                                {
+                                    "id": "category",
+                                    "key": "category",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Remove the specified category from storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"Category deleted successfully\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "Store a newly created resource in storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/competitions",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/competitions"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"b\",\"description\":\"Et animi quos velit et fugiat.\",\"prize_information\":\"dljnikhwaykcmyuw\",\"tools_information\":\"pwlvqwrsitcpscql\",\"max_teams\":16,\"start_date\":\"2026-04-09\",\"end_date\":\"2052-05-02\",\"category_id\":\"architecto\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Display a listing of the resource.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/competitions",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/competitions"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"architecto\",\"is_finished\":true,\"start_date\":\"2026-04-09\",\"end_date\":\"2026-04-09\",\"per_page\":16,\"page\":16,\"is_trashed\":false}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Display the specified resource.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/competitions\/:competition_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/competitions\/:competition_id",
+                            "variable": [
+                                {
+                                    "id": "competition_id",
+                                    "key": "competition_id",
+                                    "value": "1",
+                                    "description": "The ID of the competition."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update the specified resource in storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/competitions\/:competition_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/competitions\/:competition_id",
+                            "variable": [
+                                {
+                                    "id": "competition_id",
+                                    "key": "competition_id",
+                                    "value": "1",
+                                    "description": "The ID of the competition."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"b\",\"description\":\"Et animi quos velit et fugiat.\",\"prize_information\":\"dljnikhwaykcmyuw\",\"tools_information\":\"pwlvqwrsitcpscql\",\"total_teams\":16,\"start_date\":\"2026-04-09\",\"end_date\":\"2026-04-09\",\"max_teams\":16,\"is_finished\":false}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update the specified resource in storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/competitions\/:competition_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/competitions\/:competition_id",
+                            "variable": [
+                                {
+                                    "id": "competition_id",
+                                    "key": "competition_id",
+                                    "value": "1",
+                                    "description": "The ID of the competition."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"b\",\"description\":\"Et animi quos velit et fugiat.\",\"prize_information\":\"dljnikhwaykcmyuw\",\"tools_information\":\"pwlvqwrsitcpscql\",\"total_teams\":16,\"start_date\":\"2026-04-09\",\"end_date\":\"2026-04-09\",\"max_teams\":16,\"is_finished\":true}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Remove the specified resource from storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/competitions\/:competition_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/competitions\/:competition_id",
+                            "variable": [
+                                {
+                                    "id": "competition_id",
+                                    "key": "competition_id",
+                                    "value": "1",
+                                    "description": "The ID of the competition."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Restore a soft deleted model",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/competitions\/:id\/restore",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/competitions\/:id\/restore",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the competition."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Store a newly created resource in storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/modules",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/modules"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"b\",\"description\":\"Et animi quos velit et fugiat.\",\"attachments\":\"d\",\"due_date\":\"2026-04-09\",\"competition_id\":16}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Display a listing of the resource.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/modules",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/modules"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"architecto\",\"due_date\":\"2026-04-09\",\"competition_id\":16,\"is_trashed\":false,\"per_page\":16,\"page\":16}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Display the specified resource.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/modules\/:module_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/modules\/:module_id",
+                            "variable": [
+                                {
+                                    "id": "module_id",
+                                    "key": "module_id",
+                                    "value": "1",
+                                    "description": "The ID of the module."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update the specified resource in storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/modules\/:module_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/modules\/:module_id",
+                            "variable": [
+                                {
+                                    "id": "module_id",
+                                    "key": "module_id",
+                                    "value": "1",
+                                    "description": "The ID of the module."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"b\",\"description\":\"Et animi quos velit et fugiat.\",\"attachments\":\"d\",\"due_date\":\"2026-04-09\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update the specified resource in storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/modules\/:module_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/modules\/:module_id",
+                            "variable": [
+                                {
+                                    "id": "module_id",
+                                    "key": "module_id",
+                                    "value": "1",
+                                    "description": "The ID of the module."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"b\",\"description\":\"Et animi quos velit et fugiat.\",\"attachments\":\"d\",\"due_date\":\"2026-04-09\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Remove the specified resource from storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/modules\/:module_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/modules\/:module_id",
+                            "variable": [
+                                {
+                                    "id": "module_id",
+                                    "key": "module_id",
+                                    "value": "1",
+                                    "description": "The ID of the module."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Restore a soft deleted model",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/modules\/:id\/restore",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/modules\/:id\/restore",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the module."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Handover Actions",
+            "description": "",
+            "item": [
+                {
+                    "name": "Submit Handover",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/handovers\/:handover_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/handovers\/:handover_id",
+                            "variable": [
+                                {
+                                    "id": "handover_id",
+                                    "key": "handover_id",
+                                    "value": "1",
+                                    "description": "The ID of the handover."
+                                },
+                                {
+                                    "id": "handover",
+                                    "key": "handover",
+                                    "value": "1",
+                                    "description": "The ID of the handover to submit."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"attachment\":\"https:\\\/\\\/github.com\\\/my-repo\"}"
+                        },
+                        "description": "Submit an attachment for a pending handover."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Handover submitted successfully\",\n  \"data\": {\"id\": 1, \"attachment\": \"https:\/\/github.com\/my-repo\"}\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Handovers",
+            "description": "",
+            "item": [
+                {
+                    "name": "List Handovers",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/handovers",
+                            "query": [
+                                {
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "Filter by team ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "module_id",
+                                    "value": "1",
+                                    "description": "Filter by module ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "competition_id",
+                                    "value": "1",
+                                    "description": "Filter by competition ID.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/handovers?team_id=1&module_id=1&competition_id=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"team_id\":16,\"module_id\":16,\"competition_id\":16}"
+                        },
+                        "description": "Display a listing of the handovers (entregas)."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"title\": \"Entrega Fase 1\",\n      \"is_delivered\": true\n    }\n  ]\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"The specified team is not enrolled in this competition.\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Handover",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/handovers\/:handover_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/handovers\/:handover_id",
+                            "variable": [
+                                {
+                                    "id": "handover_id",
+                                    "key": "handover_id",
+                                    "value": "1",
+                                    "description": "The ID of the handover."
+                                },
+                                {
+                                    "id": "handover",
+                                    "key": "handover",
+                                    "value": "1",
+                                    "description": "ID of the handover."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Display the specified handover."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"title\": \"Entrega Final\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Handover",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/handovers",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/handovers"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"Entrega Final\",\"attachment\":\"https:\\\/\\\/github.com\\\/my-game\",\"is_delivered\":true,\"module_id\":1,\"team_id\":1,\"score\":95,\"date_of_submission\":\"2026-05-10\"}"
+                        },
+                        "description": "Store a newly created handover in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n  \"id\": 1,\n  \"title\": \"Entrega Final\",\n  \"is_delivered\": true\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Handover",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/handovers\/:handover_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/handovers\/:handover_id",
+                            "variable": [
+                                {
+                                    "id": "handover_id",
+                                    "key": "handover_id",
+                                    "value": "1",
+                                    "description": "The ID of the handover."
+                                },
+                                {
+                                    "id": "handover",
+                                    "key": "handover",
+                                    "value": "1",
+                                    "description": "ID of the handover."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"Entrega Corregida\",\"attachment\":\"https:\\\/\\\/github.com\\\/my-game-v2\",\"is_delivered\":true,\"module_id\":16,\"team_id\":16,\"score\":100,\"date_of_submission\":\"2022-05-03\"}"
+                        },
+                        "description": "Update the specified handover in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"title\": \"Entrega Corregida\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete Handover",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/handovers\/:handover_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/handovers\/:handover_id",
+                            "variable": [
+                                {
+                                    "id": "handover_id",
+                                    "key": "handover_id",
+                                    "value": "1",
+                                    "description": "The ID of the handover."
+                                },
+                                {
+                                    "id": "handover",
+                                    "key": "handover",
+                                    "value": "1",
+                                    "description": "ID of the handover."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Remove the specified handover from storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Handover deleted successfully\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Team Actions",
+            "description": "",
+            "item": [
+                {
+                    "name": "Enroll Team in Competition",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:team_id\/enroll\/:competition_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:team_id\/enroll\/:competition_id",
+                            "variable": [
+                                {
+                                    "id": "team_id",
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "competition_id",
+                                    "key": "competition_id",
+                                    "value": "1",
+                                    "description": "The ID of the competition."
+                                },
+                                {
+                                    "id": "team",
+                                    "key": "team",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "competition",
+                                    "key": "competition",
+                                    "value": "1",
+                                    "description": "The ID of the competition."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Registers a team in the specified competition."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n  \"team\": {\"id\": 1, \"name\": \"Team\"},\n  \"competition\": {\"id\": 1, \"name\": \"Jam\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\"message\": \"The team is already enrolled in this competition.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Withdraw Team",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:team_id\/withdraw\/:competition_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:team_id\/withdraw\/:competition_id",
+                            "variable": [
+                                {
+                                    "id": "team_id",
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "competition_id",
+                                    "key": "competition_id",
+                                    "value": "1",
+                                    "description": "The ID of the competition."
+                                },
+                                {
+                                    "id": "team",
+                                    "key": "team",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "competition",
+                                    "key": "competition",
+                                    "value": "1",
+                                    "description": "ID of the competition."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Withdraws a team from a competition."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Team withdrawn successfully from the competition. Handovers are kept as history.\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Add Team Member",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:team_id\/members\/:user_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:team_id\/members\/:user_id",
+                            "variable": [
+                                {
+                                    "id": "team_id",
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "user_id",
+                                    "key": "user_id",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                },
+                                {
+                                    "id": "team",
+                                    "key": "team",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "2",
+                                    "description": "The ID of the user to add."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Add an existing user to a specific team."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n  \"message\": \"Member added successfully to the team.\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Los Codificadores\"\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\"message\": \"This user is already a member of another team.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Remove Team Member",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:team_id\/members\/:user_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:team_id\/members\/:user_id",
+                            "variable": [
+                                {
+                                    "id": "team_id",
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "user_id",
+                                    "key": "user_id",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                },
+                                {
+                                    "id": "team",
+                                    "key": "team",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "2",
+                                    "description": "The ID of the user to remove."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Removes a user from a specific team."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Member removed successfully from the team.\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Teams",
+            "description": "",
+            "item": [
+                {
+                    "name": "List Teams",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Display a listing of the teams."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Los Codificadores\",\n      \"max_members\": 5,\n      \"total_members\": 3\n    }\n  ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Team",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Los Codificadores\",\"admin_id\":1,\"max_members\":5}"
+                        },
+                        "description": "Store a newly created team in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n  \"message\": \"Team created successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Los Codificadores\",\n    \"total_members\": 1\n  }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List Deleted Teams",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/deleted",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/deleted"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Display a listing of softly deleted teams."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [\n    {\"id\": 1, \"name\": \"Team Old\"}\n  ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Restore Team",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:id\/restore",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:id\/restore",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the deleted team."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Restore a soft deleted team."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Team restored successfully\",\n  \"data\": {\"id\": 1, \"name\": \"Team Old\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"message\": \"There are no matches for the searched team\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Team",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:team_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:team_id",
+                            "variable": [
+                                {
+                                    "id": "team_id",
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "team",
+                                    "key": "team",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Display the specified team."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"name\": \"Los Codificadores\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Team",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:team_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:team_id",
+                            "variable": [
+                                {
+                                    "id": "team_id",
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "team",
+                                    "key": "team",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Los Pro\",\"max_members\":4}"
+                        },
+                        "description": "Update the specified team in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Team updated successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Los Pro\"\n  }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete Team",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:team_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:team_id",
+                            "variable": [
+                                {
+                                    "id": "team_id",
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "team",
+                                    "key": "team",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Remove the specified team from storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": "{\"message\": \"Team deleted successfully\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Users",
+            "description": "",
+            "item": [
+                {
+                    "name": "List Users",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users",
+                            "query": [
+                                {
+                                    "key": "role",
+                                    "value": "participante",
+                                    "description": "Filter by role.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "Filter by team ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "dui",
+                                    "value": "12345678-9",
+                                    "description": "Filter by exact DUI.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "name",
+                                    "value": "Juan",
+                                    "description": "Filter by partial name.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "lastname",
+                                    "value": "Perez",
+                                    "description": "Filter by partial lastname.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "juan%40",
+                                    "description": "Filter by partial email.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "username",
+                                    "value": "juano",
+                                    "description": "Filter by partial username.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/users?role=participante&team_id=1&dui=12345678-9&name=Juan&lastname=Perez&email=juan%40&username=juano"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"role\":\"architecto\",\"team_id\":16,\"dui\":\"56425593-1\"}"
+                        },
+                        "description": "Display a listing of the users."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Juan\",\n      \"lastname\": \"Perez\",\n      \"email\": \"juan@example.com\",\n      \"username\": \"juanp\",\n      \"dui\": \"12345678-9\"\n    }\n  ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/users"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Juan\",\"lastname\":\"Perez\",\"email\":\"juanperez@example.com\",\"username\":\"juanp\",\"password\":\"secretpassword\",\"dui\":\"12345678-9\",\"role\":\"participante\"}"
+                        },
+                        "description": "Store a newly created user in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n  \"id\": 1,\n  \"name\": \"Juan\",\n  \"lastname\": \"Perez\",\n  \"email\": \"juanperez@example.com\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users\/:user_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/users\/:user_id",
+                            "variable": [
+                                {
+                                    "id": "user_id",
+                                    "key": "user_id",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Display the specified user."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"name\": \"Juan\",\n  \"email\": \"juanperez@example.com\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users\/:user_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/users\/:user_id",
+                            "variable": [
+                                {
+                                    "id": "user_id",
+                                    "key": "user_id",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Juan Carlos\",\"lastname\":\"Perez\",\"username\":\"juanc\",\"password\":\"newpassword\",\"role\":\"lider\"}"
+                        },
+                        "description": "Update the specified user in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"name\": \"Juan Carlos\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users\/:user_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/users\/:user_id",
+                            "variable": [
+                                {
+                                    "id": "user_id",
+                                    "key": "user_id",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Juan Carlos\",\"lastname\":\"Perez\",\"username\":\"juanc\",\"password\":\"newpassword\",\"role\":\"lider\"}"
+                        },
+                        "description": "Update the specified user in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"name\": \"Juan Carlos\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users\/:user_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/users\/:user_id",
+                            "variable": [
+                                {
+                                    "id": "user_id",
+                                    "key": "user_id",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "1",
+                                    "description": "The ID of the user."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Remove the specified user from storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"User deleted successfully\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "noauth"
+    }
+}

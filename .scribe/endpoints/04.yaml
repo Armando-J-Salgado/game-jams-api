@@ -1,0 +1,372 @@
+name: 'Team Actions'
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/teams/{team_id}/enroll/{competition_id}'
+    metadata:
+      custom: []
+      groupName: 'Team Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Enroll Team in Competition'
+      description: 'Registers a team in the specified competition.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      team_id:
+        custom: []
+        name: team_id
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      competition_id:
+        custom: []
+        name: competition_id
+        description: 'The ID of the competition.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      team:
+        custom: []
+        name: team
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      competition:
+        custom: []
+        name: competition
+        description: 'The ID of the competition.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      team_id: 1
+      competition_id: 1
+      team: 1
+      competition: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "team": {"id": 1, "name": "Team"},
+            "competition": {"id": 1, "name": "Jam"}
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 400
+        content: '{"message": "The team is already enrolled in this competition."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/teams/{team_id}/withdraw/{competition_id}'
+    metadata:
+      custom: []
+      groupName: 'Team Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Withdraw Team'
+      description: 'Withdraws a team from a competition.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      team_id:
+        custom: []
+        name: team_id
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      competition_id:
+        custom: []
+        name: competition_id
+        description: 'The ID of the competition.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      team:
+        custom: []
+        name: team
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      competition:
+        custom: []
+        name: competition
+        description: 'ID of the competition.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      team_id: 1
+      competition_id: 1
+      team: 1
+      competition: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Team withdrawn successfully from the competition. Handovers are kept as history."
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/teams/{team_id}/members/{user_id}'
+    metadata:
+      custom: []
+      groupName: 'Team Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Add Team Member'
+      description: 'Add an existing user to a specific team.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      team_id:
+        custom: []
+        name: team_id
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      user_id:
+        custom: []
+        name: user_id
+        description: 'The ID of the user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      team:
+        custom: []
+        name: team
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      user:
+        custom: []
+        name: user
+        description: 'The ID of the user to add.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      team_id: 1
+      user_id: 1
+      team: 1
+      user: 2
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "message": "Member added successfully to the team.",
+            "data": {
+              "id": 1,
+              "name": "Los Codificadores"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 400
+        content: '{"message": "This user is already a member of another team."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/teams/{team_id}/members/{user_id}'
+    metadata:
+      custom: []
+      groupName: 'Team Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Remove Team Member'
+      description: 'Removes a user from a specific team.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      team_id:
+        custom: []
+        name: team_id
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      user_id:
+        custom: []
+        name: user_id
+        description: 'The ID of the user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      team:
+        custom: []
+        name: team
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      user:
+        custom: []
+        name: user
+        description: 'The ID of the user to remove.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      team_id: 1
+      user_id: 1
+      team: 1
+      user: 2
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Member removed successfully from the team."
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

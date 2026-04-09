@@ -22,8 +22,11 @@ class UpdateTeamRequest extends FormRequest
      */
     public function rules(): array
     {
+        $team = $this->route('team');
+        $teamId = is_object($team) ? $team->id : ($team ?: 'NULL');
+
         return [
-            'name' => 'sometimes|required|string|max:255|unique:teams,name,' . $this->route('team')->id,
+            'name' => 'sometimes|required|string|max:255|unique:teams,name,' . $teamId,
             'admin_id' => 'sometimes|required|exists:users,id',
             'max_members' => 'nullable|integer|min:1',
         ];

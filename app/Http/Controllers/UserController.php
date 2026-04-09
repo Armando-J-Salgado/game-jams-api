@@ -22,6 +22,35 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * List Users
+     *
+     * Display a listing of the users.
+     *
+     * @group Users
+     * @authenticated
+     *
+     * @queryParam role string Filter by role. Example: participante
+     * @queryParam team_id int Filter by team ID. Example: 1
+     * @queryParam dui string Filter by exact DUI. Example: 12345678-9
+     * @queryParam name string Filter by partial name. Example: Juan
+     * @queryParam lastname string Filter by partial lastname. Example: Perez
+     * @queryParam email string Filter by partial email. Example: juan@
+     * @queryParam username string Filter by partial username. Example: juano
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "name": "Juan",
+     *       "lastname": "Perez",
+     *       "email": "juan@example.com",
+     *       "username": "juanp",
+     *       "dui": "12345678-9"
+     *     }
+     *   ]
+     * }
+     */
     public function index(Request $request)
     {
         $this->authorize('viewAny', User::class);
@@ -70,6 +99,29 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * Create User
+     *
+     * Store a newly created user in storage.
+     *
+     * @group Users
+     * @authenticated
+     *
+     * @bodyParam name string required The name of the user. Example: Juan
+     * @bodyParam lastname string required The lastname of the user. Example: Perez
+     * @bodyParam email string required The email of the user. Example: juanperez@example.com
+     * @bodyParam username string required The username of the user. Example: juanp
+     * @bodyParam password string required The password of the user (min 8 chars). Example: secretpassword
+     * @bodyParam dui string required The DUI of the user. Example: 12345678-9
+     * @bodyParam role string required The role to assign (administrador, organizador, lider, participante). Example: participante
+     *
+     * @response 201 {
+     *   "id": 1,
+     *   "name": "Juan",
+     *   "lastname": "Perez",
+     *   "email": "juanperez@example.com"
+     * }
+     */
     public function store(StoreUserRequest $request)
     {
         $this->authorize('create', User::class);
@@ -95,6 +147,22 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
+    /**
+     * Get User
+     *
+     * Display the specified user.
+     *
+     * @group Users
+     * @authenticated
+     *
+     * @urlParam user int required The ID of the user. Example: 1
+     *
+     * @response 200 {
+     *   "id": 1,
+     *   "name": "Juan",
+     *   "email": "juanperez@example.com"
+     * }
+     */
     public function show(User $user)
     {
         $this->authorize('view', $user);
@@ -111,6 +179,26 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     */
+    /**
+     * Update User
+     *
+     * Update the specified user in storage.
+     *
+     * @group Users
+     * @authenticated
+     *
+     * @urlParam user int required The ID of the user. Example: 1
+     * @bodyParam name string nullable The name of the user. Example: Juan Carlos
+     * @bodyParam lastname string nullable The lastname of the user. Example: Perez
+     * @bodyParam username string nullable The username of the user. Example: juanc
+     * @bodyParam password string nullable The new password (min 8 chars). Example: newpassword
+     * @bodyParam role string nullable The role to assign. Example: lider
+     *
+     * @response 200 {
+     *   "id": 1,
+     *   "name": "Juan Carlos"
+     * }
      */
     public function update(UpdateUserRequest $request, User $user)
     {
@@ -135,6 +223,20 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     */
+    /**
+     * Delete User
+     *
+     * Remove the specified user from storage.
+     *
+     * @group Users
+     * @authenticated
+     *
+     * @urlParam user int required The ID of the user. Example: 1
+     *
+     * @response 200 {
+     *   "message": "User deleted successfully"
+     * }
      */
     public function destroy(User $user)
     {

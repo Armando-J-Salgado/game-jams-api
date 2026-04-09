@@ -25,6 +25,21 @@ class UpdateCompetitionRequest extends FormRequest
     {
         $competition = $this->route('competition');
 
+        if (!$competition || is_string($competition)) {
+            return [
+                'name'=>['sometimes', 'string', 'max:255'],
+                'description'=>['sometimes', 'string', 'min:1', 'max:500'],
+                'prize_information'=>['sometimes', 'string', 'max:500', 'min:1'],
+                'tools_information'=>['sometimes', 'string', 'max:500', 'min:1'],
+                'total_teams'=>['sometimes', 'integer', 'gte:0'],
+                'start_date'=>['sometimes', Rule::date()->format('Y-m-d')],
+                'end_date'=>['sometimes', Rule::date()->format('Y-m-d')],
+                'category_id'=>['sometimes', 'exists:categories,id'],
+                'max_teams'=>['sometimes', 'integer', 'gt:0'],
+                'is_finished'=>['sometimes', 'boolean']
+            ];
+        }
+
         $startDate = $this->input('start_date', $competition->start_date);
         $endDate = $this->input('end_date', $competition->end_date);
         $maxTeams = $this->input('max_teams', $competition->max_teams);

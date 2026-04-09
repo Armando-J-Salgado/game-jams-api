@@ -18,6 +18,23 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * List Categories
+     *
+     * Display a listing of the categories.
+     *
+     * @group Categories
+     * @authenticated
+     *
+     * @response 200 {
+     *  "data": [
+     *    {
+     *      "id": 1,
+     *      "name": "Game Jam 2026"
+     *    }
+     *  ]
+     * }
+     */
     public function index(Request $request)
     {
         $this->authorize('viewAny', Category::class);
@@ -36,6 +53,21 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * Create Category
+     *
+     * Store a newly created category in the database.
+     *
+     * @group Categories
+     * @authenticated
+     *
+     * @bodyParam name string required The name of the category. Example: Art
+     *
+     * @response 201 {
+     *  "id": 1,
+     *  "name": "Art"
+     * }
+     */
     public function store(StoreCategoryRequest $request)
     {
         $this->authorize('create', Category::class);
@@ -46,6 +78,21 @@ class CategoryController extends Controller
 
     /**
      * Display the specified resource.
+     */
+    /**
+     * Get Category
+     *
+     * Display the specified category.
+     *
+     * @group Categories
+     * @authenticated
+     *
+     * @urlParam category int required The ID of the category. Example: 1
+     *
+     * @response 200 {
+     *  "id": 1,
+     *  "name": "Art"
+     * }
      */
     public function show(Category $category)
     {
@@ -64,6 +111,22 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    /**
+     * Update Category
+     *
+     * Update the specified category in storage.
+     *
+     * @group Categories
+     * @authenticated
+     *
+     * @urlParam category int required The ID of the category. Example: 1
+     * @bodyParam name string required The new name for the category. Example: 2D Art
+     *
+     * @response 200 {
+     *  "id": 1,
+     *  "name": "2D Art"
+     * }
+     */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $this->authorize('update', $category);
@@ -74,6 +137,20 @@ class CategoryController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     */
+    /**
+     * Delete Category
+     *
+     * Remove the specified category from storage.
+     *
+     * @group Categories
+     * @authenticated
+     *
+     * @urlParam category int required The ID of the category. Example: 1
+     *
+     * @response 200 {
+     *  "message": "Category deleted successfully"
+     * }
      */
     public function destroy(Category $category)
     {
