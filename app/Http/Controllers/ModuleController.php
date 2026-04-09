@@ -67,7 +67,7 @@ class ModuleController extends Controller
         $module = Module::create([
             'title'=>$request->title,
             'description'=>$request->description,
-            'attachments'=>$request->attachments ? $request->attachments : '',
+            'attachments'=> $request->attachments ?? null,
             'due_date'=>$request->due_date,
             'competition_id'=>$request->competition_id,
         ]);

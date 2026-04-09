@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
-
 use App\Http\Resources\TeamResource;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TeamController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -23,11 +25,12 @@ class TeamController extends Controller
      */
     public function store(StoreTeamRequest $request)
     {
+        $this->authorize('create', Team::class);
+
         $data = $request->validated();
         $data['total_members'] = 1; // El líder es el primer miembro
         $data['max_members'] = 5; // el máximo default debe ser 5
 
-        
         $team = Team::create($data);
 
         return response()->json([
