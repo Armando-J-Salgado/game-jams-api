@@ -404,8 +404,7 @@ it('deletes a user', function () {
 
     $this->deleteJson('/api/v1/users/' . $user->id)
         ->assertStatus(200);
-
-    $this->assertDatabaseMissing('users', [
+    $this->assertSoftDeleted('users', [
         'id' => $user->id,
     ]);
 });
@@ -420,5 +419,128 @@ it('cannot delete users without permission', function (string $role) {
     Sanctum::actingAs($actor);
 
     $this->deleteJson('/api/v1/users/' . $user->id)
+        ->assertStatus(403);
+})->with('restrictedRoles');
+
+// Test # it filters users by deleted status
+it('filters users by deleted status', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $activeUser = User::factory()->create();
+    $deletedUser = User::factory()->create();
+    $deletedUser->delete();
+
+    Sanctum::actingAs($admin);
+
+    $response = $this->getJson('/api/v1/users?status=deleted')
+        ->assertOk()
+        ->assertJsonStructure(['data']);
+
+    $ids = collect($response->json('data'))->pluck('id');
+
+    expect($ids)->toContain($deletedUser->id);
+    expect($ids)->not->toContain($activeUser->id);
+    expect($ids)->not->toContain($admin->id);
+});
+
+// Test # it filters users by active status
+it('filters users by active status', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $activeUser = User::factory()->create();
+    $deletedUser = User::factory()->create();
+    $deletedUser->delete();
+
+    Sanctum::actingAs($admin);
+
+    $response = $this->getJson('/api/v1/users?status=active')
+        ->assertOk()
+        ->assertJsonStructure(['data']);
+
+    $ids = collect($response->json('data'))->pluck('id');
+
+    expect($ids)->toContain($admin->id);
+    expect($ids)->toContain($activeUser->id);
+    expect($ids)->not->toContain($deletedUser->id);
+});
+
+// Test # it filters users by all status
+it('filters users by all status', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $activeUser = User::factory()->create();
+    $deletedUser = User::factory()->create();
+    $deletedUser->delete();
+
+    Sanctum::actingAs($admin);
+
+    $response = $this->getJson('/api/v1/users?status=all')
+        ->assertOk()
+        ->assertJsonStructure(['data']);
+
+    $ids = collect($response->json('data'))->pluck('id');
+
+    expect($ids)->toContain($admin->id);
+    expect($ids)->toContain($activeUser->id);
+    expect($ids)->toContain($deletedUser->id);
+});
+
+// Test # it restores a soft deleted user
+it('restores a soft deleted user', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $user = User::factory()->create();
+    $user->delete();
+
+    Sanctum::actingAs($admin);
+
+    $this->patchJson('/api/v1/users/' . $user->id . '/restore')
+        ->assertStatus(200)
+        ->assertJsonPath('message', 'User restored successfully');
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'deleted_at' => null,
+    ]);
+});
+
+// Test # it permanently deletes a soft deleted user
+it('permanently deletes a soft deleted user', function () {
+    $admin = User::factory()->asAdministrador()->create();
+    $user = User::factory()->create();
+    $user->delete();
+
+    Sanctum::actingAs($admin);
+
+    $this->deleteJson('/api/v1/users/' . $user->id . '/force')
+        ->assertStatus(200)
+        ->assertJsonPath('message', 'User permanently deleted successfully');
+
+    $this->assertDatabaseMissing('users', [
+        'id' => $user->id,
+    ]);
+});
+
+// Test # it cannot restore users without permission
+it('cannot restore users without permission', function (string $role) {
+    $actor = User::factory()->create();
+    $actor->assignRole($role);
+
+    $user = User::factory()->create();
+    $user->delete();
+
+    Sanctum::actingAs($actor);
+
+    $this->patchJson('/api/v1/users/' . $user->id . '/restore')
+        ->assertStatus(403);
+})->with('restrictedRoles');
+
+// Test # it cannot permanently delete users without permission
+it('cannot permanently delete users without permission', function (string $role) {
+    $actor = User::factory()->create();
+    $actor->assignRole($role);
+
+    $user = User::factory()->create();
+    $user->delete();
+
+    Sanctum::actingAs($actor);
+
+    $this->deleteJson('/api/v1/users/' . $user->id . '/force')
         ->assertStatus(403);
 })->with('restrictedRoles');
