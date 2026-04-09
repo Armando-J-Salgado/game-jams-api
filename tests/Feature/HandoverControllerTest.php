@@ -18,7 +18,7 @@ beforeEach(function () {
 // ==========================================
 
 #Test: It can get a list of all handovers
-test("It can get a list of all handovers (no filters)", function (string $role) {
+test("It can get a list of all handovers", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -64,7 +64,7 @@ test("It cannot show the list of handovers to invalid users", function (string $
 })->with(['invitado']);
 
 #Test: Participants and Leaders only see their own team's handovers
-test("It isolates handover lists for standard team roles", function (string $role) {
+test("It can isolate handover lists for standard team roles", function (string $role) {
     /** @var \Tests\TestCase $this */
     
     // 1. Create the user and assign a team
@@ -88,7 +88,7 @@ test("It isolates handover lists for standard team roles", function (string $rol
 })->with(['participante', 'lider']);
 
 #Test: No result found when the no data corresponds to the filters
-test("It returns empty list when no handovers match the filters", function (string $role) {
+test("It can return empty list when no handovers match the filters", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -144,8 +144,8 @@ test("It can create a handover", function (string $role) {
     $this->assertDatabaseHas('handovers', ['title' => 'Project Alpha', 'module_id' => $module->id]);
 })->with(['administrador', 'organizador', 'lider', 'participante']);
 
-#Test: Refusal to create a handover with invalid user types
-test("It cannot create a handover if invalid user types", function (string $role) {
+#Test: Refusal to create a handover with unauthorized user roles
+test("It cannot create a handover if unauthorized user roles", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     if ($role !== 'invitado') {
@@ -220,9 +220,23 @@ test("It can show details of an existing handover", function (string $role) {
              ->assertJsonPath('data.id', $handover->id)
              ->assertJsonPath('data.title', $handover->title);
 })->with(['administrador', 'organizador']);
+#Test: Doesn't show details to unauthorized users
+test("It cannot show handover details to unauthorized users", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    if ($role !== 'invitado') {
+        $user->assignRole($role);
+    }
+    $this->actingAs($user, 'sanctum');
 
+    $handover = Handover::factory()->create();
+
+    $response = $this->getJson("api/v1/handovers/{$handover->id}");
+
+    $response->assertStatus(403);
+})->with(['invitado']);
 #Test: No handover found
-test("It returns 404 when showing a non-existent handover", function (string $role) {
+test("It can return a not found error when showing a non-existent handover", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -259,8 +273,8 @@ test("It can update a handover", function (string $role) {
     $this->assertDatabaseHas('handovers', ['id' => $handover->id, 'title' => 'Updated Project Title', 'score' => 95]);
 })->with(['administrador', 'organizador']);
 
-#Test: Refuses to update data with invalid users
-test("It cannot update a handover with invalid users", function (string $role) {
+#Test: Refuses to update data with unauthorized users
+test("It cannot update a handover with unauthorized users", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     if ($role !== 'invitado') {
@@ -296,7 +310,7 @@ test("It cannot update a handover with wrong format data", function (string $rol
 })->with(['administrador']);
 
 #Test: Refuses to update data of a non-existent handover
-test("It returns 404 when updating a non-existent handover", function (string $role) {
+test("It can return a not found error when updating a non-existent handover", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -304,6 +318,77 @@ test("It returns 404 when updating a non-existent handover", function (string $r
 
     $response = $this->putJson('api/v1/handovers/99999', [
         'title' => 'Ghost Handover'
+    ]);
+
+    $response->assertStatus(404);
+})->with(['administrador']);
+
+
+#Test: Successfully partially updates data of a handover with valid users (PATCH)
+test("It can partially update a handover", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user, 'sanctum');
+
+    $handover = Handover::factory()->create();
+
+    $updateData = [
+        'score' => 88
+    ];
+
+    $response = $this->patchJson("api/v1/handovers/{$handover->id}", $updateData);
+
+    $response->assertStatus(200)
+             ->assertJsonPath('data.score', 88);
+    $this->assertDatabaseHas('handovers', ['id' => $handover->id, 'score' => 88]);
+})->with(['administrador', 'organizador']);
+
+#Test: Refuses to partially update data with unauthorized users (PATCH)
+test("It cannot partially update a handover with unauthorized users", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    if ($role !== 'invitado') {
+        $user->assignRole($role);
+    }
+    $this->actingAs($user, 'sanctum');
+
+    $handover = Handover::factory()->create();
+
+    $response = $this->patchJson("api/v1/handovers/{$handover->id}", [
+        'title' => 'Unauthorized Partial Update'
+    ]);
+
+    $response->assertStatus(403);
+})->with(['invitado']);
+
+#Test: Refuses to partially update a handover with wrong format data (PATCH)
+test("It cannot partially update a handover with wrong format data", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user, 'sanctum');
+
+    $handover = Handover::factory()->create();
+
+    $response = $this->patchJson("api/v1/handovers/{$handover->id}", [
+        'score' => 200, // Invalid: over 100
+        'attachment' => 'invalid-url' // Invalid format
+    ]);
+
+    $response->assertStatus(422)
+             ->assertJsonValidationErrors(['score', 'attachment']);
+})->with(['administrador']);
+
+#Test: Refuses to partially update data of a non-existent handover (PATCH)
+test("It can return a not found error when partially updating a non-existent handover", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user, 'sanctum');
+
+    $response = $this->patchJson('api/v1/handovers/99999', [
+        'title' => 'Ghost Handover Update'
     ]);
 
     $response->assertStatus(404);
@@ -329,8 +414,8 @@ test("It can soft delete a handover", function (string $role) {
     $this->assertSoftDeleted('handovers', ['id' => $handover->id]);
 })->with(['administrador']);
 
-#Test: Refuses to soft delete a handover with invalid users
-test("It cannot soft delete a handover with invalid users", function (string $role) {
+#Test: Refuses to soft delete a handover with unauthorized users
+test("It cannot soft delete a handover with unauthorized users", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     if ($role !== 'invitado') {
@@ -346,7 +431,7 @@ test("It cannot soft delete a handover with invalid users", function (string $ro
 })->with(['organizador', 'lider', 'participante', 'invitado']);
 
 #Test: Refusal to soft delete a non-existent handover
-test("It returns 404 when deleting a non-existent handover", function (string $role) {
+test("It can return a not found error when soft deleting a non-existent handover", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);

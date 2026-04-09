@@ -238,6 +238,77 @@ test("It can return a not found error when updating a non-existent category", fu
     $response->assertStatus(404);
 })->with(['administrador']);
 
+#Test: Successfully partially updates data of a category with valid users (PATCH)
+test("It can partially update a category", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user, 'sanctum');
+
+    $category = Category::factory()->create();
+
+    $updateData = [
+        'name' => 'Patch Updated Category Name',
+    ];
+
+    $response = $this->patchJson("api/v1/categories/{$category->id}", $updateData);
+
+    $response->assertStatus(200);
+    $this->assertDatabaseHas('categories', [
+        'id' => $category->id,
+        'name' => 'Patch Updated Category Name'
+    ]);
+})->with(['administrador']);
+
+#Test: Refuses to partially update data with unauthorized users (PATCH)
+test("It cannot partially update a category with unauthorized user roles", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    if ($role !== 'invitado') {
+        $user->assignRole($role);
+    }
+    $this->actingAs($user, 'sanctum');
+
+    $category = Category::factory()->create();
+
+    $response = $this->patchJson("api/v1/categories/{$category->id}", [
+        'name' => 'Unauthorized Partial Update',
+    ]);
+
+    $response->assertStatus(403);
+})->with(['organizador', 'lider', 'participante', 'invitado']);
+
+#Test: Refuses to partially update a category with wrong format data (PATCH)
+test("It cannot partially update a category with wrong format data", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user, 'sanctum');
+
+    $category = Category::factory()->create();
+
+    $response = $this->patchJson("api/v1/categories/{$category->id}", [
+        'name' => str_repeat('A', 256), // Invalid: over max 255 limit
+    ]);
+
+    $response->assertStatus(422)
+             ->assertJsonValidationErrors(['name']);
+})->with(['administrador']);
+
+#Test: Refuses to partially update data of a non-existent category (PATCH)
+test("It can return a not found error when partially updating a non-existent category", function (string $role) {
+    /** @var \Tests\TestCase $this */
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user, 'sanctum');
+
+    $response = $this->patchJson('api/v1/categories/99999', [
+        'name' => 'Ghost Category Update'
+    ]);
+
+    $response->assertStatus(404);
+})->with(['administrador']);
+
 // ==========================================
 // DELETE TESTS
 // ==========================================
