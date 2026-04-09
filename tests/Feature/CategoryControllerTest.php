@@ -18,7 +18,7 @@ beforeEach(function () {
 // ==========================================
 
 #Test: It can get a list of all categories
-test("It can get a list of all categories (no filters)", function (string $role) {
+test("It can get a list of all categories", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -32,8 +32,8 @@ test("It can get a list of all categories (no filters)", function (string $role)
              ->assertJsonCount(3, 'data');
 })->with(['administrador', 'organizador', 'lider', 'participante']);
 
-#Test: It refuses to show the list of categories to invalid users
-test("It cannot show the list of categories to invalid users", function (string $role) {
+#Test: It refuses to show the list of categories to unauthorized users
+test("It cannot show the list of categories to unauthorized users", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     if ($role !== 'invitado') {
@@ -67,8 +67,8 @@ test("It can create a category", function (string $role) {
     $this->assertDatabaseHas('categories', ['name' => 'New Game Category']);
 })->with(['administrador']);
 
-#Test: Refusal to create a category with invalid user types
-test("It cannot create a category with invalid user types", function (string $role) {
+#Test: Refusal to create a category with unauthorized user role
+test("It cannot create a category with unauthorized user role", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     if ($role !== 'invitado') {
@@ -135,8 +135,8 @@ test("It can show details of an existing category", function (string $role) {
              ->assertJsonPath('data.name', $category->name);
 })->with(['administrador', 'organizador', 'lider', 'participante']);
 
-#Test: Doesn't show details to invalid users
-test("It cannot show category details to invalid users", function (string $role) {
+#Test: Doesn't show details to unauthorized users
+test("It cannot show category details to unauthorized users", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     if ($role !== 'invitado') {
@@ -152,7 +152,7 @@ test("It cannot show category details to invalid users", function (string $role)
 })->with(['invitado']);
 
 #Test: No category found
-test("It returns 404 when showing a non-existent category", function (string $role) {
+test("It can return a not found error when attempting to show a non-existent category", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -189,8 +189,8 @@ test("It can update a category", function (string $role) {
     ]);
 })->with(['administrador']);
 
-#Test: Refuses to update data with invalid users
-test("It cannot update a category with invalid users", function (string $role) {
+#Test: Refuses to update data with unauthorized users
+test("It cannot update a category with unauthorized user roles", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     if ($role !== 'invitado') {
@@ -225,7 +225,7 @@ test("It cannot update a category with wrong format data", function (string $rol
 })->with(['administrador']);
 
 #Test: Refuses to update data of a non-existent category
-test("It returns 404 when updating a non-existent category", function (string $role) {
+test("It can return a not found error when updating a non-existent category", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -242,8 +242,8 @@ test("It returns 404 when updating a non-existent category", function (string $r
 // DELETE TESTS
 // ==========================================
 
-#Test: Successful soft deletion of a category
-test("It can soft delete a category", function (string $role) {
+#Test: Successful logical deletion of a category
+test("It can logically delete a category", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -257,8 +257,8 @@ test("It can soft delete a category", function (string $role) {
     $this->assertSoftDeleted('categories', ['id' => $category->id]);
 })->with(['administrador']);
 
-#Test: Refuses to soft delete a category with invalid users
-test("It cannot soft delete a category with invalid users", function (string $role) {
+#Test: Refuses to logically delete a category with unauthorized users
+test("It cannot logically delete a category with unauthorized user roles", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     if ($role !== 'invitado') {
@@ -274,7 +274,7 @@ test("It cannot soft delete a category with invalid users", function (string $ro
 })->with(['organizador', 'lider', 'participante', 'invitado']);
 
 #Test: Refusal to soft delete a non-existent category
-test("It returns 404 when deleting a non-existent category", function (string $role) {
+test("It can return a not found error when deleting a non-existent category", function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
