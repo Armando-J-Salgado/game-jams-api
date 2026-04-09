@@ -27,7 +27,27 @@ class EnrollTeamController extends Controller
      *   "team": {"id": 1, "name": "Team"},
      *   "competition": {"id": 1, "name": "Jam"}
      * }
-     * @response 400 {"message": "The team is already enrolled in this competition."}
+     * @response 400 scenario="Already enrolled" {
+     *   "message": "The team is already enrolled in this competition."
+     * }
+     * @response 400 scenario="Competition full" {
+     *   "message": "The competition has reached its maximum team capacity."
+     * }
+     * @response 400 scenario="Registration not open" {
+     *   "message": "Competition registration has not started yet."
+     * }
+     * @response 400 scenario="Competition closed" {
+     *   "message": "This competition is closed or finished."
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "Team or competition not found."
+     * }
      */
     public function __invoke(Request $request, Team $team, Competition $competition)
     {

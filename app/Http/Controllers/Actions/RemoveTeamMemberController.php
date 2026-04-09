@@ -23,7 +23,23 @@ class RemoveTeamMemberController extends Controller
      * @urlParam user int required The ID of the user to remove. Example: 2
      *
      * @response 200 {
-     *   "message": "Member removed successfully from the team."
+     *   "message": "Member removed successfully from the team.",
+     *   "data": {"id": 1, "name": "Los Codificadores"}
+     * }
+     * @response 400 scenario="Cannot remove leader" {
+     *   "message": "The team leader cannot be removed. You must delete the team or transfer leadership."
+     * }
+     * @response 400 scenario="User not in team" {
+     *   "message": "This user is not a member of the specified team."
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "Team or user not found."
      * }
      */
     public function __invoke(Request $request, Team $team, User $user)

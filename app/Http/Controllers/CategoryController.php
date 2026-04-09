@@ -134,21 +134,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified category.
-     *
-     * @group Categories
-     * @bodyParam name string The name of the category. Example: 3D Game
-     * @response {
-     *  "id": 1,
-     *  "name": "3D Game",
-     *  "created_at": "...",
-     *  "updated_at": "..."
-     * }
-     */
-    /**
      * Update Category
      *
-     * Update the specified category in storage.
+     * Update the specified category in storage. Applies to both PUT and PATCH requests.
      *
      * @group Categories
      * @authenticated
@@ -167,7 +155,7 @@ class CategoryController extends Controller
      *  "message": "This action is unauthorized."
      * }
      * @response 404 {
-     *  "message": "No query results for model [App\\Models\\Category]."
+     *  "message": "There are no matches for the searched category"
      * }
      * @response 422 {
      *  "message": "The given data was invalid.",

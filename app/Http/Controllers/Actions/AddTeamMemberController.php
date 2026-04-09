@@ -29,7 +29,24 @@ class AddTeamMemberController extends Controller
      *     "name": "Los Codificadores"
      *   }
      * }
-     * @response 400 {"message": "This user is already a member of another team."}
+     * @response 400 scenario="User already in this team" {
+     *   "message": "This user is already in your team."
+     * }
+     * @response 400 scenario="User in another team" {
+     *   "message": "This user is already a member of another team."
+     * }
+     * @response 400 scenario="Team at capacity" {
+     *   "message": "The team has reached its maximum capacity."
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "Team or user not found."
+     * }
      */
     public function __invoke(Request $request, Team $team, User $user)
     {

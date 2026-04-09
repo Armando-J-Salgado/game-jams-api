@@ -218,33 +218,9 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user.
-     *
-     * @group Users
-     * @bodyParam name string The first name of the user. Example: John
-     * @bodyParam lastname string The last name of the user. Example: Doe
-     * @bodyParam email string The email of the user. Example: john@example.com
-     * @bodyParam username string The username of the user. Example: johndoe
-     * @bodyParam password string The password of the user. Example: secret123
-     * @bodyParam dui string The DUI of the user. Example: 01234567-8
-     * @bodyParam role string The role of the user. Example: participante
-     * @response {
-     *  "data": {
-     *    "id": 1,
-     *    "name": "John",
-     *    "lastname": "Doe",
-     *    "email": "john@example.com",
-     *    "username": "johndoe",
-     *    "dui": "01234567-8",
-     *    "role": "participante",
-     *    "team_id": null
-     *  }
-     * }
-     */
-    /**
      * Update User
      *
-     * Update the specified user in storage.
+     * Update the specified user in storage. Applies to both PUT and PATCH requests.
      *
      * @group Users
      * @authenticated
@@ -252,13 +228,22 @@ class UserController extends Controller
      * @urlParam user int required The ID of the user. Example: 1
      * @bodyParam name string nullable The name of the user. Example: Juan Carlos
      * @bodyParam lastname string nullable The lastname of the user. Example: Perez
+     * @bodyParam email string nullable The email of the user. Example: juan@example.com
      * @bodyParam username string nullable The username of the user. Example: juanc
      * @bodyParam password string nullable The new password (min 8 chars). Example: newpassword
-     * @bodyParam role string nullable The role to assign. Example: lider
+     * @bodyParam dui string nullable The DUI of the user. Example: 01234567-8
+     * @bodyParam role string nullable The role to assign (administrador, organizador, lider, participante). Example: lider
      *
      * @response 200 {
-     *   "id": 1,
-     *   "name": "Juan Carlos"
+     *   "data": {
+     *     "id": 1,
+     *     "name": "Juan Carlos",
+     *     "lastname": "Perez",
+     *     "email": "juan@example.com",
+     *     "username": "juanc",
+     *     "dui": "01234567-8",
+     *     "team_id": null
+     *   }
      * }
      * @response 401 {
      *   "message": "Unauthenticated."
@@ -267,7 +252,7 @@ class UserController extends Controller
      *   "message": "This action is unauthorized."
      * }
      * @response 404 {
-     *   "message": "No query results for model [App\\Models\\User]."
+     *   "message": "There are no matches for the searched user"
      * }
      * @response 422 {
      *   "message": "The given data was invalid.",
@@ -329,7 +314,24 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of soft deleted resources.
+     * List Deleted Users
+     *
+     * Display a listing of soft-deleted users.
+     *
+     * @group Users
+     * @authenticated
+     *
+     * @response 200 {
+     *   "data": [
+     *     {"id": 1, "name": "Juan", "email": "juan@example.com"}
+     *   ]
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
      */
     public function deleted()
     {
@@ -340,7 +342,28 @@ class UserController extends Controller
     }
 
     /**
-     * Restore a soft deleted resource.
+     * Restore User
+     *
+     * Restore a soft-deleted user by ID.
+     *
+     * @group Users
+     * @authenticated
+     *
+     * @urlParam id int required The ID of the deleted user. Example: 1
+     *
+     * @response 200 {
+     *   "message": "User restored successfully",
+     *   "data": {"id": 1, "name": "Juan"}
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "There are no matches for the searched user"
+     * }
      */
     public function restore(string $id)
     {
@@ -360,7 +383,27 @@ class UserController extends Controller
     }
 
     /**
-     * Permanently delete a soft deleted resource.
+     * Force Delete User
+     *
+     * Permanently delete a soft-deleted user by ID.
+     *
+     * @group Users
+     * @authenticated
+     *
+     * @urlParam id int required The ID of the deleted user. Example: 1
+     *
+     * @response 200 {
+     *   "message": "User permanently deleted successfully"
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "There are no matches for the searched user"
+     * }
      */
     public function forceDelete(string $id)
     {

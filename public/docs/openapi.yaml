@@ -14,6 +14,9 @@ tags:
     name: Categories
     description: ''
   -
+    name: Competitions
+    description: ''
+  -
     name: Endpoints
     description: ''
   -
@@ -21,6 +24,9 @@ tags:
     description: ''
   -
     name: Handovers
+    description: ''
+  -
+    name: Modules
     description: ''
   -
     name: 'Team Actions'
@@ -131,6 +137,18 @@ paths:
                   message:
                     type: string
                     example: 'Logout successful'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Authentication
   /api/v1/auth/profile:
@@ -164,6 +182,18 @@ paths:
                       email:
                         type: string
                         example: admin@example.com
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Authentication
   /api/v1/categories:
@@ -200,6 +230,30 @@ paths:
                         name:
                           type: string
                           example: 'Game Jam 2026'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
       tags:
         - Categories
     post:
@@ -224,6 +278,54 @@ paths:
                   name:
                     type: string
                     example: Art
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    name:
+                      - 'The name field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name field is required.'
+                        items:
+                          type: string
       tags:
         - Categories
       requestBody:
@@ -262,12 +364,48 @@ paths:
                   name:
                     type: string
                     example: Art
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Category].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Category].'
       tags:
         - Categories
     put:
       summary: 'Update Category'
       operationId: updateCategory
-      description: 'Update the specified category in storage.'
+      description: 'Update the specified category in storage. Applies to both PUT and PATCH requests.'
       parameters: []
       responses:
         200:
@@ -286,6 +424,163 @@ paths:
                   name:
                     type: string
                     example: '2D Art'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched category'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched category'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    name:
+                      - 'The name field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name field is required.'
+                        items:
+                          type: string
+      tags:
+        - Categories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The new name for the category.'
+                  example: '2D Art'
+              required:
+                - name
+    patch:
+      summary: 'Update Category'
+      operationId: updateCategory
+      description: 'Update the specified category in storage. Applies to both PUT and PATCH requests.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: '2D Art'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: '2D Art'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched category'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched category'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    name:
+                      - 'The name field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name field is required.'
+                        items:
+                          type: string
       tags:
         - Categories
       requestBody:
@@ -319,6 +614,42 @@ paths:
                   message:
                     type: string
                     example: 'Category deleted successfully'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Category].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Category].'
       tags:
         - Categories
     parameters:
@@ -339,14 +670,222 @@ paths:
         schema:
           type: integer
   /api/v1/competitions:
-    post:
-      summary: 'Store a newly created resource in storage.'
-      operationId: storeANewlyCreatedResourceInStorage
-      description: ''
-      parameters: []
-      responses: {  }
+    get:
+      summary: 'Index Competitions'
+      operationId: indexCompetitions
+      description: 'Retrieve a collection of competitions. Filter by name, date, finished and trashed competitions.'
+      parameters:
+        -
+          name: name
+          in: query
+          description: 'Retrieve competitions that include the value on their name'
+          schema:
+            type: string
+        -
+          name: start_date
+          in: query
+          description: 'Retrieve competitions that start on that date or after'
+          schema:
+            type: string
+            format: date
+        -
+          name: end_date
+          in: query
+          description: 'Retrieve competitions that end before or on that date'
+          schema:
+            type: string
+            format: date
+        -
+          name: is_finished
+          in: query
+          description: 'Retrieve active or finished competitions'
+          schema:
+            type: boolean
+        -
+          name: is_trashed
+          in: query
+          description: 'Retrieve stored or soft deleted models'
+          schema:
+            type: boolean
+        -
+          name: per_page
+          in: query
+          description: 'Amount of competitions to show per page (Default 15)'
+          schema:
+            type: integer
+        -
+          name: page
+          in: query
+          description: 'Page to show'
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Competition'
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      -
+                        id: 2
+                        name: 'Laborum voluptatibus quaerat voluptas soluta.'
+                        description: 'Impedit aliquam nisi maxime ducimus.'
+                        prize: 'Ipsam placeat nostrum enim molestiae.'
+                        tools: 'Officiis est odio repudiandae inventore.'
+                        maximum_number_of_teams: 44
+                        total_number_of_teams: 0
+                        registration_start_date: '2026-04-08'
+                        registration_closing_date: '2026-04-22'
+                        competition_is_finished: false
+                        category: 'aspernatur perspiciatis'
+                        admin: El
+                        teams: []
+                        modules:
+                          - 'Fase 1: Planteamiento y GDD'
+                          - 'Fase 2: Prototipo Jugable'
+                          - 'Fase 3: Entrega Final'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
       tags:
-        - Endpoints
+        - Competitions
+    post:
+      summary: 'Store Competition'
+      operationId: storeCompetition
+      description: 'Create a brand new competition.'
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  competition:
+                    $ref: '#/components/schemas/Competition'
+              examples:
+                Example 1:
+                  value:
+                    message: 'Competition created successfully'
+                    competition:
+                      id: 1
+                      name: 'Game JAM 2099'
+                      description: 'Utiliza tecnologÃ­as de desarrollo de videojuegos...'
+                      prize: 'Premio en efectivo mÃ¡s diploma de participaciÃ³n'
+                      tools: 'UsarÃ¡s Unity y desplegarÃ¡s en Games-Dev.com'
+                      maximum_number_of_teams: 1
+                      total_number_of_teams: 0
+                      registration_start_date: '2022-10-12'
+                      registration_closing_date: '2022-11-10'
+                      competition_is_finished: true
+                      category: 'Unity Amateur'
+                      admin: 'Robert Downey Jr'
+                      teams: []
+                      modules: []
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+        422:
+          description: 'Unprocessable Content'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        items:
+                          type: string
+                      description:
+                        type: array
+                        items:
+                          type: string
+                      prize_information:
+                        type: array
+                        items:
+                          type: string
+                      tools_information:
+                        type: array
+                        items:
+                          type: string
+                      max_teams:
+                        type: array
+                        items:
+                          type: string
+                      start_date:
+                        type: array
+                        items:
+                          type: string
+                      end_date:
+                        type: array
+                        items:
+                          type: string
+                      category_id:
+                        type: array
+                        items:
+                          type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'The name field is required. (and 7 more errors)'
+                    errors:
+                      name:
+                        - 'The name field is required.'
+                      description:
+                        - 'The description field is required.'
+                      prize_information:
+                        - 'The prize information field is required.'
+                      tools_information:
+                        - 'The tools information field is required.'
+                      max_teams:
+                        - 'The max teams field must be greater than 0.'
+                      start_date:
+                        - 'The start date field is required.'
+                      end_date:
+                        - 'The end date field is required.'
+                      category_id:
+                        - 'The selected category id is invalid.'
+      tags:
+        - Competitions
       requestBody:
         required: true
         content:
@@ -356,187 +895,227 @@ paths:
               properties:
                 name:
                   type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: b
+                  minLength: 1
+                  maxLength: 255
                 description:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 500 characters.'
-                  example: 'Et animi quos velit et fugiat.'
+                  minLength: 1
+                  maxLength: 500
                 prize_information:
                   type: string
-                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
-                  example: dljnikhwaykcmyuw
+                  minLength: 1
+                  maxLength: 500
                 tools_information:
                   type: string
-                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
-                  example: pwlvqwrsitcpscql
+                  minLength: 1
+                  maxLength: 500
                 max_teams:
                   type: integer
-                  description: ''
-                  example: 16
+                  minimum: 1
                 start_date:
                   type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
+                  format: date
                 end_date:
                   type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>. Must be a date after <code>start_date</code>.'
-                  example: '2052-05-02'
+                  format: date
                 category_id:
-                  type: string
-                  description: 'The <code>id</code> of an existing record in the categories table.'
-                  example: architecto
+                  type: integer
+                  minimum: 1
               required:
                 - name
                 - description
                 - prize_information
                 - tools_information
+                - max_teams
                 - start_date
                 - end_date
                 - category_id
-      security: []
-    get:
-      summary: 'Display a listing of the resource.'
-      operationId: displayAListingOfTheResource
-      description: ''
-      parameters: []
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: Unauthenticated.
-                properties:
-                  message:
-                    type: string
-                    example: Unauthenticated.
-      tags:
-        - Endpoints
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: ''
-                  example: architecto
-                is_finished:
-                  type: boolean
-                  description: ''
-                  example: true
-                start_date:
-                  type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-                end_date:
-                  type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-                per_page:
-                  type: integer
-                  description: ''
-                  example: 16
-                page:
-                  type: integer
-                  description: ''
-                  example: 16
-                is_trashed:
-                  type: boolean
-                  description: ''
-                  example: false
-      security: []
   '/api/v1/competitions/{competition_id}':
     get:
-      summary: 'Display the specified resource.'
-      operationId: displayTheSpecifiedResource
-      description: ''
+      summary: 'Show Competition'
+      operationId: showCompetition
+      description: 'Retrieve a specific competition with its details.'
       parameters: []
       responses:
-        401:
-          description: ''
+        200:
+          description: OK
           content:
             application/json:
               schema:
                 type: object
-                example:
-                  message: Unauthenticated.
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Competition'
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: 1
+                      name: 'Competencia 1'
+                      description: 'DescripciÃ³n 1'
+                      prize: 'Premio 1'
+                      tools: 'Herramientas a utilizar'
+                      maximum_number_of_teams: 10
+                      total_number_of_teams: 1
+                      registration_start_date: '2019-08-24'
+                      registration_closing_date: '2019-08-24'
+                      competition_is_finished: true
+                      category: 'Nuevo Experto'
+                      admin: 'Don Ramon'
+                      teams:
+                        - 'Cheetcode 12'
+                      modules:
+                        - 'DiseÃ±o de personajes'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
                 properties:
                   message:
                     type: string
-                    example: Unauthenticated.
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        404:
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'There are no matches for the searched competition'
       tags:
-        - Endpoints
-      security: []
-    patch:
-      summary: 'Update the specified resource in storage.'
-      operationId: updateTheSpecifiedResourceInStorage
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: b
-                description:
-                  type: string
-                  description: 'Must be at least 1 character. Must not be greater than 500 characters.'
-                  example: 'Et animi quos velit et fugiat.'
-                prize_information:
-                  type: string
-                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
-                  example: dljnikhwaykcmyuw
-                tools_information:
-                  type: string
-                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
-                  example: pwlvqwrsitcpscql
-                total_teams:
-                  type: integer
-                  description: ''
-                  example: 16
-                start_date:
-                  type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-                end_date:
-                  type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-                category_id:
-                  type: string
-                  description: 'The <code>id</code> of an existing record in the categories table.'
-                  example: null
-                max_teams:
-                  type: integer
-                  description: ''
-                  example: 16
-                is_finished:
-                  type: boolean
-                  description: ''
-                  example: false
-      security: []
+        - Competitions
     put:
-      summary: 'Update the specified resource in storage.'
-      operationId: updateTheSpecifiedResourceInStorage
-      description: ''
+      summary: 'Update Competition'
+      operationId: updateCompetition
+      description: "Update all the editable competition's attributes."
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Competition'
+              examples:
+                Example 1:
+                  value:
+                    message: 'Competition updated successfully'
+                    data:
+                      id: 1
+                      name: 'Nuevo nombre'
+                      description: 'Nueva DescripciÃ³n'
+                      prize: 'Nuevo Premio'
+                      tools: 'Nuevas herramientas'
+                      maximum_number_of_teams: 12
+                      total_number_of_teams: 1
+                      registration_start_date: '2019-08-24'
+                      registration_closing_date: '2019-08-24'
+                      competition_is_finished: true
+                      category: 'Nueva categorÃ­a'
+                      admin: 'El admin'
+                      teams:
+                        - 'LoL Bits 3'
+                      modules:
+                        - 'DiseÃ±o de banda sonora'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+        404:
+          description: 'Not Found'
+        422:
+          description: 'Unprocessable Content'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        items:
+                          type: string
+                      description:
+                        type: array
+                        items:
+                          type: string
+                      prize_information:
+                        type: array
+                        items:
+                          type: string
+                      tools_information:
+                        type: array
+                        items:
+                          type: string
+                      total_teams:
+                        type: array
+                        items:
+                          type: string
+                      start_date:
+                        type: array
+                        items:
+                          type: string
+                      end_date:
+                        type: array
+                        items:
+                          type: string
+                      category_id:
+                        type: array
+                        items:
+                          type: string
+                      max_teams:
+                        type: array
+                        items:
+                          type: string
+                      is_finished:
+                        type: array
+                        items:
+                          type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'No se puede actualizar'
+                    errors:
+                      name:
+                        - 'No puedes dejar el nombre vacÃ­o'
+                      description:
+                        - 'No puedes dejar la descripciÃ³n vacÃ­a'
+                      start_date:
+                        - 'Fecha invÃ¡lida'
+                      end_date:
+                        - 'No puede ir antes de la fecha de inicio'
       tags:
-        - Endpoints
+        - Competitions
       requestBody:
         required: false
         content:
@@ -546,91 +1125,487 @@ paths:
               properties:
                 name:
                   type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: b
+                  minLength: 1
+                  maxLength: 255
                 description:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 500 characters.'
-                  example: 'Et animi quos velit et fugiat.'
+                  minLength: 1
+                  maxLength: 500
                 prize_information:
                   type: string
-                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
-                  example: dljnikhwaykcmyuw
+                  minLength: 1
+                  maxLength: 500
                 tools_information:
                   type: string
-                  description: 'Must not be greater than 500 characters. Must be at least 1 character.'
-                  example: pwlvqwrsitcpscql
-                total_teams:
-                  type: integer
-                  description: ''
-                  example: 16
-                start_date:
-                  type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-                end_date:
-                  type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-                category_id:
-                  type: string
-                  description: 'The <code>id</code> of an existing record in the categories table.'
-                  example: null
+                  minLength: 1
+                  maxLength: 500
                 max_teams:
                   type: integer
-                  description: ''
-                  example: 16
+                  minimum: 1
+                total_teams:
+                  type: integer
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+                category_id:
+                  type: integer
+                  minimum: 1
                 is_finished:
                   type: boolean
-                  description: ''
-                  example: true
-      security: []
-    delete:
-      summary: 'Remove the specified resource from storage.'
-      operationId: removeTheSpecifiedResourceFromStorage
-      description: ''
+    patch:
+      summary: 'Update Competition (Partial)'
+      operationId: patchCompetition
+      description: "Update one or more of the competition's attributes."
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Competition'
+              examples:
+                Example 1:
+                  value:
+                    message: 'Competition updated successfully'
+                    data:
+                      id: 1
+                      name: 'Nuevo nombre'
+                      description: 'DescripciÃ³n'
+                      prize: 'Premio'
+                      tools: 'Herramientas usadas'
+                      maximum_number_of_teams: 10
+                      total_number_of_teams: 0
+                      registration_start_date: '2019-08-24'
+                      registration_closing_date: '2019-08-24'
+                      competition_is_finished: true
+                      category: 'Unity'
+                      admin: 'El admin'
+                      teams:
+                        - Galaxy5
+                      modules:
+                        - 'DiseÃ±o de un platformer'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+        404:
+          description: 'Not Found'
+        422:
+          description: 'Unprocessable Content'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        items:
+                          type: string
+                      description:
+                        type: array
+                        items:
+                          type: string
+                      prize_information:
+                        type: array
+                        items:
+                          type: string
+                      tools_information:
+                        type: array
+                        items:
+                          type: string
+                      total_teams:
+                        type: array
+                        items:
+                          type: string
+                      start_date:
+                        type: array
+                        items:
+                          type: string
+                      end_date:
+                        type: array
+                        items:
+                          type: string
+                      category_id:
+                        type: array
+                        items:
+                          type: string
+                      max_teams:
+                        type: array
+                        items:
+                          type: string
+                      is_finished:
+                        type: array
+                        items:
+                          type: string
       tags:
-        - Endpoints
-      security: []
+        - Competitions
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                description:
+                  type: string
+                  minLength: 1
+                  maxLength: 500
+                prize_information:
+                  type: string
+                  minLength: 1
+                  maxLength: 500
+                tools_information:
+                  type: string
+                  minLength: 1
+                  maxLength: 500
+                max_teams:
+                  type: integer
+                  minimum: 1
+                total_teams:
+                  type: integer
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+                category_id:
+                  type: integer
+                  minimum: 1
+                is_finished:
+                  type: boolean
+    delete:
+      summary: 'Destroy Competition'
+      operationId: destroyCompetition
+      description: 'Soft delete a competition.'
+      parameters: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'Competencia eliminada exitosamente'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+        404:
+          description: 'Not Found'
+      tags:
+        - Competitions
     parameters:
       -
         in: path
         name: competition_id
-        description: 'The ID of the competition.'
+        description: 'Identificador Ãºnico de la competencia'
         example: 1
         required: true
         schema:
           type: integer
   '/api/v1/competitions/{id}/restore':
     post:
-      summary: 'Restore a soft deleted model'
-      operationId: restoreASoftDeletedModel
-      description: ''
+      summary: 'Restore Competition'
+      operationId: restoreCompetition
+      description: 'Restore a soft deleted competition.'
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'La competencia ha sido restaurada correctamente'
+        400:
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'La competencia que intentas restaurar no ha sido eliminada o no existe'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthorized
+        404:
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'El id es invÃ¡lido'
       tags:
-        - Endpoints
-      security: []
+        - Competitions
     parameters:
       -
         in: path
         name: id
-        description: 'The ID of the competition.'
+        description: 'Unique identifier of the competition to restore'
         example: 1
         required: true
         schema:
-          type: integer
+          type: string
   /api/v1/modules:
-    post:
-      summary: 'Store a newly created resource in storage.'
-      operationId: storeANewlyCreatedResourceInStorage
-      description: ''
-      parameters: []
-      responses: {  }
+    get:
+      summary: 'Index Modules'
+      operationId: indexModules
+      description: 'Retrieve a collection of modules. Filter by title, due date, competition and soft deleted instances.'
+      parameters:
+        -
+          name: title
+          in: query
+          description: 'Retrieve modules whose title contains the value given'
+          schema:
+            type: string
+        -
+          name: due_date
+          in: query
+          description: 'Retrieve modules with a due date equal or before to the value given'
+          schema:
+            type: string
+            format: date
+        -
+          name: competition_id
+          in: query
+          description: 'Retrieve modules that belong to the competition with the given id'
+          schema:
+            type: integer
+        -
+          name: is_trashed
+          in: query
+          description: 'Retrieve instances that have or have not been soft deleted'
+          schema:
+            type: boolean
+        -
+          name: page
+          in: query
+          description: 'Retrieve the modules of a given page number (default 1)'
+          schema:
+            type: integer
+        -
+          name: per_page
+          in: query
+          description: 'The amount of modules to retrieve per page (default 15)'
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Module'
+              examples:
+                Example 1:
+                  value:
+                    -
+                      title: 'CreaciÃ³n de fÃ­sicas'
+                      description: 'Aprende a usar fÃ­sicas de nodos en unity'
+                      attachments: 'URL:HAMTIMER.COM'
+                      due_date: '2019-08-24'
+                      competition:
+                        id: 1
+                        name: 'El rayo game jam in unity'
+                      created_at: '2019-08-24T14:15:22Z'
+                      updated_at: '2019-08-24T14:15:22Z'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
       tags:
-        - Endpoints
+        - Modules
+    post:
+      summary: 'Store Module'
+      operationId: storeModule
+      description: 'Store a new module.'
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  module:
+                    $ref: '#/components/schemas/Module'
+              examples:
+                Example 1:
+                  value:
+                    message: 'MÃ³dulo creado exitosamente'
+                    module:
+                      title: 'Nuevo modulo de aprendizaje'
+                      description: 'Emprende con videojuegos'
+                      attachments: 'url: yatuve.com'
+                      due_date: '2019-08-24'
+                      competition:
+                        id: 1
+                        name: 'Game Gold Jam'
+                      created_at: '2019-08-24T14:15:22Z'
+                      updated_at: '2019-08-24T14:15:22Z'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+        422:
+          description: 'Unprocessable Content'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                      description:
+                        type: array
+                        items:
+                          type: string
+                      attachments:
+                        type: array
+                        items:
+                          type: string
+                      due_date:
+                        type: array
+                        items:
+                          type: string
+                      competition_id:
+                        type: array
+                        items:
+                          type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'The title field is required. (and 5 more errors)'
+                    errors:
+                      title:
+                        - 'The title field is required.'
+                      description:
+                        - 'The description field is required.'
+                      due_date:
+                        - 'The due date field is required.'
+                      competition_id:
+                        - 'The selected competition id is invalid.'
+      tags:
+        - Modules
       requestBody:
         required: true
         content:
@@ -640,112 +1615,157 @@ paths:
               properties:
                 title:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
-                  example: b
+                  minLength: 1
+                  maxLength: 255
                 description:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 300 characters.'
-                  example: 'Et animi quos velit et fugiat.'
+                  minLength: 1
+                  maxLength: 300
                 attachments:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
-                  example: d
+                  minLength: 1
+                  maxLength: 255
                 due_date:
                   type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
+                  format: date
                 competition_id:
                   type: integer
-                  description: 'The <code>id</code> of an existing record in the competitions table.'
-                  example: 16
               required:
                 - title
                 - description
                 - due_date
                 - competition_id
-      security: []
-    get:
-      summary: 'Display a listing of the resource.'
-      operationId: displayAListingOfTheResource
-      description: ''
-      parameters: []
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: Unauthenticated.
-                properties:
-                  message:
-                    type: string
-                    example: Unauthenticated.
-      tags:
-        - Endpoints
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  description: ''
-                  example: architecto
-                due_date:
-                  type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-                competition_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the competitions table.'
-                  example: 16
-                is_trashed:
-                  type: boolean
-                  description: ''
-                  example: false
-                per_page:
-                  type: integer
-                  description: ''
-                  example: 16
-                page:
-                  type: integer
-                  description: ''
-                  example: 16
-      security: []
   '/api/v1/modules/{module_id}':
     get:
-      summary: 'Display the specified resource.'
-      operationId: displayTheSpecifiedResource
-      description: ''
+      summary: 'Show Module'
+      operationId: showModule
+      description: 'Retrieve a specific module with its details.'
       parameters: []
       responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+              examples:
+                Example 1:
+                  value:
+                    title: 'Ejemplo de mÃ³dulo prÃ¡ctico'
+                    description: 'Se despliega un juego en consola'
+                    attachments: 'url: yappp.wow.com'
+                    due_date: '2019-08-24'
+                    competition:
+                      id: 1
+                      name: 'Freaky Friday Game Jam'
+                    created_at: '2019-08-24T14:15:22Z'
+                    updated_at: '2019-08-24T14:15:22Z'
         401:
-          description: ''
+          description: Unauthorized
           content:
             application/json:
               schema:
                 type: object
-                example:
-                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: Unauthenticated.
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        404:
+          description: 'Not Found'
       tags:
-        - Endpoints
-      security: []
+        - Modules
     put:
-      summary: 'Update the specified resource in storage.'
-      operationId: updateTheSpecifiedResourceInStorage
-      description: ''
+      summary: 'Update Module'
+      operationId: updateModule
+      description: 'Update all the editable attributes of the module.'
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  '0':
+                    $ref: '#/components/schemas/Module'
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    '0':
+                      title: 'MÃ³dulo actualizado'
+                      description: 'DescripciÃ³n actualizada'
+                      attachments: 'URLS actualizados'
+                      due_date: '2019-08-24'
+                      competition:
+                        id: 1
+                        name: 'Game Jam 2025'
+                      created_at: '2019-08-24T14:15:22Z'
+                      updated_at: '2019-08-24T14:15:22Z'
+                    message: 'Actualizado correctamente'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+        404:
+          description: 'Not Found'
+        422:
+          description: 'Unprocessable Content'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                      description:
+                        type: array
+                        items:
+                          type: string
+                      attachments:
+                        type: array
+                        items:
+                          type: string
+                      due_date:
+                        type: array
+                        items:
+                          type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'No se pudo actualizar'
+                    errors:
+                      title:
+                        - 'No puedes dejar el tÃ­tulo vacÃ­o'
+                      description:
+                        - 'No puedes dejar la descripciÃ³n vacÃ­a'
+                      due_date:
+                        - 'No puedes colocar una fecha fuera del rango de la competencia'
       tags:
-        - Endpoints
+        - Modules
       requestBody:
         required: false
         content:
@@ -755,29 +1775,97 @@ paths:
               properties:
                 title:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
-                  example: b
+                  minLength: 1
+                  maxLength: 255
                 description:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 300 characters.'
-                  example: 'Et animi quos velit et fugiat.'
+                  minLength: 1
+                  maxLength: 300
                 attachments:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
-                  example: d
+                  minLength: 1
+                  maxLength: 255
                 due_date:
                   type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-      security: []
+                  format: date
     patch:
-      summary: 'Update the specified resource in storage.'
-      operationId: updateTheSpecifiedResourceInStorage
-      description: ''
+      summary: 'Update Module (Partial)'
+      operationId: patchModule
+      description: 'Update one or more editable attributes of the module.'
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  '0':
+                    $ref: '#/components/schemas/Module'
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    '0':
+                      title: 'MÃ³dulos de videojuegos con AI'
+                      description: 'Nueva descripciÃ³n'
+                      attachments: 'URL: aprendofacil.com'
+                      due_date: '2019-08-24'
+                      competition:
+                        id: 1
+                        name: 'La mega Game Jam'
+                      created_at: '2019-08-24T14:15:22Z'
+                      updated_at: '2019-08-24T14:15:22Z'
+                    message: 'ActualizaciÃ³n correcta'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+        404:
+          description: 'Not Found'
+        422:
+          description: 'Unprocessable Content'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                      description:
+                        type: array
+                        items:
+                          type: string
+                      attachments:
+                        type: array
+                        items:
+                          type: string
+                      due_date:
+                        type: array
+                        items:
+                          type: string
       tags:
-        - Endpoints
+        - Modules
       requestBody:
         required: false
         content:
@@ -787,59 +1875,150 @@ paths:
               properties:
                 title:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
-                  example: b
+                  minLength: 1
+                  maxLength: 255
                 description:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 300 characters.'
-                  example: 'Et animi quos velit et fugiat.'
+                  minLength: 1
+                  maxLength: 300
                 attachments:
                   type: string
-                  description: 'Must be at least 1 character. Must not be greater than 255 characters.'
-                  example: d
+                  minLength: 1
+                  maxLength: 255
                 due_date:
                   type: string
-                  description: 'Must be a valid date in the format <code>Y-m-d</code>.'
-                  example: '2026-04-09'
-      security: []
+                  format: date
     delete:
-      summary: 'Remove the specified resource from storage.'
-      operationId: removeTheSpecifiedResourceFromStorage
-      description: ''
+      summary: 'Destroy Module'
+      operationId: destroyModule
+      description: 'Soft delete a module instance.'
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'La instancia fue eliminada correctamente'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+        404:
+          description: 'Not Found'
       tags:
-        - Endpoints
-      security: []
+        - Modules
     parameters:
       -
         in: path
         name: module_id
-        description: 'The ID of the module.'
+        description: 'Identificador Ãºnico del mÃ³dulo'
         example: 1
         required: true
         schema:
           type: integer
   '/api/v1/modules/{id}/restore':
     post:
-      summary: 'Restore a soft deleted model'
-      operationId: restoreASoftDeletedModel
-      description: ''
+      summary: 'Restore Module'
+      operationId: restoreModule
+      description: 'Restore a soft deleted module.'
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'El mÃ³dulo fue restaurado con Ã©xito'
+        400:
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'No puedes restaurar algo que no ha sido eliminado o no existe'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthenticated
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Unauthorized
+        404:
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: 'El id brindado no es vÃ¡lido'
       tags:
-        - Endpoints
-      security: []
+        - Modules
     parameters:
       -
         in: path
         name: id
-        description: 'The ID of the module.'
+        description: 'The ID of the module'
         example: 1
         required: true
         schema:
-          type: integer
-  '/api/v1/handovers/{handover_id}':
+          type: string
+  '/api/v1/handovers/{handover_id}/submit':
     patch:
       summary: 'Submit Handover'
       operationId: submitHandover
@@ -857,6 +2036,7 @@ paths:
                   data:
                     id: 1
                     attachment: 'https://github.com/my-repo'
+                    is_delivered: true
                 properties:
                   message:
                     type: string
@@ -870,6 +2050,69 @@ paths:
                       attachment:
                         type: string
                         example: 'https://github.com/my-repo'
+                      is_delivered:
+                        type: boolean
+                        example: true
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Handover not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Handover not found.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    attachment:
+                      - 'The attachment field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      attachment:
+                        type: array
+                        example:
+                          - 'The attachment field is required.'
+                        items:
+                          type: string
       tags:
         - 'Handover Actions'
       requestBody:
@@ -885,111 +2128,6 @@ paths:
                   example: 'https://github.com/my-repo'
               required:
                 - attachment
-    get:
-      summary: 'Get Handover'
-      operationId: getHandover
-      description: 'Display the specified handover.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  id: 1
-                  title: 'Entrega Final'
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  title:
-                    type: string
-                    example: 'Entrega Final'
-      tags:
-        - Handovers
-    put:
-      summary: 'Update Handover'
-      operationId: updateHandover
-      description: 'Update the specified handover in storage.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  id: 1
-                  title: 'Entrega Corregida'
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  title:
-                    type: string
-                    example: 'Entrega Corregida'
-      tags:
-        - Handovers
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  description: 'The title of the handover.'
-                  example: 'Entrega Corregida'
-                attachment:
-                  type: string
-                  description: 'nullable URL or link to the attachment.'
-                  example: 'https://github.com/my-game-v2'
-                is_delivered:
-                  type: boolean
-                  description: 'sometimes Whether the handover is delivered.'
-                  example: true
-                module_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the modules table.'
-                  example: 16
-                team_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the teams table.'
-                  example: 16
-                score:
-                  type: integer
-                  description: 'nullable Score of the handover (0-100).'
-                  example: 100
-                date_of_submission:
-                  type: string
-                  description: 'Must be a valid date. Must be a date before or equal to <code>today</code>.'
-                  example: '2022-05-03'
-              required:
-                - title
-    delete:
-      summary: 'Delete Handover'
-      operationId: deleteHandover
-      description: 'Remove the specified handover from storage.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: 'Handover deleted successfully'
-                properties:
-                  message:
-                    type: string
-                    example: 'Handover deleted successfully'
-      tags:
-        - Handovers
     parameters:
       -
         in: path
@@ -1076,6 +2214,30 @@ paths:
                         is_delivered:
                           type: boolean
                           example: true
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
         404:
           description: ''
           content:
@@ -1088,6 +2250,30 @@ paths:
                   message:
                     type: string
                     example: 'The specified team is not enrolled in this competition.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    team_id:
+                      - 'The selected team_id is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      team_id:
+                        type: array
+                        example:
+                          - 'The selected team_id is invalid.'
+                        items:
+                          type: string
       tags:
         - Handovers
       requestBody:
@@ -1135,6 +2321,54 @@ paths:
                   is_delivered:
                     type: boolean
                     example: true
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    title:
+                      - 'The title field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        example:
+                          - 'The title field is required.'
+                        items:
+                          type: string
       tags:
         - Handovers
       requestBody:
@@ -1179,6 +2413,382 @@ paths:
                 - title
                 - module_id
                 - team_id
+  '/api/v1/handovers/{handover_id}':
+    get:
+      summary: 'Get Handover'
+      operationId: getHandover
+      description: 'Display the specified handover.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  title: 'Entrega Final'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: 'Entrega Final'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Handover].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Handover].'
+      tags:
+        - Handovers
+    put:
+      summary: 'Update Handover'
+      operationId: updateHandover
+      description: 'Update the specified handover in storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  title: 'Entrega Corregida'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: 'Entrega Corregida'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Handover].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Handover].'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    score:
+                      - 'The score must be between 0 and 100.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      score:
+                        type: array
+                        example:
+                          - 'The score must be between 0 and 100.'
+                        items:
+                          type: string
+      tags:
+        - Handovers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'The title of the handover.'
+                  example: 'Entrega Corregida'
+                attachment:
+                  type: string
+                  description: 'nullable URL or link to the attachment.'
+                  example: 'https://github.com/my-game-v2'
+                is_delivered:
+                  type: boolean
+                  description: 'sometimes Whether the handover is delivered.'
+                  example: true
+                module_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the modules table.'
+                  example: 16
+                team_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the teams table.'
+                  example: 16
+                score:
+                  type: integer
+                  description: 'nullable Score of the handover (0-100).'
+                  example: 100
+                date_of_submission:
+                  type: string
+                  description: 'Must be a valid date. Must be a date before or equal to <code>today</code>.'
+                  example: '2022-05-03'
+              required:
+                - title
+    patch:
+      summary: 'Update Handover'
+      operationId: updateHandover
+      description: 'Update the specified handover in storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  title: 'Entrega Corregida'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: 'Entrega Corregida'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Handover].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Handover].'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    score:
+                      - 'The score must be between 0 and 100.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      score:
+                        type: array
+                        example:
+                          - 'The score must be between 0 and 100.'
+                        items:
+                          type: string
+      tags:
+        - Handovers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'The title of the handover.'
+                  example: 'Entrega Corregida'
+                attachment:
+                  type: string
+                  description: 'nullable URL or link to the attachment.'
+                  example: 'https://github.com/my-game-v2'
+                is_delivered:
+                  type: boolean
+                  description: 'sometimes Whether the handover is delivered.'
+                  example: true
+                module_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the modules table.'
+                  example: 16
+                team_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the teams table.'
+                  example: 16
+                score:
+                  type: integer
+                  description: 'nullable Score of the handover (0-100).'
+                  example: 100
+                date_of_submission:
+                  type: string
+                  description: 'Must be a valid date. Must be a date before or equal to <code>today</code>.'
+                  example: '2022-05-03'
+              required:
+                - title
+    delete:
+      summary: 'Delete Handover'
+      operationId: deleteHandover
+      description: 'Remove the specified handover from storage.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Handover deleted successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'Handover deleted successfully'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Handover].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Handover].'
+      tags:
+        - Handovers
+    parameters:
+      -
+        in: path
+        name: handover_id
+        description: 'The ID of the handover.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: handover
+        description: 'ID of the handover.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   '/api/v1/teams/{team_id}/enroll/{competition_id}':
     post:
       summary: 'Enroll Team in Competition'
@@ -1223,13 +2833,79 @@ paths:
           content:
             application/json:
               schema:
+                oneOf:
+                  -
+                    description: 'Already enrolled'
+                    type: object
+                    example:
+                      message: 'The team is already enrolled in this competition.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'The team is already enrolled in this competition.'
+                  -
+                    description: 'Competition full'
+                    type: object
+                    example:
+                      message: 'The competition has reached its maximum team capacity.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'The competition has reached its maximum team capacity.'
+                  -
+                    description: 'Registration not open'
+                    type: object
+                    example:
+                      message: 'Competition registration has not started yet.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'Competition registration has not started yet.'
+                  -
+                    description: 'Competition closed'
+                    type: object
+                    example:
+                      message: 'This competition is closed or finished.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'This competition is closed or finished.'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
                 type: object
                 example:
-                  message: 'The team is already enrolled in this competition.'
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'The team is already enrolled in this competition.'
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team or competition not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Team or competition not found.'
       tags:
         - 'Team Actions'
     parameters:
@@ -1280,10 +2956,70 @@ paths:
                 type: object
                 example:
                   message: 'Team withdrawn successfully from the competition. Handovers are kept as history.'
+                  data:
+                    id: 1
+                    name: 'Los Codificadores'
                 properties:
                   message:
                     type: string
                     example: 'Team withdrawn successfully from the competition. Handovers are kept as history.'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Los Codificadores'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The team is not enrolled in this competition.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The team is not enrolled in this competition.'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team or competition not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Team or competition not found.'
       tags:
         - 'Team Actions'
     parameters:
@@ -1355,13 +3091,70 @@ paths:
           content:
             application/json:
               schema:
+                oneOf:
+                  -
+                    description: 'User already in this team'
+                    type: object
+                    example:
+                      message: 'This user is already in your team.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'This user is already in your team.'
+                  -
+                    description: 'User in another team'
+                    type: object
+                    example:
+                      message: 'This user is already a member of another team.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'This user is already a member of another team.'
+                  -
+                    description: 'Team at capacity'
+                    type: object
+                    example:
+                      message: 'The team has reached its maximum capacity.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'The team has reached its maximum capacity.'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
                 type: object
                 example:
-                  message: 'This user is already a member of another team.'
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'This user is already a member of another team.'
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team or user not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Team or user not found.'
       tags:
         - 'Team Actions'
     delete:
@@ -1378,10 +3171,82 @@ paths:
                 type: object
                 example:
                   message: 'Member removed successfully from the team.'
+                  data:
+                    id: 1
+                    name: 'Los Codificadores'
                 properties:
                   message:
                     type: string
                     example: 'Member removed successfully from the team.'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Los Codificadores'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  -
+                    description: 'Cannot remove leader'
+                    type: object
+                    example:
+                      message: 'The team leader cannot be removed. You must delete the team or transfer leadership.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'The team leader cannot be removed. You must delete the team or transfer leadership.'
+                  -
+                    description: 'User not in team'
+                    type: object
+                    example:
+                      message: 'This user is not a member of the specified team.'
+                    properties:
+                      message:
+                        type: string
+                        example: 'This user is not a member of the specified team.'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team or user not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Team or user not found.'
       tags:
         - 'Team Actions'
     parameters:
@@ -1397,7 +3262,7 @@ paths:
         in: path
         name: user_id
         description: 'The ID of the user.'
-        example: 1
+        example: 16
         required: true
         schema:
           type: integer
@@ -1461,6 +3326,18 @@ paths:
                         total_members:
                           type: integer
                           example: 3
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Teams
     post:
@@ -1497,6 +3374,54 @@ paths:
                       total_members:
                         type: integer
                         example: 1
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    name:
+                      - 'The name has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name has already been taken.'
+                        items:
+                          type: string
       tags:
         - Teams
       requestBody:
@@ -1539,14 +3464,14 @@ paths:
                   data:
                     -
                       id: 1
-                      name: 'Team Old'
+                      name: 'Team Viejo'
                 properties:
                   data:
                     type: array
                     example:
                       -
                         id: 1
-                        name: 'Team Old'
+                        name: 'Team Viejo'
                     items:
                       type: object
                       properties:
@@ -1555,14 +3480,38 @@ paths:
                           example: 1
                         name:
                           type: string
-                          example: 'Team Old'
+                          example: 'Team Viejo'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
       tags:
         - Teams
   '/api/v1/teams/{id}/restore':
     patch:
       summary: 'Restore Team'
       operationId: restoreTeam
-      description: 'Restore a soft deleted team.'
+      description: 'Restore a soft-deleted team by ID.'
       parameters: []
       responses:
         200:
@@ -1575,7 +3524,7 @@ paths:
                   message: 'Team restored successfully'
                   data:
                     id: 1
-                    name: 'Team Old'
+                    name: 'Team Viejo'
                 properties:
                   message:
                     type: string
@@ -1588,7 +3537,31 @@ paths:
                         example: 1
                       name:
                         type: string
-                        example: 'Team Old'
+                        example: 'Team Viejo'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
         404:
           description: ''
           content:
@@ -1635,12 +3608,36 @@ paths:
                   name:
                     type: string
                     example: 'Los Codificadores'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched team'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched team'
       tags:
         - Teams
     put:
       summary: 'Update Team'
       operationId: updateTeam
-      description: 'Update the specified team in storage.'
+      description: 'Update the specified team in storage. Applies to both PUT and PATCH requests.'
       parameters: []
       responses:
         200:
@@ -1654,6 +3651,9 @@ paths:
                   data:
                     id: 1
                     name: 'Los Pro'
+                    admin_id: 2
+                    max_members: 4
+                    total_members: 2
                 properties:
                   message:
                     type: string
@@ -1667,6 +3667,75 @@ paths:
                       name:
                         type: string
                         example: 'Los Pro'
+                      admin_id:
+                        type: integer
+                        example: 2
+                      max_members:
+                        type: integer
+                        example: 4
+                      total_members:
+                        type: integer
+                        example: 2
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched team'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched team'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    name:
+                      - 'The name has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name has already been taken.'
+                        items:
+                          type: string
       tags:
         - Teams
       requestBody:
@@ -1681,9 +3750,133 @@ paths:
                   description: 'nullable The new name of the team.'
                   example: 'Los Pro'
                 admin_id:
+                  type: integer
+                  description: 'nullable The ID of the new team leader.'
+                  example: 2
+                max_members:
+                  type: integer
+                  description: 'nullable The new maximum members.'
+                  example: 4
+                  nullable: true
+    patch:
+      summary: 'Update Team'
+      operationId: updateTeam
+      description: 'Update the specified team in storage. Applies to both PUT and PATCH requests.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Team updated successfully'
+                  data:
+                    id: 1
+                    name: 'Los Pro'
+                    admin_id: 2
+                    max_members: 4
+                    total_members: 2
+                properties:
+                  message:
+                    type: string
+                    example: 'Team updated successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Los Pro'
+                      admin_id:
+                        type: integer
+                        example: 2
+                      max_members:
+                        type: integer
+                        example: 4
+                      total_members:
+                        type: integer
+                        example: 2
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched team'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched team'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    name:
+                      - 'The name has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name has already been taken.'
+                        items:
+                          type: string
+      tags:
+        - Teams
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
                   type: string
-                  description: 'The <code>id</code> of an existing record in the users table.'
-                  example: null
+                  description: 'nullable The new name of the team.'
+                  example: 'Los Pro'
+                admin_id:
+                  type: integer
+                  description: 'nullable The ID of the new team leader.'
+                  example: 2
                 max_members:
                   type: integer
                   description: 'nullable The new maximum members.'
@@ -1692,7 +3885,7 @@ paths:
     delete:
       summary: 'Delete Team'
       operationId: deleteTeam
-      description: 'Remove the specified team from storage.'
+      description: 'Soft-delete the specified team.'
       parameters: []
       responses:
         204:
@@ -1707,6 +3900,42 @@ paths:
                   message:
                     type: string
                     example: 'Team deleted successfully'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched team'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched team'
       tags:
         - Teams
     parameters:
@@ -1850,6 +4079,54 @@ paths:
                         dui:
                           type: string
                           example: 12345678-9
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    role:
+                      - 'The selected role is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      role:
+                        type: array
+                        example:
+                          - 'The selected role is invalid.'
+                        items:
+                          type: string
       tags:
         - Users
       requestBody:
@@ -1871,6 +4148,14 @@ paths:
                   type: string
                   description: 'Must match the regex /^\d{8}-\d$/.'
                   example: 56425593-1
+                status:
+                  type: string
+                  description: ''
+                  example: active
+                  enum:
+                    - active
+                    - deleted
+                    - all
     post:
       summary: 'Create User'
       operationId: createUser
@@ -1901,6 +4186,54 @@ paths:
                   email:
                     type: string
                     example: juanperez@example.com
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    email:
+                      - 'The email has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        example:
+                          - 'The email has already been taken.'
+                        items:
+                          type: string
       tags:
         - Users
       requestBody:
@@ -1946,6 +4279,215 @@ paths:
                 - password
                 - dui
                 - role
+  /api/v1/users/deleted:
+    get:
+      summary: 'List Deleted Users'
+      operationId: listDeletedUsers
+      description: 'Display a listing of soft-deleted users.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: Juan
+                      email: juan@example.com
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: Juan
+                        email: juan@example.com
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Juan
+                        email:
+                          type: string
+                          example: juan@example.com
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+      tags:
+        - Users
+  '/api/v1/users/{id}/restore':
+    patch:
+      summary: 'Restore User'
+      operationId: restoreUser
+      description: 'Restore a soft-deleted user by ID.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'User restored successfully'
+                  data:
+                    id: 1
+                    name: Juan
+                properties:
+                  message:
+                    type: string
+                    example: 'User restored successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Juan
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched user'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched user'
+      tags:
+        - Users
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the deleted user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/users/{id}/force':
+    delete:
+      summary: 'Force Delete User'
+      operationId: forceDeleteUser
+      description: 'Permanently delete a soft-deleted user by ID.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'User permanently deleted successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'User permanently deleted successfully'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched user'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched user'
+      tags:
+        - Users
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the deleted user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   '/api/v1/users/{user_id}':
     get:
       summary: 'Get User'
@@ -1973,12 +4515,48 @@ paths:
                   email:
                     type: string
                     example: juanperez@example.com
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\User].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\User].'
       tags:
         - Users
     put:
       summary: 'Update User'
       operationId: updateUser
-      description: 'Update the specified user in storage.'
+      description: 'Update the specified user in storage. Applies to both PUT and PATCH requests.'
       parameters: []
       responses:
         200:
@@ -1988,15 +4566,100 @@ paths:
               schema:
                 type: object
                 example:
-                  id: 1
-                  name: 'Juan Carlos'
+                  data:
+                    id: 1
+                    name: 'Juan Carlos'
+                    lastname: Perez
+                    email: juan@example.com
+                    username: juanc
+                    dui: 01234567-8
+                    team_id: null
                 properties:
-                  id:
-                    type: integer
-                    example: 1
-                  name:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Juan Carlos'
+                      lastname:
+                        type: string
+                        example: Perez
+                      email:
+                        type: string
+                        example: juan@example.com
+                      username:
+                        type: string
+                        example: juanc
+                      dui:
+                        type: string
+                        example: 01234567-8
+                      team_id:
+                        type: string
+                        example: null
+                        nullable: true
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
                     type: string
-                    example: 'Juan Carlos'
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched user'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched user'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    username:
+                      - 'The username has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      username:
+                        type: array
+                        example:
+                          - 'The username has already been taken.'
+                        items:
+                          type: string
       tags:
         - Users
       requestBody:
@@ -2018,18 +4681,26 @@ paths:
                   type: string
                   description: 'nullable The username of the user.'
                   example: juanc
+                email:
+                  type: string
+                  description: 'nullable The email of the user.'
+                  example: juan@example.com
                 password:
                   type: string
                   description: 'nullable The new password (min 8 chars).'
                   example: newpassword
+                dui:
+                  type: string
+                  description: 'nullable The DUI of the user.'
+                  example: 01234567-8
                 role:
                   type: string
-                  description: 'nullable The role to assign.'
+                  description: 'nullable The role to assign (administrador, organizador, lider, participante).'
                   example: lider
     patch:
       summary: 'Update User'
       operationId: updateUser
-      description: 'Update the specified user in storage.'
+      description: 'Update the specified user in storage. Applies to both PUT and PATCH requests.'
       parameters: []
       responses:
         200:
@@ -2039,15 +4710,100 @@ paths:
               schema:
                 type: object
                 example:
-                  id: 1
-                  name: 'Juan Carlos'
+                  data:
+                    id: 1
+                    name: 'Juan Carlos'
+                    lastname: Perez
+                    email: juan@example.com
+                    username: juanc
+                    dui: 01234567-8
+                    team_id: null
                 properties:
-                  id:
-                    type: integer
-                    example: 1
-                  name:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Juan Carlos'
+                      lastname:
+                        type: string
+                        example: Perez
+                      email:
+                        type: string
+                        example: juan@example.com
+                      username:
+                        type: string
+                        example: juanc
+                      dui:
+                        type: string
+                        example: 01234567-8
+                      team_id:
+                        type: string
+                        example: null
+                        nullable: true
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
                     type: string
-                    example: 'Juan Carlos'
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'There are no matches for the searched user'
+                properties:
+                  message:
+                    type: string
+                    example: 'There are no matches for the searched user'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    username:
+                      - 'The username has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      username:
+                        type: array
+                        example:
+                          - 'The username has already been taken.'
+                        items:
+                          type: string
       tags:
         - Users
       requestBody:
@@ -2069,13 +4825,21 @@ paths:
                   type: string
                   description: 'nullable The username of the user.'
                   example: juanc
+                email:
+                  type: string
+                  description: 'nullable The email of the user.'
+                  example: juan@example.com
                 password:
                   type: string
                   description: 'nullable The new password (min 8 chars).'
                   example: newpassword
+                dui:
+                  type: string
+                  description: 'nullable The DUI of the user.'
+                  example: 01234567-8
                 role:
                   type: string
-                  description: 'nullable The role to assign.'
+                  description: 'nullable The role to assign (administrador, organizador, lider, participante).'
                   example: lider
     delete:
       summary: 'Delete User'
@@ -2095,6 +4859,42 @@ paths:
                   message:
                     type: string
                     example: 'User deleted successfully'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\User].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\User].'
       tags:
         - Users
     parameters:
@@ -2102,7 +4902,7 @@ paths:
         in: path
         name: user_id
         description: 'The ID of the user.'
-        example: 1
+        example: 16
         required: true
         schema:
           type: integer
@@ -2114,3 +4914,253 @@ paths:
         required: true
         schema:
           type: integer
+components:
+  schemas:
+    Competition:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          description: 'Unique identifier of the competition'
+          example: 1
+        name:
+          type: string
+          description: 'Name of the competition'
+          example: 'ESEN 2026 GAME JAM FRIGHTS'
+        description:
+          type: string
+          description: 'Detailed description of the competition'
+          example: 'Come along and release your worst nightmares in this new edition.'
+        prize:
+          type: string
+          description: 'Prize information for the competition'
+          example: 'Earn a recognition as a Software Developer with your own official diploma.'
+        tools:
+          type: string
+          description: 'Tools information for participants'
+          example: 'Prepare to use itch.io and GODOT game engine'
+        maximum_number_of_teams:
+          type: integer
+          minimum: 1
+          description: 'Maximum number of teams allowed to participate'
+          example: 10
+        total_number_of_teams:
+          type: integer
+          minimum: 0
+          description: 'Current number of enrolled teams'
+          example: 2
+        registration_start_date:
+          type: string
+          format: date
+          description: 'Date when registration/competition starts'
+          example: '2026-07-04'
+        registration_closing_date:
+          type: string
+          format: date
+          description: 'Date when the competition ends'
+          example: '2026-07-06'
+        competition_is_finished:
+          type: boolean
+          description: 'Indicates whether the competition has been marked as finished'
+          example: false
+        category:
+          type: string
+          description: 'Category name the competition belongs to'
+          example: 'Action RPG'
+        admin:
+          type: string
+          description: 'Name of the administrator/organizer'
+          example: 'El'
+        teams:
+          type: array
+          description: 'List of enrolled team names'
+          items:
+            type: string
+          example: ['Boyer and Sons', 'Greenholt PLC']
+        modules:
+          type: array
+          description: 'List of module titles for this competition'
+          items:
+            type: string
+          example: ['Fase 1: Planteamiento y GDD', 'Fase 2: Prototipo Jugable', 'Fase 3: Entrega Final']
+      required:
+        - id
+        - name
+        - description
+        - prize
+        - tools
+        - maximum_number_of_teams
+        - total_number_of_teams
+        - registration_start_date
+        - registration_closing_date
+        - competition_is_finished
+        - category
+        - admin
+        - teams
+        - modules
+    Module:
+      type: object
+      properties:
+        title:
+          type: string
+          description: 'Title of the module/phase'
+          example: 'Fase 1: Planteamiento y GDD'
+        description:
+          type: string
+          description: 'Description of the module objectives'
+          example: 'Documentos de requerimientos y Game Design Document (GDD).'
+        attachments:
+          type: string
+          nullable: true
+          description: 'URL or links to module resources'
+          example: 'https://itch.io/competitions/my-game'
+        due_date:
+          type: string
+          format: date
+          description: 'Deadline for this module'
+          example: '2026-04-11'
+        competition:
+          type: object
+          description: 'Competition this module belongs to'
+          properties:
+            id:
+              type: integer
+              minimum: 1
+              example: 1
+            name:
+              type: string
+              example: 'ESEN 2026 GAME JAM FRIGHTS'
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+      required:
+        - title
+        - description
+        - due_date
+        - competition
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'Action RPG'
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+    Handover:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: 'Entrega Fase 1'
+        attachment:
+          type: string
+          example: 'https://github.com/team/project'
+        is_delivered:
+          type: boolean
+          example: true
+        module_id:
+          type: integer
+          example: 1
+        team_id:
+          type: integer
+          example: 1
+        score:
+          type: integer
+          example: 95
+        date_of_submission:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'Los Programadores'
+        admin_id:
+          type: integer
+          example: 1
+        total_members:
+          type: integer
+          example: 3
+        max_members:
+          type: integer
+          example: 5
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: 'johndoe123'
+        email:
+          type: string
+          example: 'john@example.com'
+        name:
+          type: string
+          example: 'John'
+        lastname:
+          type: string
+          example: 'Doe'
+        dui:
+          type: string
+          example: '01234567-8'
+        team_id:
+          type: integer
+          example: 1
+        role_id:
+          type: integer
+          example: 2
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-08T15:16:19.000000Z'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []

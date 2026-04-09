@@ -23,7 +23,20 @@ class WithdrawTeamController extends Controller
      * @urlParam competition int required ID of the competition. Example: 1
      *
      * @response 200 {
-     *   "message": "Team withdrawn successfully from the competition. Handovers are kept as history."
+     *   "message": "Team withdrawn successfully from the competition. Handovers are kept as history.",
+     *   "data": {"id": 1, "name": "Los Codificadores"}
+     * }
+     * @response 400 {
+     *   "message": "The team is not enrolled in this competition."
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "Team or competition not found."
      * }
      */
     public function __invoke(Request $request, Team $team, Competition $competition)

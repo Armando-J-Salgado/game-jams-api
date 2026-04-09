@@ -43,6 +43,24 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+           "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+           "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -108,6 +126,33 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+           "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+           "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+           "message": "No query results for model [App\\Models\\Category]."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -161,6 +206,34 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+           "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+           "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+           "message": "The given data was invalid.",
+           "errors": {"name": ["The name field is required."]}
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -178,7 +251,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Update Category'
-      description: 'Update the specified category in storage.'
+      description: 'Update the specified category in storage. Applies to both PUT and PATCH requests.'
       authenticated: true
       deprecated: false
     headers:
@@ -235,6 +308,157 @@ endpoints:
           {
            "id": 1,
            "name": "2D Art"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+           "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+           "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+           "message": "There are no matches for the searched category"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+           "message": "The given data was invalid.",
+           "errors": {"name": ["The name field is required."]}
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/categories/{category_id}'
+    metadata:
+      custom: []
+      groupName: Categories
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Category'
+      description: 'Update the specified category in storage. Applies to both PUT and PATCH requests.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      category_id:
+        custom: []
+        name: category_id
+        description: 'The ID of the category.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      category:
+        custom: []
+        name: category
+        description: 'The ID of the category.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      category_id: 1
+      category: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'The new name for the category.'
+        required: true
+        example: '2D Art'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: '2D Art'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+           "id": 1,
+           "name": "2D Art"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+           "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+           "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+           "message": "There are no matches for the searched category"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+           "message": "The given data was invalid.",
+           "errors": {"name": ["The name field is required."]}
           }
         headers: []
         description: ''
@@ -299,6 +523,33 @@ endpoints:
         content: |-
           {
            "message": "Category deleted successfully"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+           "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+           "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+           "message": "No query results for model [App\\Models\\Category]."
           }
         headers: []
         description: ''

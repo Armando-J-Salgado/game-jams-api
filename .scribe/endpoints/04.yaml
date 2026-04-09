@@ -88,7 +88,64 @@ endpoints:
       -
         custom: []
         status: 400
-        content: '{"message": "The team is already enrolled in this competition."}'
+        content: |-
+          {
+            "message": "The team is already enrolled in this competition."
+          }
+        headers: []
+        description: 'Already enrolled'
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "The competition has reached its maximum team capacity."
+          }
+        headers: []
+        description: 'Competition full'
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "Competition registration has not started yet."
+          }
+        headers: []
+        description: 'Registration not open'
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "This competition is closed or finished."
+          }
+        headers: []
+        description: 'Competition closed'
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Team or competition not found."
+          }
         headers: []
         description: ''
     responseFields: []
@@ -175,7 +232,44 @@ endpoints:
         status: 200
         content: |-
           {
-            "message": "Team withdrawn successfully from the competition. Handovers are kept as history."
+            "message": "Team withdrawn successfully from the competition. Handovers are kept as history.",
+            "data": {"id": 1, "name": "Los Codificadores"}
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "The team is not enrolled in this competition."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Team or competition not found."
           }
         headers: []
         description: ''
@@ -219,7 +313,7 @@ endpoints:
         name: user_id
         description: 'The ID of the user.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -249,7 +343,7 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       team_id: 1
-      user_id: 1
+      user_id: 16
       team: 1
       user: 2
     queryParameters: []
@@ -274,7 +368,55 @@ endpoints:
       -
         custom: []
         status: 400
-        content: '{"message": "This user is already a member of another team."}'
+        content: |-
+          {
+            "message": "This user is already in your team."
+          }
+        headers: []
+        description: 'User already in this team'
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "This user is already a member of another team."
+          }
+        headers: []
+        description: 'User in another team'
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "The team has reached its maximum capacity."
+          }
+        headers: []
+        description: 'Team at capacity'
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Team or user not found."
+          }
         headers: []
         description: ''
     responseFields: []
@@ -317,7 +459,7 @@ endpoints:
         name: user_id
         description: 'The ID of the user.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -347,7 +489,7 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       team_id: 1
-      user_id: 1
+      user_id: 16
       team: 1
       user: 2
     queryParameters: []
@@ -361,7 +503,53 @@ endpoints:
         status: 200
         content: |-
           {
-            "message": "Member removed successfully from the team."
+            "message": "Member removed successfully from the team.",
+            "data": {"id": 1, "name": "Los Codificadores"}
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "The team leader cannot be removed. You must delete the team or transfer leadership."
+          }
+        headers: []
+        description: 'Cannot remove leader'
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "This user is not a member of the specified team."
+          }
+        headers: []
+        description: 'User not in team'
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Team or user not found."
           }
         headers: []
         description: ''

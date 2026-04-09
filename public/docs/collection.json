@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel API Documentation",
-        "_postman_id": "624f8b58-4989-4bb8-aa42-b92f436ab58c",
+        "_postman_id": "bf8ac099-4c2d-43a5-b0a1-516911ab2498",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -92,6 +92,12 @@
                             "code": 200,
                             "body": "{\n \"status\": \"success\",\n \"message\": \"Logout successful\"\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -123,6 +129,12 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n \"profile\": {\"id\": 1, \"name\": \"Admin\", \"email\": \"admin@example.com\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n \"message\": \"Unauthenticated.\"\n}",
                             "name": ""
                         }
                     ]
@@ -161,6 +173,18 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n \"data\": [\n   {\n     \"id\": 1,\n     \"name\": \"Game Jam 2026\"\n   }\n ]\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n \"message\": \"This action is unauthorized.\"\n}",
                             "name": ""
                         }
                     ]
@@ -208,6 +232,24 @@
                             "code": 200,
                             "body": "{\n \"id\": 1,\n \"name\": \"Art\"\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n \"message\": \"No query results for model [App\\\\Models\\\\Category].\"\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -242,6 +284,24 @@
                             "header": [],
                             "code": 201,
                             "body": "{\n \"id\": 1,\n \"name\": \"Art\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"The given data was invalid.\",\n \"errors\": {\"name\": [\"The name field is required.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -284,13 +344,110 @@
                             "mode": "raw",
                             "raw": "{\"name\":\"2D Art\"}"
                         },
-                        "description": "Update the specified category in storage."
+                        "description": "Update the specified category in storage. Applies to both PUT and PATCH requests."
                     },
                     "response": [
                         {
                             "header": [],
                             "code": 200,
                             "body": "{\n \"id\": 1,\n \"name\": \"2D Art\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n \"message\": \"There are no matches for the searched category\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"The given data was invalid.\",\n \"errors\": {\"name\": [\"The name field is required.\"]}\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories\/:category_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories\/:category_id",
+                            "variable": [
+                                {
+                                    "id": "category_id",
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                },
+                                {
+                                    "id": "category",
+                                    "key": "category",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"2D Art\"}"
+                        },
+                        "description": "Update the specified category in storage. Applies to both PUT and PATCH requests."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"id\": 1,\n \"name\": \"2D Art\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n \"message\": \"There are no matches for the searched category\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"The given data was invalid.\",\n \"errors\": {\"name\": [\"The name field is required.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -337,6 +494,24 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n \"message\": \"Category deleted successfully\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n \"message\": \"No query results for model [App\\\\Models\\\\Category].\"\n}",
                             "name": ""
                         }
                     ]
@@ -400,7 +575,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"architecto\",\"is_finished\":true,\"start_date\":\"2026-04-09\",\"end_date\":\"2026-04-09\",\"per_page\":16,\"page\":16,\"is_trashed\":false}"
+                            "raw": "{\"name\":\"architecto\",\"is_finished\":false,\"start_date\":\"2026-04-09\",\"end_date\":\"2026-04-09\",\"per_page\":16,\"page\":16,\"is_trashed\":false}"
                         },
                         "description": "",
                         "auth": {
@@ -554,7 +729,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"b\",\"description\":\"Et animi quos velit et fugiat.\",\"prize_information\":\"dljnikhwaykcmyuw\",\"tools_information\":\"pwlvqwrsitcpscql\",\"total_teams\":16,\"start_date\":\"2026-04-09\",\"end_date\":\"2026-04-09\",\"max_teams\":16,\"is_finished\":true}"
+                            "raw": "{\"name\":\"b\",\"description\":\"Et animi quos velit et fugiat.\",\"prize_information\":\"dljnikhwaykcmyuw\",\"tools_information\":\"pwlvqwrsitcpscql\",\"total_teams\":16,\"start_date\":\"2026-04-09\",\"end_date\":\"2026-04-09\",\"max_teams\":16,\"is_finished\":false}"
                         },
                         "description": "",
                         "auth": {
@@ -934,9 +1109,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/v1\/handovers\/:handover_id",
+                            "path": "api\/v1\/handovers\/:handover_id\/submit",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/handovers\/:handover_id",
+                            "raw": "{{baseUrl}}\/api\/v1\/handovers\/:handover_id\/submit",
                             "variable": [
                                 {
                                     "id": "handover_id",
@@ -973,7 +1148,31 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"message\": \"Handover submitted successfully\",\n  \"data\": {\"id\": 1, \"attachment\": \"https:\/\/github.com\/my-repo\"}\n}",
+                            "body": "{\n  \"message\": \"Handover submitted successfully\",\n  \"data\": {\"id\": 1, \"attachment\": \"https:\/\/github.com\/my-repo\", \"is_delivered\": true}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"Handover not found.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"attachment\": [\"The attachment field is required.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -1038,8 +1237,26 @@
                         },
                         {
                             "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
                             "code": 404,
                             "body": "{\n  \"message\": \"The specified team is not enrolled in this competition.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"team_id\": [\"The selected team_id is invalid.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -1087,6 +1304,24 @@
                             "code": 200,
                             "body": "{\n  \"id\": 1,\n  \"title\": \"Entrega Final\"\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Handover].\"\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -1121,6 +1356,24 @@
                             "header": [],
                             "code": 201,
                             "body": "{\n  \"id\": 1,\n  \"title\": \"Entrega Final\",\n  \"is_delivered\": true\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"title\": [\"The title field is required.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -1171,6 +1424,103 @@
                             "code": 200,
                             "body": "{\n  \"id\": 1,\n  \"title\": \"Entrega Corregida\"\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Handover].\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"score\": [\"The score must be between 0 and 100.\"]}\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Handover",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/handovers\/:handover_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/handovers\/:handover_id",
+                            "variable": [
+                                {
+                                    "id": "handover_id",
+                                    "key": "handover_id",
+                                    "value": "1",
+                                    "description": "The ID of the handover."
+                                },
+                                {
+                                    "id": "handover",
+                                    "key": "handover",
+                                    "value": "1",
+                                    "description": "ID of the handover."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"Entrega Corregida\",\"attachment\":\"https:\\\/\\\/github.com\\\/my-game-v2\",\"is_delivered\":true,\"module_id\":16,\"team_id\":16,\"score\":100,\"date_of_submission\":\"2022-05-03\"}"
+                        },
+                        "description": "Update the specified handover in storage."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"title\": \"Entrega Corregida\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Handover].\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"score\": [\"The score must be between 0 and 100.\"]}\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -1216,6 +1566,24 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n  \"message\": \"Handover deleted successfully\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\Handover].\"\n}",
                             "name": ""
                         }
                     ]
@@ -1285,7 +1653,43 @@
                         {
                             "header": [],
                             "code": 400,
-                            "body": "{\"message\": \"The team is already enrolled in this competition.\"}",
+                            "body": "{\n  \"message\": \"The team is already enrolled in this competition.\"\n}",
+                            "name": "Already enrolled"
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"message\": \"The competition has reached its maximum team capacity.\"\n}",
+                            "name": "Competition full"
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"message\": \"Competition registration has not started yet.\"\n}",
+                            "name": "Registration not open"
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"message\": \"This competition is closed or finished.\"\n}",
+                            "name": "Competition closed"
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"Team or competition not found.\"\n}",
                             "name": ""
                         }
                     ]
@@ -1343,7 +1747,31 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"message\": \"Team withdrawn successfully from the competition. Handovers are kept as history.\"\n}",
+                            "body": "{\n  \"message\": \"Team withdrawn successfully from the competition. Handovers are kept as history.\",\n  \"data\": {\"id\": 1, \"name\": \"Los Codificadores\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"message\": \"The team is not enrolled in this competition.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"Team or competition not found.\"\n}",
                             "name": ""
                         }
                     ]
@@ -1366,7 +1794,7 @@
                                 {
                                     "id": "user_id",
                                     "key": "user_id",
-                                    "value": "1",
+                                    "value": "16",
                                     "description": "The ID of the user."
                                 },
                                 {
@@ -1407,7 +1835,37 @@
                         {
                             "header": [],
                             "code": 400,
-                            "body": "{\"message\": \"This user is already a member of another team.\"}",
+                            "body": "{\n  \"message\": \"This user is already in your team.\"\n}",
+                            "name": "User already in this team"
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"message\": \"This user is already a member of another team.\"\n}",
+                            "name": "User in another team"
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"message\": \"The team has reached its maximum capacity.\"\n}",
+                            "name": "Team at capacity"
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"Team or user not found.\"\n}",
                             "name": ""
                         }
                     ]
@@ -1430,7 +1888,7 @@
                                 {
                                     "id": "user_id",
                                     "key": "user_id",
-                                    "value": "1",
+                                    "value": "16",
                                     "description": "The ID of the user."
                                 },
                                 {
@@ -1465,7 +1923,37 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"message\": \"Member removed successfully from the team.\"\n}",
+                            "body": "{\n  \"message\": \"Member removed successfully from the team.\",\n  \"data\": {\"id\": 1, \"name\": \"Los Codificadores\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"message\": \"The team leader cannot be removed. You must delete the team or transfer leadership.\"\n}",
+                            "name": "Cannot remove leader"
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"message\": \"This user is not a member of the specified team.\"\n}",
+                            "name": "User not in team"
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"Team or user not found.\"\n}",
                             "name": ""
                         }
                     ]
@@ -1505,6 +1993,12 @@
                             "code": 200,
                             "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Los Codificadores\",\n      \"max_members\": 5,\n      \"total_members\": 3\n    }\n  ]\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -1540,6 +2034,24 @@
                             "code": 201,
                             "body": "{\n  \"message\": \"Team created successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Los Codificadores\",\n    \"total_members\": 1\n  }\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"name\": [\"The name has already been taken.\"]}\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -1570,7 +2082,19 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"data\": [\n    {\"id\": 1, \"name\": \"Team Old\"}\n  ]\n}",
+                            "body": "{\n  \"data\": [\n    {\"id\": 1, \"name\": \"Team Viejo\"}\n  ]\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
                             "name": ""
                         }
                     ]
@@ -1604,19 +2128,31 @@
                             }
                         ],
                         "body": null,
-                        "description": "Restore a soft deleted team."
+                        "description": "Restore a soft-deleted team by ID."
                     },
                     "response": [
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"message\": \"Team restored successfully\",\n  \"data\": {\"id\": 1, \"name\": \"Team Old\"}\n}",
+                            "body": "{\n  \"message\": \"Team restored successfully\",\n  \"data\": {\"id\": 1, \"name\": \"Team Viejo\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
                             "name": ""
                         },
                         {
                             "header": [],
                             "code": 404,
-                            "body": "{\"message\": \"There are no matches for the searched team\"}",
+                            "body": "{\n  \"message\": \"There are no matches for the searched team\"\n}",
                             "name": ""
                         }
                     ]
@@ -1664,6 +2200,18 @@
                             "code": 200,
                             "body": "{\n  \"id\": 1,\n  \"name\": \"Los Codificadores\"\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"There are no matches for the searched team\"\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -1703,15 +2251,112 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"Los Pro\",\"max_members\":4}"
+                            "raw": "{\"name\":\"Los Pro\",\"admin_id\":2,\"max_members\":4}"
                         },
-                        "description": "Update the specified team in storage."
+                        "description": "Update the specified team in storage. Applies to both PUT and PATCH requests."
                     },
                     "response": [
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"message\": \"Team updated successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Los Pro\"\n  }\n}",
+                            "body": "{\n  \"message\": \"Team updated successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Los Pro\",\n    \"admin_id\": 2,\n    \"max_members\": 4,\n    \"total_members\": 2\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"There are no matches for the searched team\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"name\": [\"The name has already been taken.\"]}\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Team",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/teams\/:team_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/teams\/:team_id",
+                            "variable": [
+                                {
+                                    "id": "team_id",
+                                    "key": "team_id",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                },
+                                {
+                                    "id": "team",
+                                    "key": "team",
+                                    "value": "1",
+                                    "description": "The ID of the team."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Los Pro\",\"admin_id\":2,\"max_members\":4}"
+                        },
+                        "description": "Update the specified team in storage. Applies to both PUT and PATCH requests."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Team updated successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Los Pro\",\n    \"admin_id\": 2,\n    \"max_members\": 4,\n    \"total_members\": 2\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"There are no matches for the searched team\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"name\": [\"The name has already been taken.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -1751,13 +2396,31 @@
                             }
                         ],
                         "body": null,
-                        "description": "Remove the specified team from storage."
+                        "description": "Soft-delete the specified team."
                     },
                     "response": [
                         {
                             "header": [],
                             "code": 204,
                             "body": "{\"message\": \"Team deleted successfully\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"There are no matches for the searched team\"\n}",
                             "name": ""
                         }
                     ]
@@ -1833,7 +2496,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"role\":\"architecto\",\"team_id\":16,\"dui\":\"56425593-1\"}"
+                            "raw": "{\"role\":\"architecto\",\"team_id\":16,\"dui\":\"56425593-1\",\"status\":\"active\"}"
                         },
                         "description": "Display a listing of the users."
                     },
@@ -1842,6 +2505,24 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Juan\",\n      \"lastname\": \"Perez\",\n      \"email\": \"juan@example.com\",\n      \"username\": \"juanp\",\n      \"dui\": \"12345678-9\"\n    }\n  ]\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"role\": [\"The selected role is invalid.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -1878,6 +2559,184 @@
                             "code": 201,
                             "body": "{\n  \"id\": 1,\n  \"name\": \"Juan\",\n  \"lastname\": \"Perez\",\n  \"email\": \"juanperez@example.com\"\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"email\": [\"The email has already been taken.\"]}\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List Deleted Users",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users\/deleted",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/users\/deleted"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Display a listing of soft-deleted users."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [\n    {\"id\": 1, \"name\": \"Juan\", \"email\": \"juan@example.com\"}\n  ]\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Restore User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users\/:id\/restore",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/users\/:id\/restore",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the deleted user."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Restore a soft-deleted user by ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"User restored successfully\",\n  \"data\": {\"id\": 1, \"name\": \"Juan\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"There are no matches for the searched user\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Force Delete User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/users\/:id\/force",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/users\/:id\/force",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the deleted user."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently delete a soft-deleted user by ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"User permanently deleted successfully\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"There are no matches for the searched user\"\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -1893,7 +2752,7 @@
                                 {
                                     "id": "user_id",
                                     "key": "user_id",
-                                    "value": "1",
+                                    "value": "16",
                                     "description": "The ID of the user."
                                 },
                                 {
@@ -1924,6 +2783,24 @@
                             "code": 200,
                             "body": "{\n  \"id\": 1,\n  \"name\": \"Juan\",\n  \"email\": \"juanperez@example.com\"\n}",
                             "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\User].\"\n}",
+                            "name": ""
                         }
                     ]
                 },
@@ -1939,7 +2816,7 @@
                                 {
                                     "id": "user_id",
                                     "key": "user_id",
-                                    "value": "1",
+                                    "value": "16",
                                     "description": "The ID of the user."
                                 },
                                 {
@@ -1963,15 +2840,39 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"Juan Carlos\",\"lastname\":\"Perez\",\"username\":\"juanc\",\"password\":\"newpassword\",\"role\":\"lider\"}"
+                            "raw": "{\"name\":\"Juan Carlos\",\"lastname\":\"Perez\",\"username\":\"juanc\",\"email\":\"juan@example.com\",\"password\":\"newpassword\",\"dui\":\"01234567-8\",\"role\":\"lider\"}"
                         },
-                        "description": "Update the specified user in storage."
+                        "description": "Update the specified user in storage. Applies to both PUT and PATCH requests."
                     },
                     "response": [
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"id\": 1,\n  \"name\": \"Juan Carlos\"\n}",
+                            "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Juan Carlos\",\n    \"lastname\": \"Perez\",\n    \"email\": \"juan@example.com\",\n    \"username\": \"juanc\",\n    \"dui\": \"01234567-8\",\n    \"team_id\": null\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"There are no matches for the searched user\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"username\": [\"The username has already been taken.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -1988,7 +2889,7 @@
                                 {
                                     "id": "user_id",
                                     "key": "user_id",
-                                    "value": "1",
+                                    "value": "16",
                                     "description": "The ID of the user."
                                 },
                                 {
@@ -2012,15 +2913,39 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"Juan Carlos\",\"lastname\":\"Perez\",\"username\":\"juanc\",\"password\":\"newpassword\",\"role\":\"lider\"}"
+                            "raw": "{\"name\":\"Juan Carlos\",\"lastname\":\"Perez\",\"username\":\"juanc\",\"email\":\"juan@example.com\",\"password\":\"newpassword\",\"dui\":\"01234567-8\",\"role\":\"lider\"}"
                         },
-                        "description": "Update the specified user in storage."
+                        "description": "Update the specified user in storage. Applies to both PUT and PATCH requests."
                     },
                     "response": [
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"id\": 1,\n  \"name\": \"Juan Carlos\"\n}",
+                            "body": "{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Juan Carlos\",\n    \"lastname\": \"Perez\",\n    \"email\": \"juan@example.com\",\n    \"username\": \"juanc\",\n    \"dui\": \"01234567-8\",\n    \"team_id\": null\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"There are no matches for the searched user\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\"username\": [\"The username has already been taken.\"]}\n}",
                             "name": ""
                         }
                     ]
@@ -2037,7 +2962,7 @@
                                 {
                                     "id": "user_id",
                                     "key": "user_id",
-                                    "value": "1",
+                                    "value": "16",
                                     "description": "The ID of the user."
                                 },
                                 {
@@ -2067,6 +2992,24 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n  \"message\": \"User deleted successfully\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Unauthenticated.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n  \"message\": \"This action is unauthorized.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\User].\"\n}",
                             "name": ""
                         }
                     ]

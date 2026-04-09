@@ -7,7 +7,7 @@ endpoints:
     custom: []
     httpMethods:
       - PATCH
-    uri: 'api/v1/handovers/{handover_id}'
+    uri: 'api/v1/handovers/{handover_id}/submit'
     metadata:
       custom: []
       groupName: 'Handover Actions'
@@ -71,7 +71,44 @@ endpoints:
         content: |-
           {
             "message": "Handover submitted successfully",
-            "data": {"id": 1, "attachment": "https://github.com/my-repo"}
+            "data": {"id": 1, "attachment": "https://github.com/my-repo", "is_delivered": true}
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Handover not found."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"attachment": ["The attachment field is required."]}
           }
         headers: []
         description: ''

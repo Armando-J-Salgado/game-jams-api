@@ -24,7 +24,20 @@ class SubmitHandoverController extends Controller
      *
      * @response 200 {
      *   "message": "Handover submitted successfully",
-     *   "data": {"id": 1, "attachment": "https://github.com/my-repo"}
+     *   "data": {"id": 1, "attachment": "https://github.com/my-repo", "is_delivered": true}
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "Handover not found."
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"attachment": ["The attachment field is required."]}
      * }
      */
     public function __invoke(SubmitHandoverRequest $request, Handover $handover)

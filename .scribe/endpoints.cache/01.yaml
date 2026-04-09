@@ -143,10 +143,25 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      status:
+        custom: []
+        name: status
+        description: ''
+        required: false
+        example: active
+        type: string
+        enumValues:
+          - active
+          - deleted
+          - all
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
       role: architecto
       team_id: 16
       dui: 56425593-1
+      status: active
     fileParameters: []
     responses:
       -
@@ -164,6 +179,34 @@ endpoints:
                 "dui": "12345678-9"
               }
             ]
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"role": ["The selected role is invalid."]}
           }
         headers: []
         description: ''
@@ -294,6 +337,253 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"email": ["The email has already been taken."]}
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/users/deleted
+    metadata:
+      custom: []
+      groupName: Users
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List Deleted Users'
+      description: 'Display a listing of soft-deleted users.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {"id": 1, "name": "Juan", "email": "juan@example.com"}
+            ]
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/users/{id}/restore'
+    metadata:
+      custom: []
+      groupName: Users
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Restore User'
+      description: 'Restore a soft-deleted user by ID.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the deleted user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "User restored successfully",
+            "data": {"id": 1, "name": "Juan"}
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "There are no matches for the searched user"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/users/{id}/force'
+    metadata:
+      custom: []
+      groupName: Users
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Force Delete User'
+      description: 'Permanently delete a soft-deleted user by ID.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the deleted user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "User permanently deleted successfully"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "There are no matches for the searched user"
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -323,7 +613,7 @@ endpoints:
         name: user_id
         description: 'The ID of the user.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -341,7 +631,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_id: 1
+      user_id: 16
       user: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -357,6 +647,33 @@ endpoints:
             "id": 1,
             "name": "Juan",
             "email": "juanperez@example.com"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\User]."
           }
         headers: []
         description: ''
@@ -377,7 +694,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Update User'
-      description: 'Update the specified user in storage.'
+      description: 'Update the specified user in storage. Applies to both PUT and PATCH requests.'
       authenticated: true
       deprecated: false
     headers:
@@ -389,7 +706,7 @@ endpoints:
         name: user_id
         description: 'The ID of the user.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -407,7 +724,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_id: 1
+      user_id: 16
       user: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -445,6 +762,17 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'nullable The email of the user.'
+        required: false
+        example: juan@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
       password:
         custom: []
         name: password
@@ -456,10 +784,21 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
+      dui:
+        custom: []
+        name: dui
+        description: 'nullable The DUI of the user.'
+        required: false
+        example: 01234567-8
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
       role:
         custom: []
         name: role
-        description: 'nullable The role to assign.'
+        description: 'nullable The role to assign (administrador, organizador, lider, participante).'
         required: false
         example: lider
         type: string
@@ -471,7 +810,9 @@ endpoints:
       name: 'Juan Carlos'
       lastname: Perez
       username: juanc
+      email: juan@example.com
       password: newpassword
+      dui: 01234567-8
       role: lider
     fileParameters: []
     responses:
@@ -480,8 +821,52 @@ endpoints:
         status: 200
         content: |-
           {
-            "id": 1,
-            "name": "Juan Carlos"
+            "data": {
+              "id": 1,
+              "name": "Juan Carlos",
+              "lastname": "Perez",
+              "email": "juan@example.com",
+              "username": "juanc",
+              "dui": "01234567-8",
+              "team_id": null
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "There are no matches for the searched user"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"username": ["The username has already been taken."]}
           }
         headers: []
         description: ''
@@ -502,7 +887,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Update User'
-      description: 'Update the specified user in storage.'
+      description: 'Update the specified user in storage. Applies to both PUT and PATCH requests.'
       authenticated: true
       deprecated: false
     headers:
@@ -514,7 +899,7 @@ endpoints:
         name: user_id
         description: 'The ID of the user.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -532,7 +917,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_id: 1
+      user_id: 16
       user: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -570,6 +955,17 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'nullable The email of the user.'
+        required: false
+        example: juan@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
       password:
         custom: []
         name: password
@@ -581,10 +977,21 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
+      dui:
+        custom: []
+        name: dui
+        description: 'nullable The DUI of the user.'
+        required: false
+        example: 01234567-8
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
       role:
         custom: []
         name: role
-        description: 'nullable The role to assign.'
+        description: 'nullable The role to assign (administrador, organizador, lider, participante).'
         required: false
         example: lider
         type: string
@@ -596,7 +1003,9 @@ endpoints:
       name: 'Juan Carlos'
       lastname: Perez
       username: juanc
+      email: juan@example.com
       password: newpassword
+      dui: 01234567-8
       role: lider
     fileParameters: []
     responses:
@@ -605,8 +1014,52 @@ endpoints:
         status: 200
         content: |-
           {
-            "id": 1,
-            "name": "Juan Carlos"
+            "data": {
+              "id": 1,
+              "name": "Juan Carlos",
+              "lastname": "Perez",
+              "email": "juan@example.com",
+              "username": "juanc",
+              "dui": "01234567-8",
+              "team_id": null
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "There are no matches for the searched user"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"username": ["The username has already been taken."]}
           }
         headers: []
         description: ''
@@ -639,7 +1092,7 @@ endpoints:
         name: user_id
         description: 'The ID of the user.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -657,7 +1110,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_id: 1
+      user_id: 16
       user: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -671,6 +1124,33 @@ endpoints:
         content: |-
           {
             "message": "User deleted successfully"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\User]."
           }
         headers: []
         description: ''

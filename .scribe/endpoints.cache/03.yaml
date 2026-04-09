@@ -118,10 +118,38 @@ endpoints:
         description: ''
       -
         custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 404
         content: |-
           {
             "message": "The specified team is not enrolled in this competition."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"team_id": ["The selected team_id is invalid."]}
           }
         headers: []
         description: ''
@@ -187,6 +215,33 @@ endpoints:
           {
             "id": 1,
             "title": "Entrega Final"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\Handover]."
           }
         headers: []
         description: ''
@@ -313,6 +368,34 @@ endpoints:
             "id": 1,
             "title": "Entrega Final",
             "is_delivered": true
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"title": ["The title field is required."]}
           }
         headers: []
         description: ''
@@ -465,6 +548,229 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\Handover]."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"score": ["The score must be between 0 and 100."]}
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/handovers/{handover_id}'
+    metadata:
+      custom: []
+      groupName: Handovers
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Handover'
+      description: 'Update the specified handover in storage.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      handover_id:
+        custom: []
+        name: handover_id
+        description: 'The ID of the handover.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      handover:
+        custom: []
+        name: handover
+        description: 'ID of the handover.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      handover_id: 1
+      handover: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'The title of the handover.'
+        required: true
+        example: 'Entrega Corregida'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      attachment:
+        custom: []
+        name: attachment
+        description: 'nullable URL or link to the attachment.'
+        required: false
+        example: 'https://github.com/my-game-v2'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      is_delivered:
+        custom: []
+        name: is_delivered
+        description: 'sometimes Whether the handover is delivered.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      module_id:
+        custom: []
+        name: module_id
+        description: 'The <code>id</code> of an existing record in the modules table.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      team_id:
+        custom: []
+        name: team_id
+        description: 'The <code>id</code> of an existing record in the teams table.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      score:
+        custom: []
+        name: score
+        description: 'nullable Score of the handover (0-100).'
+        required: false
+        example: 100
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      date_of_submission:
+        custom: []
+        name: date_of_submission
+        description: 'Must be a valid date. Must be a date before or equal to <code>today</code>.'
+        required: false
+        example: '2022-05-03'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      title: 'Entrega Corregida'
+      attachment: 'https://github.com/my-game-v2'
+      is_delivered: true
+      module_id: 16
+      team_id: 16
+      score: 100
+      date_of_submission: '2022-05-03'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "title": "Entrega Corregida"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\Handover]."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"score": ["The score must be between 0 and 100."]}
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -526,6 +832,33 @@ endpoints:
         content: |-
           {
             "message": "Handover deleted successfully"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "No query results for model [App\\Models\\Handover]."
           }
         headers: []
         description: ''

@@ -113,6 +113,15 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+           "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -150,6 +159,15 @@ endpoints:
         content: |-
           {
            "profile": {"id": 1, "name": "Admin", "email": "admin@example.com"}
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+           "message": "Unauthenticated."
           }
         headers: []
         description: ''

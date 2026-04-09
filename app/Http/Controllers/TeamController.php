@@ -13,9 +13,6 @@ class TeamController extends Controller
     use AuthorizesRequests;
 
     /**
-     * Display a listing of the resource.
-     */
-    /**
      * List Teams
      *
      * Display a listing of the teams.
@@ -33,15 +30,15 @@ class TeamController extends Controller
      *     }
      *   ]
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
      */
     public function index()
     {
         return TeamResource::collection(Team::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     /**
      * Create Team
      *
@@ -62,6 +59,16 @@ class TeamController extends Controller
      *     "total_members": 1
      *   }
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"name": ["The name has already been taken."]}
+     * }
      */
     public function store(StoreTeamRequest $request)
     {
@@ -80,9 +87,6 @@ class TeamController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    /**
      * Get Team
      *
      * Display the specified team.
@@ -96,6 +100,12 @@ class TeamController extends Controller
      *   "id": 1,
      *   "name": "Los Codificadores"
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 404 {
+     *   "message": "There are no matches for the searched team"
+     * }
      */
     public function show(Team $team)
     {
@@ -103,43 +113,40 @@ class TeamController extends Controller
     }
 
     /**
-     * Update the specified team.
-     *
-     * @group Teams
-     * @bodyParam name string The name of the team. Example: Alpha Team
-     * @bodyParam admin_id int The ID of the user who is the admin of the team. Example: 1
-     * @bodyParam max_members int The maximum number of members allowed in the team. Example: 5
-     * @response {
-     *  "message": "Team updated successfully",
-     *  "data": {
-     *    "id": 1,
-     *    "name": "Alpha Team",
-     *    "admin_id": 1,
-     *    "max_members": 5,
-     *    "total_members": 2,
-     *    "created_at": "...",
-     *    "updated_at": "..."
-     *  }
-     * }
-     */
-    /**
      * Update Team
      *
-     * Update the specified team in storage.
+     * Update the specified team in storage. Applies to both PUT and PATCH requests.
      *
      * @group Teams
      * @authenticated
      *
      * @urlParam team int required The ID of the team. Example: 1
      * @bodyParam name string nullable The new name of the team. Example: Los Pro
+     * @bodyParam admin_id int nullable The ID of the new team leader. Example: 2
      * @bodyParam max_members int nullable The new maximum members. Example: 4
      *
      * @response 200 {
      *   "message": "Team updated successfully",
      *   "data": {
      *     "id": 1,
-     *     "name": "Los Pro"
+     *     "name": "Los Pro",
+     *     "admin_id": 2,
+     *     "max_members": 4,
+     *     "total_members": 2
      *   }
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "There are no matches for the searched team"
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"name": ["The name has already been taken."]}
      * }
      */
     public function update(UpdateTeamRequest $request, Team $team)
@@ -153,12 +160,9 @@ class TeamController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     */
-    /**
      * Delete Team
      *
-     * Remove the specified team from storage.
+     * Soft-delete the specified team.
      *
      * @group Teams
      * @authenticated
@@ -166,6 +170,15 @@ class TeamController extends Controller
      * @urlParam team int required The ID of the team. Example: 1
      *
      * @response 204 {"message": "Team deleted successfully"}
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "There are no matches for the searched team"
+     * }
      */
     public function destroy(Team $team)
     {
@@ -177,9 +190,6 @@ class TeamController extends Controller
     }
 
     /**
-     * Display a listing of soft deleted resources.
-     */
-    /**
      * List Deleted Teams
      *
      * Display a listing of softly deleted teams.
@@ -189,8 +199,14 @@ class TeamController extends Controller
      *
      * @response 200 {
      *   "data": [
-     *     {"id": 1, "name": "Team Old"}
+     *     {"id": 1, "name": "Team Viejo"}
      *   ]
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
      * }
      */
     public function deleted()
@@ -200,12 +216,9 @@ class TeamController extends Controller
     }
 
     /**
-     * Restore a soft deleted resource.
-     */
-    /**
      * Restore Team
      *
-     * Restore a soft deleted team.
+     * Restore a soft-deleted team by ID.
      *
      * @group Teams
      * @authenticated
@@ -214,9 +227,17 @@ class TeamController extends Controller
      *
      * @response 200 {
      *   "message": "Team restored successfully",
-     *   "data": {"id": 1, "name": "Team Old"}
+     *   "data": {"id": 1, "name": "Team Viejo"}
      * }
-     * @response 404 {"message": "There are no matches for the searched team"}
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "There are no matches for the searched team"
+     * }
      */
     public function restore($id)
     {

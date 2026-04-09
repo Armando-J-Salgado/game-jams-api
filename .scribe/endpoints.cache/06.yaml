@@ -45,6 +45,15 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -126,6 +135,34 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"name": ["The name has already been taken."]}
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -163,8 +200,26 @@ endpoints:
         content: |-
           {
             "data": [
-              {"id": 1, "name": "Team Old"}
+              {"id": 1, "name": "Team Viejo"}
             ]
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
           }
         headers: []
         description: ''
@@ -185,7 +240,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Restore Team'
-      description: 'Restore a soft deleted team.'
+      description: 'Restore a soft-deleted team by ID.'
       authenticated: true
       deprecated: false
     headers:
@@ -217,14 +272,35 @@ endpoints:
         content: |-
           {
             "message": "Team restored successfully",
-            "data": {"id": 1, "name": "Team Old"}
+            "data": {"id": 1, "name": "Team Viejo"}
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
           }
         headers: []
         description: ''
       -
         custom: []
         status: 404
-        content: '{"message": "There are no matches for the searched team"}'
+        content: |-
+          {
+            "message": "There are no matches for the searched team"
+          }
         headers: []
         description: ''
     responseFields: []
@@ -292,6 +368,24 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "There are no matches for the searched team"
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -309,7 +403,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Update Team'
-      description: 'Update the specified team in storage.'
+      description: 'Update the specified team in storage. Applies to both PUT and PATCH requests.'
       authenticated: true
       deprecated: false
     headers:
@@ -358,12 +452,12 @@ endpoints:
       admin_id:
         custom: []
         name: admin_id
-        description: 'The <code>id</code> of an existing record in the users table.'
+        description: 'nullable The ID of the new team leader.'
         required: false
-        example: null
-        type: string
+        example: 2
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       max_members:
@@ -379,6 +473,7 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       name: 'Los Pro'
+      admin_id: 2
       max_members: 4
     fileParameters: []
     responses:
@@ -390,8 +485,192 @@ endpoints:
             "message": "Team updated successfully",
             "data": {
               "id": 1,
-              "name": "Los Pro"
+              "name": "Los Pro",
+              "admin_id": 2,
+              "max_members": 4,
+              "total_members": 2
             }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "There are no matches for the searched team"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"name": ["The name has already been taken."]}
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/teams/{team_id}'
+    metadata:
+      custom: []
+      groupName: Teams
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Team'
+      description: 'Update the specified team in storage. Applies to both PUT and PATCH requests.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      team_id:
+        custom: []
+        name: team_id
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      team:
+        custom: []
+        name: team
+        description: 'The ID of the team.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      team_id: 1
+      team: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'nullable The new name of the team.'
+        required: false
+        example: 'Los Pro'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      admin_id:
+        custom: []
+        name: admin_id
+        description: 'nullable The ID of the new team leader.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      max_members:
+        custom: []
+        name: max_members
+        description: 'nullable The new maximum members.'
+        required: false
+        example: 4
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Los Pro'
+      admin_id: 2
+      max_members: 4
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Team updated successfully",
+            "data": {
+              "id": 1,
+              "name": "Los Pro",
+              "admin_id": 2,
+              "max_members": 4,
+              "total_members": 2
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "There are no matches for the searched team"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {"name": ["The name has already been taken."]}
           }
         headers: []
         description: ''
@@ -412,7 +691,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Delete Team'
-      description: 'Remove the specified team from storage.'
+      description: 'Soft-delete the specified team.'
       authenticated: true
       deprecated: false
     headers:
@@ -454,6 +733,33 @@ endpoints:
         custom: []
         status: 204
         content: '{"message": "Team deleted successfully"}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |-
+          {
+            "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "There are no matches for the searched team"
+          }
         headers: []
         description: ''
     responseFields: []

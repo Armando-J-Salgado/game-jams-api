@@ -167,7 +167,7 @@ endpoints:
         name: is_finished
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -230,7 +230,7 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       name: architecto
-      is_finished: true
+      is_finished: false
       start_date: '2026-04-09'
       end_date: '2026-04-09'
       per_page: 16
@@ -605,7 +605,7 @@ endpoints:
         name: is_finished
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -620,7 +620,7 @@ endpoints:
       start_date: '2026-04-09'
       end_date: '2026-04-09'
       max_teams: 16
-      is_finished: true
+      is_finished: false
     fileParameters: []
     responses: []
     responseFields: []
