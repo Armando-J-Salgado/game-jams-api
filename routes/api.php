@@ -53,6 +53,9 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::put('/categories/{category}', [CategoryController::class, 'update'])
         ->missing(fn() => response()
             ->json(['message' => 'There are no matches for the searched category'], 404));
+    Route::patch('/categories/{category}', [CategoryController::class, 'update'])
+        ->missing(fn() => response()
+            ->json(['message' => 'There are no matches for the searched category'], 404));
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])
         ->missing(fn() => response()
             ->json(['message' => 'There are no matches for the searched category'], 404));
@@ -65,6 +68,9 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
             ->json(['message' => 'There are no matches for the searched handover'], 404));
     Route::post('/handovers', [HandoverController::class, 'store']);
     Route::put('/handovers/{handover}', [HandoverController::class, 'update'])
+        ->missing(fn() => response()
+            ->json(['message' => 'There are no matches for the searched handover'], 404));
+    Route::patch('/handovers/{handover}', [HandoverController::class, 'update'])
         ->missing(fn() => response()
             ->json(['message' => 'There are no matches for the searched handover'], 404));
     Route::delete('/handovers/{handover}', [HandoverController::class, 'destroy'])
@@ -80,7 +86,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         ->missing(fn() => response()->json(['message' => 'Team or user not found.'], 404));
     Route::delete('/teams/{team}/members/{user}', RemoveTeamMemberController::class)
         ->missing(fn() => response()->json(['message' => 'Team or user not found.'], 404));
-    Route::patch('/handovers/{handover}', SubmitHandoverController::class)
+    Route::patch('/handovers/{handover}/submit', SubmitHandoverController::class)
         ->missing(fn() => response()->json(['message' => 'Handover not found.'], 404));
     // CRUD Teams
     Route::get('/teams', [TeamController::class, 'index']);
@@ -92,6 +98,8 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('/teams/{team}', [TeamController::class, 'show'])
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
     Route::put('/teams/{team}', [TeamController::class, 'update'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
+    Route::patch('/teams/{team}', [TeamController::class, 'update'])
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
     Route::delete('/teams/{team}', [TeamController::class, 'destroy'])
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));

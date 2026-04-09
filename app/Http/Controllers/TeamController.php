@@ -103,7 +103,24 @@ class TeamController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified team.
+     *
+     * @group Teams
+     * @bodyParam name string The name of the team. Example: Alpha Team
+     * @bodyParam admin_id int The ID of the user who is the admin of the team. Example: 1
+     * @bodyParam max_members int The maximum number of members allowed in the team. Example: 5
+     * @response {
+     *  "message": "Team updated successfully",
+     *  "data": {
+     *    "id": 1,
+     *    "name": "Alpha Team",
+     *    "admin_id": 1,
+     *    "max_members": 5,
+     *    "total_members": 2,
+     *    "created_at": "...",
+     *    "updated_at": "..."
+     *  }
+     * }
      */
     /**
      * Update Team

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 uses(RefreshDatabase::class);
 
 // Test #1 it returns token with valid credentials
-test('login returns token with valid credentials', function () {
+test('it can login with valid credentials', function () {
 	$password = 'password123';
 	$user = User::factory()->create([
 		'password' => Hash::make($password),
@@ -29,7 +29,7 @@ test('login returns token with valid credentials', function () {
 });
 
 // Test #2 it rejects invalid credentials
-test('login fails with invalid credentials', function () {
+test('it cannot login with invalid credentials', function () {
 	$user = User::factory()->create([
 		'password' => Hash::make('password123'),
 	]);
@@ -47,13 +47,13 @@ test('login fails with invalid credentials', function () {
 });
 
 // Test #3 it blocks profile without auth
-test('profile requires authentication', function () {
+test('it cannot access profile without authentication', function () {
 	$this->getJson('/api/v1/auth/profile')
 		->assertStatus(401);
 });
 
 // Test #4 it returns profile for authenticated user
-test('profile returns authenticated user', function () {
+test('it can access profile', function () {
 	$user = User::factory()->create();
 	$token = $user->createToken('token-name')->plainTextToken;
 
@@ -65,7 +65,7 @@ test('profile returns authenticated user', function () {
 });
 
 // Test #5 it revokes tokens on logout
-test('logout revokes user tokens', function () {
+test('it can logout', function () {
 	$user = User::factory()->create();
 	$token = $user->createToken('token-name')->plainTextToken;
 

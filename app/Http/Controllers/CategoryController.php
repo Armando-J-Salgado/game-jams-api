@@ -134,7 +134,16 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified category.
+     *
+     * @group Categories
+     * @bodyParam name string The name of the category. Example: 3D Game
+     * @response {
+     *  "id": 1,
+     *  "name": "3D Game",
+     *  "created_at": "...",
+     *  "updated_at": "..."
+     * }
      */
     /**
      * Update Category

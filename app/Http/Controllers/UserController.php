@@ -218,7 +218,28 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user.
+     *
+     * @group Users
+     * @bodyParam name string The first name of the user. Example: John
+     * @bodyParam lastname string The last name of the user. Example: Doe
+     * @bodyParam email string The email of the user. Example: john@example.com
+     * @bodyParam username string The username of the user. Example: johndoe
+     * @bodyParam password string The password of the user. Example: secret123
+     * @bodyParam dui string The DUI of the user. Example: 01234567-8
+     * @bodyParam role string The role of the user. Example: participante
+     * @response {
+     *  "data": {
+     *    "id": 1,
+     *    "name": "John",
+     *    "lastname": "Doe",
+     *    "email": "john@example.com",
+     *    "username": "johndoe",
+     *    "dui": "01234567-8",
+     *    "role": "participante",
+     *    "team_id": null
+     *  }
+     * }
      */
     /**
      * Update User
