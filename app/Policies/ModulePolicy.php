@@ -45,7 +45,7 @@ class ModulePolicy
      */
     public function delete(User $user, Module $module): bool
     {
-        return $user->can('modules.delete');
+        return $user->can('modules.delete') && $module->competition->admin_id === $user->id;
     }
 
     /**
@@ -53,7 +53,7 @@ class ModulePolicy
      */
     public function restore(User $user, Module $module): bool
     {
-        return false;
+        return $user->can('modules.restore') && $user->id === $module->competition->admin_id;
     }
 
     /**

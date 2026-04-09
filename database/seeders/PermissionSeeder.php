@@ -25,6 +25,7 @@ class PermissionSeeder extends Seeder
             'competitions.create',
             'competitions.update',
             'competitions.delete',
+            'competitions.restore',
 
             'handovers.view',
             'handovers.create',
@@ -35,6 +36,7 @@ class PermissionSeeder extends Seeder
             'modules.create',
             'modules.update',
             'modules.delete',
+            'modules.restore',
 
             'teams.view',
             'teams.create',

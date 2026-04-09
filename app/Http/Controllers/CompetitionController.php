@@ -8,6 +8,7 @@ use App\Models\Competition;
 use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
 use Illuminate\Support\Facades\Auth;
+use function Termwind\parse;
 
 class CompetitionController extends Controller
 {
@@ -121,6 +122,29 @@ class CompetitionController extends Controller
     public function destroy(Competition $competition)
     {
         $this->authorize('delete', $competition);
+        $competition->delete();
         return response()->json(['message'=>'Competition deleted succesfully'], 200);
+    }
+
+    /**
+     * Restore a soft deleted model
+     */
+    public function restore(String $id)
+    {
+        $competitionId = filter_var($id, FILTER_VALIDATE_INT);
+        if ($competitionId === false) {
+            return response()->json(['message'=>'Id de competencia invalido'], 404);
+        }
+
+        $competition = Competition::onlyTrashed()->find($competitionId);
+
+        if(!$competition) {
+            return response()->json(['message'=>'Esta competencia no ha sido eliminada o no existe'], 400);
+        }
+
+        $this->authorize('restore', $competition);
+
+        $competition->restore();
+        return response()->json(['message'=>'La competencia ha sido restaurada correctamente'], 200);
     }
 }

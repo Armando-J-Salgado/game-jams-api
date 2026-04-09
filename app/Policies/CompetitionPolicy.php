@@ -52,7 +52,7 @@ class CompetitionPolicy
      */
     public function delete(User $user, Competition $competition): bool
     {
-        return $user->can('competitions.delete');
+        return $user->can('competitions.delete') && $competition->admin_id === $user->id;
     }
 
     /**
@@ -60,7 +60,7 @@ class CompetitionPolicy
      */
     public function restore(User $user, Competition $competition): bool
     {
-        return false;
+        return $user->can('competitions.restore') && $user->id === $competition->admin_id;
     }
 
     /**

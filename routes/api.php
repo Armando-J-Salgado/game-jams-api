@@ -96,6 +96,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched competition'], 404));
     Route::delete('/competitions/{competition}', [CompetitionController::class, 'destroy'])
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched competition'], 404));
+    Route::post('/competitions/{id}/restore', [CompetitionController::class, 'restore']);
 
     // CRUD Modules
     Route::post('/modules', [ModuleController::class, 'store']);
@@ -108,5 +109,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched competition'], 404));
     Route::delete('/modules/{module}', [ModuleController::class, 'destroy'])
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched competition'], 404));
+    Route::post('/modules/{id}/restore', [ModuleController::class, 'restore']);
 });
 
