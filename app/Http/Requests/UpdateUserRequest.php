@@ -18,14 +18,21 @@ class UpdateUserRequest extends FormRequest
 
     public function rules(): array
     {
-
         $userId = $this->route('user')?->id ?? $this->route('id');
+        $user = $this->user();
 
-        return [
+        $baseRules = [
             'name' => ['sometimes', 'string', 'min:2', 'max:100'],
             'lastname' => ['sometimes', 'string', 'min:2', 'max:100'],
-            'email' => ['sometimes', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
             'username' => ['sometimes', 'string', 'min:3', 'max:100', Rule::unique('users', 'username')->ignore($userId)],
+        ];
+
+        if (!$user || !$user->hasRole('administrador')) {
+            return $baseRules;
+        }
+
+        return $baseRules + [
+            'email' => ['sometimes', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
             'password' => ['nullable', 'string', 'min:8', 'max:255'],
             'dui' => ['sometimes', 'string', 'regex:/^\d{8}-\d$/', Rule::unique('users', 'dui')->ignore($userId)],
             'role' => ['sometimes', 'string', 'in:administrador,organizador,lider,participante'],
