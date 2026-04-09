@@ -17,7 +17,7 @@ beforeEach(function () {
 
 // HAPPY PATH
 
-test('A team member can submit a handover with a valid attachment URL', function () {
+test('It can submit a handover with a valid attachment URL if the user is a team member', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -34,7 +34,7 @@ test('A team member can submit a handover with a valid attachment URL', function
 
     $this->actingAs($leader, 'sanctum');
 
-    $response = $this->patchJson("api/v1/handovers/{$handover->id}", [
+    $response = $this->patchJson("api/v1/handovers/{$handover->id}/submit", [
         'attachment' => 'https://github.com/my-team/game-jam-repo',
     ]);
 
@@ -51,7 +51,7 @@ test('A team member can submit a handover with a valid attachment URL', function
 
 // AUTHORIZATION (403)
 
-test('A user who does not belong to the team cannot submit a handover', function () {
+test('It cannot submit a handover if the user does not belong to the team', function () {
     /** @var \Tests\TestCase $this */
     $outsider = User::factory()->create();
     $outsider->assignRole('participante');
@@ -65,7 +65,7 @@ test('A user who does not belong to the team cannot submit a handover', function
 
     $this->actingAs($outsider, 'sanctum');
 
-    $response = $this->patchJson("api/v1/handovers/{$handover->id}", [
+    $response = $this->patchJson("api/v1/handovers/{$handover->id}/submit", [
         'attachment' => 'https://github.com/outsider/repo',
     ]);
 
@@ -74,7 +74,7 @@ test('A user who does not belong to the team cannot submit a handover', function
 
 // VALIDATION (422)
 
-test('Cannot submit a handover without an attachment', function () {
+test('It cannot submit a handover without an attachment', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -86,13 +86,13 @@ test('Cannot submit a handover without an attachment', function () {
 
     $this->actingAs($leader, 'sanctum');
 
-    $response = $this->patchJson("api/v1/handovers/{$handover->id}", []);
+    $response = $this->patchJson("api/v1/handovers/{$handover->id}/submit", []);
 
     $response->assertStatus(422)
         ->assertJsonValidationErrors(['attachment']);
 });
 
-test('Cannot submit a handover with an invalid URL', function () {
+test('It cannot submit a handover with an invalid URL', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -104,7 +104,7 @@ test('Cannot submit a handover with an invalid URL', function () {
 
     $this->actingAs($leader, 'sanctum');
 
-    $response = $this->patchJson("api/v1/handovers/{$handover->id}", [
+    $response = $this->patchJson("api/v1/handovers/{$handover->id}/submit", [
         'attachment' => 'not-a-valid-url',
     ]);
 
@@ -114,13 +114,13 @@ test('Cannot submit a handover with an invalid URL', function () {
 
 // NOT FOUND (404)
 
-test('Returns 404 when handover is not found on submit', function () {
+test('It can return a not found error when the handover is not found to submit', function () {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole('lider');
     $this->actingAs($user, 'sanctum');
 
-    $response = $this->patchJson('api/v1/handovers/99999', [
+    $response = $this->patchJson('api/v1/handovers/99999/submit', [
         'attachment' => 'https://github.com/team/repo',
     ]);
 
