@@ -59,9 +59,20 @@ class UserController extends Controller
             'role' => 'string|exists:roles,name',
             'team_id' => 'integer|exists:teams,id',
             'dui' => 'string|regex:/^\d{8}-\d$/',
+            'status' => 'string|in:active,deleted,all',
         ]);
 
-        $users = User::query()
+        $users = User::query();
+
+        if ($request->input('status') === 'deleted') {
+            $users->onlyTrashed();
+        }
+
+        if ($request->input('status') === 'all') {
+            $users->withTrashed();
+        }
+
+        $users = $users
             ->when($request->filled('role'), function ($query) use ($request) {
                 $query->whereHas('roles', fn($q) => $q->where('name', $request->input('role')));
             })
@@ -243,5 +254,53 @@ class UserController extends Controller
         $this->authorize('delete', $user);
         $user->delete();
         return response()->json(['message' => 'User deleted successfully'], 200);
+    }
+
+    /**
+     * Display a listing of soft deleted resources.
+     */
+    public function deleted()
+    {
+        $this->authorize('viewAny', User::class);
+
+        $users = User::onlyTrashed()->get();
+        return UserResource::collection($users);
+    }
+
+    /**
+     * Restore a soft deleted resource.
+     */
+    public function restore(string $id)
+    {
+        $user = User::onlyTrashed()->find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'There are no matches for the searched user'], 404);
+        }
+
+        $this->authorize('restore', $user);
+        $user->restore();
+
+        return response()->json([
+            'message' => 'User restored successfully',
+            'data' => UserResource::make($user),
+        ], 200);
+    }
+
+    /**
+     * Permanently delete a soft deleted resource.
+     */
+    public function forceDelete(string $id)
+    {
+        $user = User::onlyTrashed()->find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'There are no matches for the searched user'], 404);
+        }
+
+        $this->authorize('forceDelete', $user);
+        $user->forceDelete();
+
+        return response()->json(['message' => 'User permanently deleted successfully'], 200);
     }
 }

@@ -28,6 +28,12 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     // CRUD users
     Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
+    Route::get('/users/deleted', [UserController::class, 'deleted'])
+        ->missing(fn() => response()->json(['message' => 'There are no matches for the searched user'], 404));
+    Route::patch('/users/{id}/restore', [UserController::class, 'restore'])
+        ->missing(fn() => response()->json(['message' => 'There are no matches for the searched user'], 404));
+    Route::delete('/users/{id}/force', [UserController::class, 'forceDelete'])
+        ->missing(fn() => response()->json(['message' => 'There are no matches for the searched user'], 404));
     Route::get('/users/{user}', [UserController::class, 'show'])
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched user'], 404));
     Route::put('/users/{user}', [UserController::class, 'update'])
