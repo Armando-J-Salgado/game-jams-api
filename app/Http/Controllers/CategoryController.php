@@ -34,6 +34,12 @@ class CategoryController extends Controller
      *    }
      *  ]
      * }
+     * @response 401 {
+     *  "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *  "message": "This action is unauthorized."
+     * }
      */
     public function index(Request $request)
     {
@@ -67,6 +73,16 @@ class CategoryController extends Controller
      *  "id": 1,
      *  "name": "Art"
      * }
+     * @response 401 {
+     *  "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *  "message": "This action is unauthorized."
+     * }
+     * @response 422 {
+     *  "message": "The given data was invalid.",
+     *  "errors": {"name": ["The name field is required."]}
+     * }
      */
     public function store(StoreCategoryRequest $request)
     {
@@ -92,6 +108,15 @@ class CategoryController extends Controller
      * @response 200 {
      *  "id": 1,
      *  "name": "Art"
+     * }
+     * @response 401 {
+     *  "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *  "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *  "message": "No query results for model [App\\Models\\Category]."
      * }
      */
     public function show(Category $category)
@@ -126,6 +151,19 @@ class CategoryController extends Controller
      *  "id": 1,
      *  "name": "2D Art"
      * }
+     * @response 401 {
+     *  "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *  "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *  "message": "No query results for model [App\\Models\\Category]."
+     * }
+     * @response 422 {
+     *  "message": "The given data was invalid.",
+     *  "errors": {"name": ["The name field is required."]}
+     * }
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
@@ -150,6 +188,15 @@ class CategoryController extends Controller
      *
      * @response 200 {
      *  "message": "Category deleted successfully"
+     * }
+     * @response 401 {
+     *  "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *  "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *  "message": "No query results for model [App\\Models\\Category]."
      * }
      */
     public function destroy(Category $category)

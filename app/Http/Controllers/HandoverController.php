@@ -41,8 +41,18 @@ class HandoverController extends Controller
      *     }
      *   ]
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
      * @response 404 {
      *   "message": "The specified team is not enrolled in this competition."
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"team_id": ["The selected team_id is invalid."]}
      * }
      */
     public function index(Request $request)
@@ -132,6 +142,16 @@ class HandoverController extends Controller
      *   "title": "Entrega Final",
      *   "is_delivered": true
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"title": ["The title field is required."]}
+     * }
      */
     public function store(StoreHandoverRequest $request)
     {
@@ -159,6 +179,15 @@ class HandoverController extends Controller
      * @response 200 {
      *   "id": 1,
      *   "title": "Entrega Final"
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "No query results for model [App\\Models\\Handover]."
      * }
      */
     public function show(Handover $handover)
@@ -196,6 +225,19 @@ class HandoverController extends Controller
      *   "id": 1,
      *   "title": "Entrega Corregida"
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "No query results for model [App\\Models\\Handover]."
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"score": ["The score must be between 0 and 100."]}
+     * }
      */
     public function update(UpdateHandoverRequest $request, Handover $handover)
     {
@@ -220,6 +262,15 @@ class HandoverController extends Controller
      *
      * @response 200 {
      *   "message": "Handover deleted successfully"
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "No query results for model [App\\Models\\Handover]."
      * }
      */
     public function destroy(Handover $handover)

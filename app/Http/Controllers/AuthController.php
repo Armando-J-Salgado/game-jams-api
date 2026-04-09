@@ -57,6 +57,9 @@ class AuthController extends Controller
      *  "status": "success",
      *  "message": "Logout successful"
      * }
+     * @response 401 {
+     *  "message": "Unauthenticated."
+     * }
      */
     public function logout(Request $request) {
         $user = Auth::user();
@@ -78,6 +81,9 @@ class AuthController extends Controller
      *
      * @response 200 {
      *  "profile": {"id": 1, "name": "Admin", "email": "admin@example.com"}
+     * }
+     * @response 401 {
+     *  "message": "Unauthenticated."
      * }
      */
     public function profile(Request $request) {

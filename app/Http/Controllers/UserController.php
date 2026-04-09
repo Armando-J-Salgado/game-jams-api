@@ -50,6 +50,16 @@ class UserController extends Controller
      *     }
      *   ]
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"role": ["The selected role is invalid."]}
+     * }
      */
     public function index(Request $request)
     {
@@ -132,6 +142,16 @@ class UserController extends Controller
      *   "lastname": "Perez",
      *   "email": "juanperez@example.com"
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"email": ["The email has already been taken."]}
+     * }
      */
     public function store(StoreUserRequest $request)
     {
@@ -173,6 +193,15 @@ class UserController extends Controller
      *   "name": "Juan",
      *   "email": "juanperez@example.com"
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "No query results for model [App\\Models\\User]."
+     * }
      */
     public function show(User $user)
     {
@@ -209,6 +238,19 @@ class UserController extends Controller
      * @response 200 {
      *   "id": 1,
      *   "name": "Juan Carlos"
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "No query results for model [App\\Models\\User]."
+     * }
+     * @response 422 {
+     *   "message": "The given data was invalid.",
+     *   "errors": {"username": ["The username has already been taken."]}
      * }
      */
     public function update(UpdateUserRequest $request, User $user)
@@ -247,6 +289,15 @@ class UserController extends Controller
      *
      * @response 200 {
      *   "message": "User deleted successfully"
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 403 {
+     *   "message": "This action is unauthorized."
+     * }
+     * @response 404 {
+     *   "message": "No query results for model [App\\Models\\User]."
      * }
      */
     public function destroy(User $user)
