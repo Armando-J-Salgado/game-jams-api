@@ -23,13 +23,13 @@ dataset('restrictedRoles', [
 
 
 // Test # it blocks users listing without auth
-it('blocks users listing without auth', function () {
+it('it cannot list users without authentication', function () {
     $this->getJson('/api/v1/users')
         ->assertStatus(401);
 });
 
 // Test # it lists users for admin
-it('lists users for admin', function () {
+it('it can list users as administrador', function () {
     $admin = User::factory()->asAdministrador()->create();
     User::factory()->count(2)->create();
 
@@ -43,7 +43,7 @@ it('lists users for admin', function () {
 });
 
 // Test # it cannot list users for non admin
-it('cannot list users for non admin', function (string $role) {
+it('it cannot list users as non administrador', function (string $role) {
     $actor = User::factory()->create();
     $actor->assignRole($role);
 
@@ -54,7 +54,7 @@ it('cannot list users for non admin', function (string $role) {
 })->with('restrictedRoles');
 
 // Test # it cannot create users without permission
-it('cannot create users without permission', function (string $role) {
+it('it cannot create users without authorization', function (string $role) {
     $actor = User::factory()->create();
     $actor->assignRole($role);
 
@@ -75,7 +75,7 @@ it('cannot create users without permission', function (string $role) {
 })->with('restrictedRoles');
 
 // Test # it cannot create with duplicate email
-it('cannot create with duplicate email', function () {
+it('it cannot create a user with duplicate email', function () {
     $admin = User::factory()->asAdministrador()->create();
     $existing = User::factory()->create();
 
@@ -97,7 +97,7 @@ it('cannot create with duplicate email', function () {
 });
 
 // Test # it cannot create with duplicate dui
-it('cannot create with duplicate dui', function () {
+it('it cannot create a user with duplicate dui', function () {
     $admin = User::factory()->asAdministrador()->create();
     $existing = User::factory()->create();
 
@@ -119,7 +119,7 @@ it('cannot create with duplicate dui', function () {
 });
 
 // Test # it cannot create with invalid dui format
-it('cannot create with invalid dui format', function () {
+it('it cannot create a user with invalid dui format', function () {
     $admin = User::factory()->asAdministrador()->create();
 
     Sanctum::actingAs($admin);
@@ -140,7 +140,7 @@ it('cannot create with invalid dui format', function () {
 });
 
 // Test # it cannot create with invalid role
-it('cannot create with invalid role', function () {
+it('it cannot create a user with invalid role', function () {
     $admin = User::factory()->asAdministrador()->create();
 
     Sanctum::actingAs($admin);
@@ -161,7 +161,7 @@ it('cannot create with invalid role', function () {
 });
 
 // Test # it creates a user with role
-it('creates a user with role', function () {
+it('it can create a user with role', function () {
     $admin = User::factory()->asAdministrador()->create();
     Sanctum::actingAs($admin);
 
@@ -185,7 +185,7 @@ it('creates a user with role', function () {
 });
 
 // Test # it shows a user
-it('shows a user', function () {
+it('it can show any user as administrador', function () {
     $admin = User::factory()->asAdministrador()->create();
     $user = User::factory()->create();
 
@@ -197,7 +197,7 @@ it('shows a user', function () {
 });
 
 // Test # it shows own profile
-it('shows own profile', function (string $role) {
+it('it can show own profile', function (string $role) {
     $user = User::factory()->create();
     $user->assignRole($role);
 
@@ -209,7 +209,7 @@ it('shows own profile', function (string $role) {
 })->with('restrictedRoles');
 
 // Test # it cannot show another user profile
-it('cannot show another user profile', function (string $role) {
+it('it cannot show another user profile', function (string $role) {
     $actor = User::factory()->create();
     $actor->assignRole($role);
     $other = User::factory()->create();
@@ -221,7 +221,7 @@ it('cannot show another user profile', function (string $role) {
 })->with('restrictedRoles');
 
 // Test # it updates a user
-it('updates a user', function () {
+it('it can update any user as administrator', function () {
     $admin = User::factory()->asAdministrador()->create();
     $user = User::factory()->create();
 
@@ -242,7 +242,7 @@ it('updates a user', function () {
 });
 
 // Test # it cannot update with duplicate email
-it('cannot update with duplicate email', function () {
+it('it cannot update a user with duplicate email', function () {
     $admin = User::factory()->asAdministrador()->create();
     $existing = User::factory()->create();
     $user = User::factory()->create();
@@ -261,7 +261,7 @@ it('cannot update with duplicate email', function () {
 });
 
 // Test # it cannot update with duplicate dui
-it('cannot update with duplicate dui', function () {
+it('it cannot update a user with duplicate dui', function () {
     $admin = User::factory()->asAdministrador()->create();
     $existing = User::factory()->create();
     $user = User::factory()->create();
@@ -280,7 +280,7 @@ it('cannot update with duplicate dui', function () {
 });
 
 // Test # it cannot update with invalid dui format
-it('cannot update with invalid dui format', function () {
+it('it cannot update a user with invalid dui format', function () {
     $admin = User::factory()->asAdministrador()->create();
     $user = User::factory()->create();
 
@@ -298,7 +298,7 @@ it('cannot update with invalid dui format', function () {
 });
 
 // Test # it cannot update with invalid role
-it('cannot update with invalid role', function () {
+it('it cannot update a user with invalid role', function () {
     $admin = User::factory()->asAdministrador()->create();
     $user = User::factory()->create();
 
@@ -316,7 +316,7 @@ it('cannot update with invalid role', function () {
 });
 
 // Test # it updates own profile
-it('updates own profile', function (string $role) {
+it('it can update own profile', function (string $role) {
     $user = User::factory()->create();
     $user->assignRole($role);
 
@@ -364,7 +364,7 @@ it('it cannot update restricted fields on own profile', function (string $role) 
 })->with('restrictedRoles');
 
 // Test # it cannot update another user profile
-it('cannot update another user profile', function (string $role) {
+it('it cannot update another user profile', function (string $role) {
     $actor = User::factory()->create();
     $actor->assignRole($role);
     $other = User::factory()->create();
@@ -381,7 +381,7 @@ it('cannot update another user profile', function (string $role) {
 })->with('restrictedRoles');
 
 // Test # it cannot update users without permission
-it('cannot update users without permission', function (string $role) {
+it('it cannot update users without authorization', function (string $role) {
     $actor = User::factory()->create();
     $actor->assignRole($role);
 
@@ -396,7 +396,7 @@ it('cannot update users without permission', function (string $role) {
 })->with('restrictedRoles');
 
 // Test # it deletes a user
-it('deletes a user', function () {
+it('it can delete a user as administrator', function () {
     $admin = User::factory()->asAdministrador()->create();
     $user = User::factory()->create();
 
@@ -410,7 +410,7 @@ it('deletes a user', function () {
 });
 
 // Test # it cannot delete users without permission
-it('cannot delete users without permission', function (string $role) {
+it('it cannot delete users without permission', function (string $role) {
     $actor = User::factory()->create();
     $actor->assignRole($role);
 
@@ -423,7 +423,7 @@ it('cannot delete users without permission', function (string $role) {
 })->with('restrictedRoles');
 
 // Test # it filters users by deleted status
-it('filters users by deleted status', function () {
+it('it can filter users by deleted status', function () {
     $admin = User::factory()->asAdministrador()->create();
     $activeUser = User::factory()->create();
     $deletedUser = User::factory()->create();
@@ -443,7 +443,7 @@ it('filters users by deleted status', function () {
 });
 
 // Test # it filters users by active status
-it('filters users by active status', function () {
+it('it can filter users by active status', function () {
     $admin = User::factory()->asAdministrador()->create();
     $activeUser = User::factory()->create();
     $deletedUser = User::factory()->create();
@@ -463,7 +463,7 @@ it('filters users by active status', function () {
 });
 
 // Test # it filters users by all status
-it('filters users by all status', function () {
+it('it can filter users by all status', function () {
     $admin = User::factory()->asAdministrador()->create();
     $activeUser = User::factory()->create();
     $deletedUser = User::factory()->create();
@@ -483,7 +483,7 @@ it('filters users by all status', function () {
 });
 
 // Test # it restores a soft deleted user
-it('restores a soft deleted user', function () {
+it('it can restore a soft deleted user as administrator', function () {
     $admin = User::factory()->asAdministrador()->create();
     $user = User::factory()->create();
     $user->delete();
@@ -501,7 +501,7 @@ it('restores a soft deleted user', function () {
 });
 
 // Test # it permanently deletes a soft deleted user
-it('permanently deletes a soft deleted user', function () {
+it('it can permanently delete a soft deleted user as administrator', function () {
     $admin = User::factory()->asAdministrador()->create();
     $user = User::factory()->create();
     $user->delete();
@@ -518,7 +518,7 @@ it('permanently deletes a soft deleted user', function () {
 });
 
 // Test # it cannot restore users without permission
-it('cannot restore users without permission', function (string $role) {
+it('it cannot restore users without authorization', function (string $role) {
     $actor = User::factory()->create();
     $actor->assignRole($role);
 
@@ -532,7 +532,7 @@ it('cannot restore users without permission', function (string $role) {
 })->with('restrictedRoles');
 
 // Test # it cannot permanently delete users without permission
-it('cannot permanently delete users without permission', function (string $role) {
+it('it cannot permanently delete users without authorization', function (string $role) {
     $actor = User::factory()->create();
     $actor->assignRole($role);
 
