@@ -12,7 +12,7 @@ class UpdateHandoverRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,13 @@ class UpdateHandoverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['sometimes','required', 'string', 'max:255'],
+            'attachment' => ['sometimes','required', 'string', 'url', 'active_url', 'regex:/^https?:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:\/\S*)?$/'],
+            'is_delivered' => ['sometimes','required', 'boolean'],
+            'module_id' => ['sometimes','required', 'integer', 'exists:modules,id'],
+            'team_id' => ['sometimes','required', 'integer', 'exists:teams,id'],
+            'score' => ['sometimes','required', 'integer', 'between:0,100'],
+            'date_of_submission' => ['sometimes','required', 'date', 'before_or_equal:today']
         ];
     }
 }

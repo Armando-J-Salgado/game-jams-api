@@ -8,13 +8,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Competition;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Handover;
 use App\Models\User;
 
 class Team extends Model
 {
     /** @use HasFactory<\Database\Factories\TeamFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'admin_id',
+        'total_members',
+        'max_members',
+        'created_at',
+        'updated_at'
+    ];
 
 
     public function competitions() : BelongsToMany

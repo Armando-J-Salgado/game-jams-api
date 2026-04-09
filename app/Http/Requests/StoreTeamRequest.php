@@ -12,7 +12,7 @@ class StoreTeamRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,9 @@ class StoreTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255|unique:teams,name',
+            'admin_id' => 'required|exists:users,id',
+            'max_members' => 'nullable|integer|min:1',
         ];
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\Competition;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreModuleRequest extends FormRequest
 {
@@ -12,18 +13,25 @@ class StoreModuleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string|array<mixed>|string>
      */
     public function rules(): array
     {
+        $competition = Competition::find($this->input('competition_id'));
+        $end_date = $competition ? $competition->end_date : null;
+        $start_date = $competition ? $competition->start_date : null;
         return [
-            //
+            'title'=>['required', 'string', 'min:1', 'max:255'],
+            'description'=>['required', 'string', 'min:1', 'max:300'],
+            'attachments'=>['sometimes', 'string', 'min:1', 'max:255'],
+            'due_date'=>['required', Rule::date()->format('Y-m-d'), Rule::when($competition !== null, ['after_or_equal:'.$start_date, 'before_or_equal:'.$end_date])],
+            'competition_id'=>['required', 'integer', 'exists:competitions,id'],
         ];
     }
 }

@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Handover;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class HandoverPolicy
 {
@@ -13,7 +12,7 @@ class HandoverPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->can('handovers.view');
     }
 
     /**
@@ -21,7 +20,18 @@ class HandoverPolicy
      */
     public function view(User $user, Handover $handover): bool
     {
-        return false;
+        if (!$user->can('handovers.view')) {
+            return false;
+        }
+
+        if ($user->hasAnyRole(['administrador', 'organizador'])) {
+            return true;
+        }
+        $team = $handover->team;
+        $isLeader = $team && $team->admin_id === $user->id;
+        $isMember = $team && $user->team_id === $team->id;
+
+        return $isLeader || $isMember;
     }
 
     /**
@@ -29,7 +39,7 @@ class HandoverPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->can('handovers.create');
     }
 
     /**
@@ -37,7 +47,19 @@ class HandoverPolicy
      */
     public function update(User $user, Handover $handover): bool
     {
-        return false;
+        if (!$user->can('handovers.update')) {
+            return false;
+        }
+
+        if ($user->hasAnyRole(['administrador', 'organizador'])) {
+            return true;
+        }
+
+        $team = $handover->team;
+        $isLeader = $team && $team->admin_id === $user->id;
+        $isMember = $team && $user->team_id === $team->id;
+
+        return $isLeader || $isMember;
     }
 
     /**
@@ -45,7 +67,7 @@ class HandoverPolicy
      */
     public function delete(User $user, Handover $handover): bool
     {
-        return false;
+        return $user->can('handovers.delete');
     }
 
     /**

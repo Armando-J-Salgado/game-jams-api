@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Competition;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class CompetitionPolicy
 {
@@ -13,7 +12,7 @@ class CompetitionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->can('competitions.view');
     }
 
     /**
@@ -21,7 +20,7 @@ class CompetitionPolicy
      */
     public function view(User $user, Competition $competition): bool
     {
-        return false;
+        return $user->can('competitions.view');
     }
 
     /**
@@ -29,7 +28,7 @@ class CompetitionPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->can('competitions.create');
     }
 
     /**
@@ -37,7 +36,15 @@ class CompetitionPolicy
      */
     public function update(User $user, Competition $competition): bool
     {
-        return false;
+        if (! $user->can('competitions.update')) {
+            return false;
+        }
+
+        if ($user->hasRole('organizador')) {
+            return $competition->admin_id === $user->id;
+        }
+        
+        return true;
     }
 
     /**
@@ -45,7 +52,7 @@ class CompetitionPolicy
      */
     public function delete(User $user, Competition $competition): bool
     {
-        return false;
+        return $user->can('competitions.delete') && $competition->admin_id === $user->id;
     }
 
     /**
@@ -53,7 +60,7 @@ class CompetitionPolicy
      */
     public function restore(User $user, Competition $competition): bool
     {
-        return false;
+        return $user->can('competitions.restore') && $user->id === $competition->admin_id;
     }
 
     /**

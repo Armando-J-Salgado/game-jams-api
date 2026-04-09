@@ -2,18 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexCompetitionRequest;
+use App\Http\Resources\CompetitionResource;
 use App\Models\Competition;
 use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
+use Illuminate\Support\Facades\Auth;
+use function Termwind\parse;
 
 class CompetitionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexCompetitionRequest $request)
     {
-        //
+        $this->authorize('viewAny', Competition::class);
+        $query = Competition::query();
+
+        if ($request->input('name')) {
+            $query->where('name', 'like','%' . $request->name . '%');
+        }
+
+        if ($request->input('start_date')) {
+            $query->whereDate('start_date', '>=', $request->start_date);
+        }
+
+        if ($request->input('end_date')){
+            $query->whereDate('end_date', '<=', $request->end_date);
+        }
+
+        if ($request->has('is_finished')) {
+            $query->where('is_finished', $request->is_finished);
+        }
+
+        if ($request->has('is_trashed') && $request->is_trashed) {
+            $query->onlyTrashed();
+        }
+
+        $competitions = $query->paginate($request->input('per_page', 15), page: $request->input('page', 1))->getCollection();
+        return CompetitionResource::collection($competitions);
     }
 
     /**
@@ -29,7 +57,24 @@ class CompetitionController extends Controller
      */
     public function store(StoreCompetitionRequest $request)
     {
-        //
+        $this->authorize('create', Competition::class);
+        $user = Auth::user();
+        $competition = Competition::create([
+            'name'=> $request->name,
+            'description'=> $request->description,
+            'prize_information'=> $request->prize_information,
+            'tools_information'=>$request->tools_information,
+            'max_teams'=> !$request->max_teams ? 20 : $request->max_teams,
+            'start_date'=> $request->start_date,
+            'end_date'=>$request->end_date,
+            'category_id'=>$request->category_id,
+            'admin_id'=>$user->id,
+        ]);
+
+        return response()->json([
+            'message'=>'Competition created succesfully',
+            'competition'=> new CompetitionResource($competition),
+        ], 201);
     }
 
     /**
@@ -37,7 +82,8 @@ class CompetitionController extends Controller
      */
     public function show(Competition $competition)
     {
-        //
+        $this->authorize('view', $competition);
+        return CompetitionResource::make($competition);
     }
 
     /**
@@ -53,7 +99,21 @@ class CompetitionController extends Controller
      */
     public function update(UpdateCompetitionRequest $request, Competition $competition)
     {
-        //
+        $this->authorize('update', $competition);
+        $data = $request->validated();
+
+        $user = Auth::user();
+
+        if ($competition->admin_id !== $user->id) {
+            return response()->json(["Error"=>"You can't update another user competition"], 403);
+        }
+
+        $competition->update($data);
+
+        return response()->json([
+            'message'=> 'Competition updated succesfully',
+            'data'=> CompetitionResource::make($competition)
+        ]);
     }
 
     /**
@@ -61,6 +121,30 @@ class CompetitionController extends Controller
      */
     public function destroy(Competition $competition)
     {
-        //
+        $this->authorize('delete', $competition);
+        $competition->delete();
+        return response()->json(['message'=>'Competition deleted succesfully'], 200);
+    }
+
+    /**
+     * Restore a soft deleted model
+     */
+    public function restore(String $id)
+    {
+        $competitionId = filter_var($id, FILTER_VALIDATE_INT);
+        if ($competitionId === false) {
+            return response()->json(['message'=>'Id de competencia invalido'], 404);
+        }
+
+        $competition = Competition::onlyTrashed()->find($competitionId);
+
+        if(!$competition) {
+            return response()->json(['message'=>'Esta competencia no ha sido eliminada o no existe'], 400);
+        }
+
+        $this->authorize('restore', $competition);
+
+        $competition->restore();
+        return response()->json(['message'=>'La competencia ha sido restaurada correctamente'], 200);
     }
 }

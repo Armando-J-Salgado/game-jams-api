@@ -11,11 +11,29 @@ use App\Models\Category;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Competition extends Model
 {
     /** @use HasFactory<\Database\Factories\CompetitionFactory> */
     use HasFactory;
+    use SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'prize_information',
+        'tools_information',
+        'max_teams',
+        'total_teams',
+        'start_date',
+        'end_date',
+        'is_finished',
+        'category_id',
+        'admin_id',
+        'created_at',
+        'updated_at'
+    ];
 
     public function teams(): BelongsToMany
     {
@@ -34,6 +52,6 @@ class Competition extends Model
 
     public function user() : BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Handover;
+use App\Models\Module;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,26 @@ class HandoverFactory extends Factory
      */
     public function definition(): array
     {
+        // Determinamos primero si habrá archivo (20% de las veces)
+        $hasAttachment = fake()->boolean(20);
+
         return [
-            //
+            'title' => fake()->sentence(6, true),
+            
+            // Solo si hay archivo, colocar una url y marcar covers como true
+            'attachment' => $hasAttachment ? fake()->url() : null,
+            'is_delivered' => $hasAttachment,
+            
+            // Si se entregó, simular una fecha de entrega aleatoria de las últimas 2 semanas
+            'date_of_submission' => $hasAttachment ? fake()->dateTimeBetween('-2 weeks', 'now') : null,
+            
+            // Solo calificar si ya se entregó
+            'score' => $hasAttachment ? fake()->numberBetween(0, 100) : null,
+            
+            // Por defecto, se puede rellenar. Se recomienda sobreescribirlo en Seeders
+            // para asociarlo correctamente.
+            'module_id' => Module::factory(),
+            'team_id' => Team::factory(),
         ];
     }
 }

@@ -12,7 +12,7 @@ class StoreHandoverRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,20 @@ class StoreHandoverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'attachment' => ['nullable', 'string', 'url', 'active_url', 'regex:/^https?:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:\/\S*)?$/'],
+            'is_delivered' => ['sometimes','required', 'boolean'],
+            'module_id' => ['required', 'integer', 'exists:modules,id'],
+            'team_id' => ['required', 'integer', 'exists:teams,id'],
+            'score' => ['nullable', 'integer', 'between:0,100'],
+            'date_of_submission' => ['nullable', 'date', 'before_or_equal:today']
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'is_delivered' => $this->input('is_delivered', false),
+        ]);
     }
 }

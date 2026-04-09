@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('is_finished')->default(false);
-            $table->foreignId('category_id')->constrained();
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
             $table->unsignedBigInteger('admin_id');
             $table->foreign('admin_id')->references('id')->on('users');
             $table->timestamps();
