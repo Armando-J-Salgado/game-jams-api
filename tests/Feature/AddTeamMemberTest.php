@@ -15,7 +15,7 @@ beforeEach(function () {
 
 // HAPPY PATH
 
-test('A leader can add a member to their team', function () {
+test('It can add a member to the team if the user is the leader', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -38,7 +38,7 @@ test('A leader can add a member to their team', function () {
     ]);
 });
 
-test('Adding a member increments the team total_members', function () {
+test('It can increase the team total_members when adding a member', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -53,7 +53,7 @@ test('Adding a member increments the team total_members', function () {
 
 // AUTHORIZATION (403)
 
-test('A non-leader cannot add members to another team', function () {
+test('It cannot add members to another team if the user is not the leader', function () {
     /** @var \Tests\TestCase $this */
     $intruder = User::factory()->create();
     $intruder->assignRole('lider');
@@ -69,7 +69,7 @@ test('A non-leader cannot add members to another team', function () {
 
 // BUSINESS RULES (400)
 
-test('Cannot add a user who already belongs to this team', function () {
+test('It cannot add a user who already belongs to this team', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -83,7 +83,7 @@ test('Cannot add a user who already belongs to this team', function () {
     $response->assertStatus(400);
 });
 
-test('Cannot add a user who already belongs to another team', function () {
+test('It cannot add a user who already belongs to another team', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -98,7 +98,7 @@ test('Cannot add a user who already belongs to another team', function () {
     $response->assertStatus(400);
 });
 
-test('Cannot add a member when team is at full capacity', function () {
+test('It cannot add a member when team is at full capacity', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -114,7 +114,7 @@ test('Cannot add a member when team is at full capacity', function () {
 
 // NOT FOUND (404)
 
-test('Returns 404 when team is not found on add member', function () {
+test('It can returns a not found error when the team is not found to add a member', function () {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole('lider');

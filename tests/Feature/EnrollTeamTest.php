@@ -29,7 +29,7 @@ function openCompetition(): Competition
 
 // HAPPY PATH
 
-test('A leader can enroll their team in a competition', function () {
+test('It can enroll a team in a competition if the user is the leader', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -49,7 +49,7 @@ test('A leader can enroll their team in a competition', function () {
     ]);
 });
 
-test('Enrolling a team creates handovers for each module', function () {
+test('It can create handovers for each module when enrolling a team', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -66,7 +66,7 @@ test('Enrolling a team creates handovers for each module', function () {
 
 // AUTHORIZATION (403)
 
-test('A non-leader cannot enroll another team in a competition', function () {
+test('It cannot enroll another team in a competition if the user is not the leader', function () {
     /** @var \Tests\TestCase $this */
     $intruder = User::factory()->create();
     $intruder->assignRole('lider');
@@ -82,7 +82,7 @@ test('A non-leader cannot enroll another team in a competition', function () {
 
 // BUSINESS RULES (400)
 
-test('Cannot enroll a team that is already enrolled', function () {
+test('It cannot enroll a team that is already enrolled', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -97,7 +97,7 @@ test('Cannot enroll a team that is already enrolled', function () {
     $response->assertStatus(400);
 });
 
-test('Cannot enroll when competition is at max capacity', function () {
+test('It cannot enroll a team when competition is at max capacity', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -112,7 +112,7 @@ test('Cannot enroll when competition is at max capacity', function () {
     $response->assertStatus(400);
 });
 
-test('Cannot enroll before competition registration opens', function () {
+test('It cannot enroll a team before competition registration opens', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -130,7 +130,7 @@ test('Cannot enroll before competition registration opens', function () {
     $response->assertStatus(400);
 });
 
-test('Cannot enroll in a finished competition', function () {
+test('It cannot enroll a team in a finished competition', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -150,7 +150,7 @@ test('Cannot enroll in a finished competition', function () {
 
 // NOT FOUND (404)
 
-test('Returns 404 when team is not found on enroll', function () {
+test('It cannot enroll a team that is not found', function () {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole('lider');

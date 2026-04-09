@@ -15,7 +15,7 @@ beforeEach(function () {
 
 // HAPPY PATH
 
-test('A leader can remove a member from their team', function () {
+test('It can remove a member from the team if the user is the leader', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -36,7 +36,7 @@ test('A leader can remove a member from their team', function () {
     ]);
 });
 
-test('Removing a member decrements the team total_members', function () {
+test('It can decrease the team total_members when removing a member', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -51,7 +51,7 @@ test('Removing a member decrements the team total_members', function () {
 
 // AUTHORIZATION (403)
 
-test('A non-leader cannot remove members from another team', function () {
+test('It cannot remove members from another team if the user is not the leader', function () {
     /** @var \Tests\TestCase $this */
     $intruder = User::factory()->create();
     $intruder->assignRole('lider');
@@ -67,7 +67,7 @@ test('A non-leader cannot remove members from another team', function () {
 
 // BUSINESS RULES (400)
 
-test('A leader cannot remove themselves from the team', function () {
+test('It cannot remove the leader from the team', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -80,7 +80,7 @@ test('A leader cannot remove themselves from the team', function () {
     $response->assertStatus(400);
 });
 
-test('Cannot remove a user who is not a member of the team', function () {
+test('It cannot remove a user who is not a member of the team', function () {
     /** @var \Tests\TestCase $this */
     $leader = User::factory()->create();
     $leader->assignRole('lider');
@@ -96,7 +96,7 @@ test('Cannot remove a user who is not a member of the team', function () {
 
 // NOT FOUND (404)
 
-test('Returns 404 when team is not found on remove member', function () {
+test('It can return a not found error when the team is not found to remove a member', function () {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole('lider');

@@ -29,7 +29,7 @@ test('It can list all teams', function (string $role) {
         ->assertJsonCount(3, 'data');
 })->with(['administrador', 'organizador', 'lider', 'participante']);
 
-test('It cannot list teams to unauthenticated users', function () {
+test('It cannot list teams for unauthenticated users', function () {
     /** @var \Tests\TestCase $this */
     $response = $this->getJson('api/v1/teams');
 
@@ -57,7 +57,7 @@ test('It can create a team', function () {
     $this->assertDatabaseHas('teams', ['name' => 'Equipo Alfa']);
 });
 
-test('It cannot create a team with an invalid role', function (string $role) {
+test('It cannot create a team with an unauthorized role', function (string $role) {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole($role);
@@ -117,7 +117,7 @@ test('It can show a specific team', function () {
         ->assertJsonPath('data.name', $team->name);
 });
 
-test('It returns 404 when showing a non-existent team', function () {
+test('It can return a not found error when showing a non-existent team', function () {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole('administrador');
@@ -148,7 +148,7 @@ test('It can update a team', function () {
     $this->assertDatabaseHas('teams', ['id' => $team->id, 'name' => 'Equipo Actualizado']);
 });
 
-test('It returns 404 when updating a non-existent team', function () {
+test('It can return a not found error when updating a non-existent team', function () {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole('administrador');
@@ -175,7 +175,7 @@ test('It can soft delete a team', function () {
     $this->assertSoftDeleted('teams', ['id' => $team->id]);
 });
 
-test('It returns 404 when deleting a non-existent team', function () {
+test('It can return a not found error when deleting a non-existent team', function () {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole('administrador');
@@ -220,7 +220,7 @@ test('It can restore a soft-deleted team', function () {
     $this->assertDatabaseHas('teams', ['id' => $team->id, 'deleted_at' => null]);
 });
 
-test('It returns 404 when restoring a non-existent soft-deleted team', function () {
+test('It can return a not found error when restoring a non-existent soft-deleted team', function () {
     /** @var \Tests\TestCase $this */
     $user = User::factory()->create();
     $user->assignRole('administrador');
