@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Actions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\HandoverResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Handover;
@@ -26,7 +27,7 @@ class SubmitHandoverController extends Controller
 
         return response()->json([
             'message' => 'Handover submitted successfully',
-            'handover' => $handover,
+            'data' => new HandoverResource($handover->fresh()),
         ]);
     }
 }

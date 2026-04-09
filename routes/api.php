@@ -66,11 +66,16 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
             ->json(['message' => 'There are no matches for the searched handover'], 404));
 
     // Business Logic Actions (Utils)
-    Route::post('/teams/{team}/enroll/{competition}', EnrollTeamController::class);
-    Route::delete('/teams/{team}/withdraw/{competition}', WithdrawTeamController::class);
-    Route::post('/teams/{team}/members/{user}', AddTeamMemberController::class);
-    Route::delete('/teams/{team}/members/{user}', RemoveTeamMemberController::class);
-    Route::patch('/handovers/{handover}', SubmitHandoverController::class);
+    Route::post('/teams/{team}/enroll/{competition}', EnrollTeamController::class)
+        ->missing(fn() => response()->json(['message' => 'Team or competition not found.'], 404));
+    Route::delete('/teams/{team}/withdraw/{competition}', WithdrawTeamController::class)
+        ->missing(fn() => response()->json(['message' => 'Team or competition not found.'], 404));
+    Route::post('/teams/{team}/members/{user}', AddTeamMemberController::class)
+        ->missing(fn() => response()->json(['message' => 'Team or user not found.'], 404));
+    Route::delete('/teams/{team}/members/{user}', RemoveTeamMemberController::class)
+        ->missing(fn() => response()->json(['message' => 'Team or user not found.'], 404));
+    Route::patch('/handovers/{handover}', SubmitHandoverController::class)
+        ->missing(fn() => response()->json(['message' => 'Handover not found.'], 404));
     // CRUD Teams
     Route::get('/teams', [TeamController::class, 'index']);
     Route::post('/teams', [TeamController::class, 'store']);
@@ -96,6 +101,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched competition'], 404));
     Route::delete('/competitions/{competition}', [CompetitionController::class, 'destroy'])
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched competition'], 404));
+    Route::post('/competitions/{id}/restore', [CompetitionController::class, 'restore']);
 
     // CRUD Modules
     Route::post('/modules', [ModuleController::class, 'store']);
@@ -108,5 +114,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched competition'], 404));
     Route::delete('/modules/{module}', [ModuleController::class, 'destroy'])
         ->missing(fn() => response()->json(['message' => 'There are no matches for the searched competition'], 404));
+    Route::post('/modules/{id}/restore', [ModuleController::class, 'restore']);
 });
 

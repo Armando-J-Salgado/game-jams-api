@@ -67,7 +67,7 @@ class ModuleController extends Controller
         $module = Module::create([
             'title'=>$request->title,
             'description'=>$request->description,
-            'attachments'=>$request->attachments ? $request->attachments : '',
+            'attachments'=> $request->attachments ?? null,
             'due_date'=>$request->due_date,
             'competition_id'=>$request->competition_id,
         ]);
@@ -113,6 +113,14 @@ class ModuleController extends Controller
      */
     public function update(UpdateModuleRequest $request, Module $module)
     {
+        $this->authorize('update', $module);
+
+        $user = Auth::user();
+
+        if($module->competition->admin_id !== $user->id) {
+            return response()->json(['Error'=>'You can`t modify a third party`s competition module'], 403);
+        }
+
         $data = $request->validated();
         $module->update($data);
 
@@ -127,8 +135,31 @@ class ModuleController extends Controller
      */
     public function destroy(Module $module)
     {
+        $this->authorize('delete', $module);
         $module->delete();
 
         return response()->json(['message'=>'Modulo eliminado de forma exitosa'], 200);
+    }
+
+    /**
+     * Restore a soft deleted model
+     */
+    public function restore(string $id)
+    {
+        $moduleId = filter_var($id, FILTER_VALIDATE_INT);
+        if($moduleId === false){
+            return response()->json(['message'=>'El id del módulo es inválido'], 404);
+        }
+
+        $module = Module::onlyTrashed()->find($moduleId);
+
+        if(!$module) {
+            return response()->json(['message'=>'El modulo no ha sido eliminado o no existe'], 400);
+        }
+
+        $this->authorize('restore', $module);
+        $module->restore();
+
+        return response()->json(['message'=>'El modulo ha sido restaurado exitosamente'], 200);
     }
 }

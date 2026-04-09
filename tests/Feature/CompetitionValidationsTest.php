@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Competition;
+use App\Models\Team;
 use App\Models\User;
 use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
@@ -598,5 +599,156 @@ it ("can delete competitions", function (string $role) {
 
     $this->deleteJson('api/v1/competitions/'.$testCompetition->id)
         ->assertStatus(200);
+
+})->with(['administrador']);
+
+//Test #53 It can't update the max amount of teams with a value lower than the current amount enrolled
+it ('cannot update the max amount of teams with a value lower than the current amount enrolled', function (string $role) {
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+
+    $testCompetition = Competition::create([
+        "name" => "Test Competition",
+        "description" => "Test description",
+        "prize_information" => "Test prize information",
+        "tools_information" => "Test tools information",
+        "max_teams" => 10,
+        "start_date" => "2026-07-04",
+        "end_date" => "2026-07-06",
+        "admin_id" => $user->id,
+        "category_id" => test()->category->id,
+    ]);
+
+    $testTeam1 = Team::factory()->create();
+    $testTeam2 = Team::factory()->create();
+
+    $testCompetition->teams()->attach($testTeam1->id);
+    $testCompetition->teams()->attach($testTeam2->id);
+
+    $this->putJson('api/v1/competitions/' . $testCompetition->id, [
+        'max_teams' => 1
+    ])->assertJsonValidationErrors(['max_teams']);
+})->with(['administrador', 'organizador']);
+
+//Test #54: it cannot restore a non-deleted competition
+it('cannot restore a non-deleted competition', function (string $role) {
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+    
+    $testCompetition = Competition::create([
+        "name" => "Test Competition",
+        "description" => "Test description",
+        "prize_information" => "Test prize information",
+        "tools_information" => "Test tools information",
+        "max_teams" => 10,
+        "start_date" => "2026-07-04",
+        "end_date" => "2026-07-06",
+        "admin_id" => $user->id,
+        "category_id" => test()->category->id,
+    ]);
+
+    $this->postJson("/api/v1/competitions/{$testCompetition->id}/restore/")
+        ->assertStatus(400);
+
+})->with(['administrador']);
+
+//Test #55: It cannot restore a deleted competition without authorization
+it('cannot restore a deleted competition without authorization', function (string $role) {
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+    
+    $testCompetition = Competition::create([
+        "name" => "Test Competition",
+        "description" => "Test description",
+        "prize_information" => "Test prize information",
+        "tools_information" => "Test tools information",
+        "max_teams" => 10,
+        "start_date" => "2026-07-04",
+        "end_date" => "2026-07-06",
+        "admin_id" => $user->id,
+        "category_id" => test()->category->id,
+    ]);
+
+    $testCompetition->delete();
+
+    $this->postJson("/api/v1/competitions/{$testCompetition->id}/restore/")
+        ->assertStatus(403);
+
+})->with(['organizador', 'participante', 'lider']);
+
+//Test #56: It cannot restore a third-party competition
+it('cannot restore a third-party competition', function (string $role) {
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+    
+    $testCompetition = Competition::create([
+        "name" => "Test Competition",
+        "description" => "Test description",
+        "prize_information" => "Test prize information",
+        "tools_information" => "Test tools information",
+        "max_teams" => 10,
+        "start_date" => "2026-07-04",
+        "end_date" => "2026-07-06",
+        "admin_id" => test()->user->id,
+        "category_id" => test()->category->id,
+    ]);
+
+    $testCompetition->delete();
+
+    $this->postJson("/api/v1/competitions/{$testCompetition->id}/restore/")
+        ->assertStatus(403);
+
+})->with(['administrador']);
+
+//Test #57: It cannot restore a deleted competition without authentication
+it('cannot restore a deleted competition without authentication', function () {
+    $testCompetition = Competition::create([
+        "name" => "Test Competition",
+        "description" => "Test description",
+        "prize_information" => "Test prize information",
+        "tools_information" => "Test tools information",
+        "max_teams" => 10,
+        "start_date" => "2026-07-04",
+        "end_date" => "2026-07-06",
+        "admin_id" => test()->user->id,
+        "category_id" => test()->category->id,
+    ]);
+
+    $testCompetition->delete();
+
+    $this->postJson("/api/v1/competitions/{$testCompetition->id}/restore/")
+        ->assertUnauthorized();
+
+});
+
+//Test #58: It can restore a deleted competition
+it('can restore a deleted competition', function (string $role) {
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $this->actingAs($user);
+    
+    $testCompetition = Competition::create([
+        "name" => "Test Competition",
+        "description" => "Test description",
+        "prize_information" => "Test prize information",
+        "tools_information" => "Test tools information",
+        "max_teams" => 10,
+        "start_date" => "2026-07-04",
+        "end_date" => "2026-07-06",
+        "admin_id" => $user->id,
+        "category_id" => test()->category->id,
+    ]);
+
+    $testCompetition->delete();
+
+    $this->postJson("/api/v1/competitions/{$testCompetition->id}/restore/")
+        ->assertStatus(200);
+
+    $testCompetition->refresh();
+    expect($testCompetition->trashed())->toBeFalse();
 
 })->with(['administrador']);

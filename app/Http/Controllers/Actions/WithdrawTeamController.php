@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Actions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TeamResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Team;
@@ -25,13 +26,14 @@ class WithdrawTeamController extends Controller
 
         // Withdraw team
         $competition->teams()->detach($team->id);
-        
+
         if ($competition->total_teams > 0) {
             $competition->decrement('total_teams');
         }
 
         return response()->json([
             'message' => 'Team withdrawn successfully from the competition. Handovers are kept as history.',
+            'data' => new TeamResource($team->fresh()),
         ]);
     }
 }
