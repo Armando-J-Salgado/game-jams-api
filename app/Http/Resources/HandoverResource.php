@@ -18,7 +18,7 @@ class HandoverResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'attachment' => $this->attachment,
-            'is_delivered' => $this->is_delivered,
+            'is_delivered' => (bool) $this->is_delivered,
             'module_id' => $this->module_id,
             'team_id' => $this->team_id,
             'score' => $this->score,

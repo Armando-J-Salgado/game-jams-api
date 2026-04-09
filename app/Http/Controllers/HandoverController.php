@@ -8,11 +8,13 @@ use App\Http\Requests\UpdateHandoverRequest;
 use App\Http\Resources\HandoverResource;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HandoverController extends Controller
 {
-     use AuthorizesRequests;
-    public function __construct() {
+    use AuthorizesRequests;
+    public function __construct()
+    {
         $this->authorizeResource(Handover::class);
     }
     /**
@@ -23,8 +25,9 @@ class HandoverController extends Controller
         $this->authorize('viewAny', Handover::class);
 
         $request->validate([
-            'team_id' => 'integer|exists:teams,id',
-            'module_id' => 'integer|exists:modules,id',
+            'team_id'        => 'integer|exists:teams,id',
+            'module_id'      => 'integer|exists:modules,id',
+            'competition_id' => 'integer|exists:competitions,id',
         ]);
 
         $query = Handover::query();
@@ -35,13 +38,41 @@ class HandoverController extends Controller
             $query->where('team_id', $user->team_id);
         }
 
-        $query->when($request->has('team_id'), 
-            fn ($q)=>$q->where('team_id', $request->input('team_id')))
-        ->when($request->has('module_id'),
-            fn ($q)=>$q->where('module_id', $request->input('module_id')));
+        // If filtering by competition, verify that the team is enrolled in it
+        if ($request->has('competition_id') && $request->has('team_id')) {
+            $teamId = $request->integer('team_id');
+            $competitionId = $request->integer('competition_id');
+
+            $enrolled = DB::table('competition_team')
+                ->where('team_id', $teamId)
+                ->where('competition_id', $competitionId)
+                ->exists();
+
+            if (!$enrolled) {
+                return response()->json([
+                    'message' => 'The specified team is not enrolled in this competition.',
+                ], 404);
+            }
+        }
+
+        $query
+            ->when(
+                $request->has('team_id'),
+                fn($q) => $q->where('team_id', $request->input('team_id'))
+            )
+            ->when(
+                $request->has('module_id'),
+                fn($q) => $q->where('module_id', $request->input('module_id'))
+            )
+            ->when(
+                $request->has('competition_id'),
+                fn($q) => $q->whereHas(
+                    'module',
+                    fn($mq) => $mq->where('competition_id', $request->input('competition_id'))
+                )
+            );
 
         return HandoverResource::collection($query->get());
-        
     }
 
     /**
@@ -59,7 +90,7 @@ class HandoverController extends Controller
     {
         $this->authorize('create', Handover::class);
         $data = $request->validated();
-        
+
         $handover = Handover::create($data);
 
         return response()->json(HandoverResource::make($handover), 201);

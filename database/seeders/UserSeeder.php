@@ -14,8 +14,8 @@ class UserSeeder extends Seeder
     {
         // Administrador
         User::factory()->asAdministrador()->create([
-            'name' => 'El',
-            'lastname' => 'Administrador',
+            'name' => 'Administrador',
+            'lastname' => 'Inador',
             'username' => 'admin',
             'dui' => '00000000-1',
             'email' => 'admin@gamejam.test',
@@ -24,8 +24,8 @@ class UserSeeder extends Seeder
 
         // Organizador
         User::factory()->asOrganizador()->create([
-            'name' => 'El',
-            'lastname' => 'Organizador',
+            'name' => 'Organizador',
+            'lastname' => 'Compulsivo',
             'username' => 'organizador',
             'dui' => '00000000-2',
             'email' => 'organizador@gamejam.test',
@@ -33,8 +33,8 @@ class UserSeeder extends Seeder
 
         // Líder
         User::factory()->asLider()->create([
-            'name' => 'El',
-            'lastname' => 'Líder',
+            'name' => 'Líder',
+            'lastname' => 'de la Manada',
             'username' => 'lider',
             'dui' => '00000000-3',
             'email' => 'lider@gamejam.test',
@@ -42,8 +42,8 @@ class UserSeeder extends Seeder
 
         // Participante
         User::factory()->asParticipante()->create([
-            'name' => 'El',
-            'lastname' => 'Participante',
+            'name' => 'Premio',
+            'lastname' => 'de Participante',
             'username' => 'participante',
             'dui' => '00000000-4',
             'email' => 'participante@gamejam.test',

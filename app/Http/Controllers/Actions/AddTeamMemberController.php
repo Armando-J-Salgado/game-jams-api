@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Actions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TeamResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Team;
@@ -44,6 +45,7 @@ class AddTeamMemberController extends Controller
 
         return response()->json([
             'message' => 'Member added successfully to the team.',
+            'data' => new TeamResource($team->fresh()),
         ], 201);
     }
 }
