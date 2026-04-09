@@ -99,6 +99,8 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
     Route::put('/teams/{team}', [TeamController::class, 'update'])
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
+    Route::patch('/teams/{team}', [TeamController::class, 'update'])
+    ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
     Route::delete('/teams/{team}', [TeamController::class, 'destroy'])
     ->missing(fn () => response()->json(['message' => 'There are no matches for the searched team'], 404));
     
