@@ -184,7 +184,7 @@ La documentación formal de endpoints se mantiene en Stoplight para consumo exte
 
 Enlace directo a la documentación:
 
-- Game Jam API[https://2-many-bits-esen.stoplight.io/docs/game-jam-api/branches/main/b72a353cc339c-api-game-jam]
+- [Game Jam API](https://2-many-bits-esen.stoplight.io/docs/game-jam-api/branches/main/b72a353cc339c-api-game-jam)
 
 ## Autenticación y autorización
 
