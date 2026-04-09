@@ -184,7 +184,7 @@ La documentación formal de endpoints se mantiene en Stoplight para consumo exte
 
 Enlace directo a la documentación:
 
-- [Game Jam API](https://20245387-esen.stoplight.io/docs/game-jams-api/retscramd8iyh-laravel-api-documentation)
+- [Game Jam API](https://2-many-bits-esen.stoplight.io/studio/game-jam-api:?source=3yGSi2C4kNzHH8_P8DH5x&symbol=%252Fp%252Fopenapi-2.yaml%252Fpaths%252F%7E1api%7E1v1%7E1users%7E1%257Buser_id%257D)
 
 ## Autenticación y autorización
 
