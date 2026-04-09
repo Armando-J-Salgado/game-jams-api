@@ -23,7 +23,7 @@ class StoreCompetitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>['required', 'string', 'max:255'],
+            'name'=>['required', 'string', 'max:255', 'unique:competitions,name'],
             'description'=>['required', 'string', 'min:1', 'max:500'],
             'prize_information'=>['required', 'string', 'max:500', 'min:1'],
             'tools_information'=>['required', 'string', 'max:500', 'min:1'],

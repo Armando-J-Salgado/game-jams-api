@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Actions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EnrollmentResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Team;
@@ -29,7 +30,12 @@ class EnrollTeamController extends Controller
             return response()->json(['message' => 'The competition has reached its maximum team capacity.'], 400);
         }
 
-        // Check dates (closed or active)
+        // Check that registration period has opened (start_date)
+        if (now()->toDateString() < $competition->start_date) {
+            return response()->json(['message' => 'Competition registration has not started yet.'], 400);
+        }
+
+        // Check dates (closed or finished)
         if ($competition->is_finished || now()->toDateString() > $competition->end_date) {
             return response()->json(['message' => 'This competition is closed or finished.'], 400);
         }
@@ -38,10 +44,10 @@ class EnrollTeamController extends Controller
         $competition->teams()->attach($team->id);
         $competition->increment('total_teams');
 
-        // Create empty handovers
+        // Create empty handovers for each module
         foreach ($competition->modules as $module) {
             Handover::create([
-                'title' => 'Entrega: ' . $module->name . ' - ' . $team->name,
+                'title' => 'Entrega: ' . $module->title . ' - ' . $team->name,
                 'is_delivered' => false,
                 'score' => null,
                 'module_id' => $module->id,
@@ -49,8 +55,13 @@ class EnrollTeamController extends Controller
             ]);
         }
 
-        return response()->json([
-            'message' => 'Team enrolled successfully in the competition.',
-        ], 201);
+        // Reload relationships for the resource
+        $team->load('users');
+        $competition->load('modules');
+
+        return (new EnrollmentResource(['team' => $team, 'competition' => $competition]))
+            ->response()
+            ->setStatusCode(201)
+            ->header('Content-Type', 'application/json');
     }
 }
